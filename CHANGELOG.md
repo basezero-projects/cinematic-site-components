@@ -1,5 +1,11 @@
 # Cinematic Site Components Changelog
 
+## [0.2.2] - 2026-06-09
+
+### Changed
+
+- **Service Area Map rebuilt with syvr-taste**: Reworked `service-area-map.html` from a dark fake-live dispatch dashboard into a grounded service-area route sheet. The module now opens with a forest-green shop-wall hero, a paper route-sheet map, actual Denver metro town labels, lettered route stops, a moving service pin, and plain work notes for Wheat Ridge, Commerce City, Aurora, Lakewood, and DTC. It removes fake job IDs, fake times, numbered stop chips, live status dots, response metrics, dashboard language, and cyan tech styling. The `syvr-taste` grep gate reports `ALL CLEAR` with no hard fails or warnings.
+
 ## [0.2.1] - 2026-06-09
 
 ### Changed

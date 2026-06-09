@@ -3,501 +3,529 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Service Dispatch Map - Cinematic Module</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<title>Service Area Route Sheet - Cinematic Module</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
   :root{
-    --bg:#070806;
-    --ink:#f3efe6;
-    --muted:#9b9184;
-    --dim:#6e665d;
-    --panel:#10120f;
-    --panel-2:#151813;
-    --line:#252a22;
-    --line-2:#31382f;
-    --route:#f17935;
-    --route-2:#ffd08a;
-    --cyan:#7bd6d3;
-    --green:#87b978;
-    --red:#df6d5f;
-    --shadow:0 36px 120px rgba(0,0,0,.36);
+    --wall:oklch(0.2 0.045 145);
+    --wall-2:oklch(0.16 0.036 145);
+    --paper:oklch(0.9 0.043 86);
+    --paper-2:oklch(0.84 0.047 84);
+    --ink:oklch(0.18 0.028 130);
+    --muted:oklch(0.43 0.026 90);
+    --soft:oklch(0.66 0.032 86);
+    --line:oklch(0.71 0.048 82);
+    --route:oklch(0.62 0.151 48);
+    --route-dark:oklch(0.37 0.088 48);
+    --accent-ink:oklch(0.98 0 0);
+    --blue-ink:oklch(0.39 0.072 225);
+    --shadow:0 28px 80px rgba(0,0,0,.25);
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{
     min-height:100%;
-    background:
-      radial-gradient(circle at 76% 12%,rgba(123,214,211,.08),transparent 34%),
-      radial-gradient(circle at 20% 18%,rgba(241,121,53,.1),transparent 30%),
-      linear-gradient(180deg,#070806 0%,#090a08 56%,#070806 100%);
-    color:var(--ink);
-    font-family:"Instrument Sans",sans-serif;
-    -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
+    color:var(--paper);
+    background:
+      linear-gradient(115deg,rgba(255,255,255,.025),transparent 24%),
+      linear-gradient(180deg,var(--wall) 0%,var(--wall-2) 100%);
+    font-family:"Public Sans",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.16;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
+    mix-blend-mode:soft-light;
   }
 
   .hero{
-    min-height:92dvh;
+    min-height:88dvh;
     display:grid;
     place-items:center;
-    padding:80px 24px 52px;
-    text-align:center;
+    padding:84px 24px 54px;
   }
-  .hero-inner{max-width:920px}
-  .kicker,.eyebrow,.map-chip,.route-code,.dispatch-meta,.caption,.metric-label{
-    font-family:"JetBrains Mono",monospace;
-    text-transform:uppercase;
-    letter-spacing:.12em;
+  .hero-inner{
+    width:min(1120px,100%);
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(260px,380px);
+    gap:34px;
+    align-items:end;
   }
-  .kicker{font-size:12px;color:var(--cyan);margin-bottom:18px}
-  h1{
-    font-size:clamp(42px,7.5vw,104px);
-    line-height:.9;
-    letter-spacing:-.065em;
+  .kicker,.eyebrow,.sheet-label,.route-note small,.route-rule b,.city-town,.footer-tag{
+    font-family:"Public Sans",sans-serif;
+    font-size:11px;
     font-weight:800;
+    letter-spacing:.12em;
+    text-transform:uppercase;
   }
-  h1 span{color:var(--route)}
-  .hero p{
-    max-width:62ch;
-    margin:24px auto 0;
-    color:var(--muted);
+  .kicker{color:var(--paper-2);margin-bottom:16px}
+  h1{
+    max-width:840px;
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(56px,10vw,136px);
+    line-height:.82;
+    letter-spacing:-.055em;
+    font-weight:900;
+  }
+  h1 span{
+    display:block;
+    color:var(--route);
+  }
+  .hero-copy{
+    max-width:61ch;
+    margin-top:26px;
+    color:oklch(0.78 0.029 88);
     font-size:18px;
-    line-height:1.65;
+    line-height:1.62;
   }
-  .hero-proof{
+  .call-strip{
+    color:var(--ink);
+    background:var(--paper);
+    border:1px solid rgba(0,0,0,.16);
+    box-shadow:var(--shadow);
+    padding:18px;
+    border-radius:8px;
+    transform:rotate(-1.2deg);
+  }
+  .call-strip strong{
+    display:block;
+    font-family:"Archivo",sans-serif;
+    font-size:32px;
+    line-height:.95;
+    letter-spacing:-.035em;
+    margin-bottom:16px;
+  }
+  .call-strip span{
+    display:block;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.5;
+  }
+  .service-tags{
     display:flex;
     flex-wrap:wrap;
-    justify-content:center;
-    gap:10px;
-    margin-top:32px;
+    gap:8px;
+    margin-top:18px;
   }
-  .hero-proof span{
-    border:1px solid rgba(123,214,211,.22);
-    color:#c9d8d3;
-    background:rgba(123,214,211,.055);
+  .service-tags span{
+    color:var(--paper);
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);
     border-radius:999px;
-    padding:9px 12px;
-    font-size:12px;
+    padding:8px 10px;
+    font-size:13px;
   }
 
-  .dispatch-story{
+  .route-story{
     position:relative;
-    min-height:420vh;
-    border-top:1px solid rgba(255,255,255,.06);
-    border-bottom:1px solid rgba(255,255,255,.06);
+    min-height:430vh;
+    border-top:1px solid rgba(255,255,255,.09);
+    border-bottom:1px solid rgba(255,255,255,.09);
   }
-  .dispatch-sticky{
+  .route-sticky{
     position:sticky;
     top:0;
     min-height:100dvh;
     display:grid;
-    grid-template-columns:minmax(0,1.16fr) minmax(340px,.84fr);
-    gap:42px;
+    grid-template-columns:minmax(0,1.14fr) minmax(350px,.86fr);
+    gap:34px;
     align-items:center;
-    max-width:1330px;
+    width:min(1340px,100%);
     margin:0 auto;
-    padding:58px 28px;
+    padding:52px 28px;
   }
 
-  .map-shell{
+  .map-board{
     position:relative;
-    overflow:hidden;
     min-height:660px;
-    border:1px solid rgba(255,255,255,.075);
-    border-radius:28px;
+    overflow:hidden;
+    color:var(--ink);
     background:
-      linear-gradient(145deg,rgba(16,18,15,.96),rgba(12,14,12,.98)),
-      radial-gradient(circle at 50% 30%,rgba(123,214,211,.12),transparent 42%);
+      linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 34%),
+      var(--paper);
+    border:1px solid rgba(0,0,0,.18);
+    border-radius:8px;
     box-shadow:var(--shadow);
   }
-  .map-shell::before{
+  .map-board::after{
     content:"";
     position:absolute;
     inset:0;
     pointer-events:none;
     background:
-      linear-gradient(rgba(255,255,255,.026) 1px,transparent 1px),
-      linear-gradient(90deg,rgba(255,255,255,.026) 1px,transparent 1px);
-    background-size:44px 44px;
-    mask-image:radial-gradient(circle at center,black 0%,black 58%,transparent 86%);
+      linear-gradient(90deg,transparent,rgba(255,255,255,.2) 48%,transparent 52%),
+      linear-gradient(180deg,transparent 0%,rgba(42,31,18,.08) 100%);
   }
-  .map-shell::after{
-    content:"";
+  .map-head{
     position:absolute;
-    inset:-1px;
-    pointer-events:none;
-    background:linear-gradient(180deg,transparent 0%,rgba(7,8,6,.28) 72%,rgba(7,8,6,.82) 100%);
-  }
-  .map-top{
-    position:absolute;
-    z-index:3;
-    top:20px;
-    left:20px;
-    right:20px;
+    z-index:4;
+    top:18px;
+    left:18px;
+    right:18px;
     display:flex;
-    align-items:center;
     justify-content:space-between;
+    align-items:flex-start;
     gap:16px;
+    color:var(--muted);
   }
-  .map-chip{
+  .sheet-label{
+    display:block;
+    color:var(--ink);
+    margin-bottom:5px;
+  }
+  .map-head p{
+    max-width:34ch;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.45;
+  }
+  .service-area-list{
     display:flex;
-    align-items:center;
-    gap:9px;
-    font-size:11px;
-    color:#d5d0c8;
-    border:1px solid rgba(255,255,255,.09);
-    background:rgba(7,8,6,.52);
-    backdrop-filter:blur(12px);
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    gap:7px;
+    max-width:330px;
+  }
+  .service-area-list span{
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.28);
     border-radius:999px;
-    padding:9px 12px;
+    padding:7px 9px;
+    font-size:12px;
+    white-space:nowrap;
   }
-  .live-dot{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    background:var(--green);
-    box-shadow:0 0 0 0 rgba(135,185,120,.62);
-    animation:pulse 1.8s ease-out infinite;
-  }
-  @keyframes pulse{to{box-shadow:0 0 0 14px rgba(135,185,120,0)}}
-  .map-chip.alt{color:var(--cyan)}
-
   .map-svg{
     position:relative;
     z-index:1;
+    display:block;
     width:100%;
     height:auto;
     min-height:660px;
-    display:block;
+    padding-top:18px;
   }
-  .county{fill:rgba(123,214,211,.045);stroke:rgba(123,214,211,.18);stroke-width:1.5;stroke-dasharray:12 14}
-  .zone{fill:rgba(255,255,255,.025);stroke:rgba(255,255,255,.075);stroke-width:1}
-  .artery{fill:none;stroke:#3c443c;stroke-width:8;stroke-linecap:round;opacity:.68}
-  .artery-thin{fill:none;stroke:#31382f;stroke-width:3;stroke-linecap:round;stroke-dasharray:2 13;opacity:.78}
+  .county{fill:rgba(45,95,73,.08);stroke:rgba(45,95,73,.34);stroke-width:1.5;stroke-dasharray:12 13}
+  .zone{fill:rgba(255,255,255,.12);stroke:rgba(55,43,29,.18);stroke-width:1.2}
+  .road{fill:none;stroke:rgba(44,54,44,.28);stroke-width:8;stroke-linecap:round}
+  .road-thin{fill:none;stroke:rgba(44,54,44,.22);stroke-width:3;stroke-linecap:round;stroke-dasharray:2 12}
   .map-label{
-    fill:#aaa093;
+    fill:#514837;
     font-size:14px;
-    font-weight:700;
+    font-weight:800;
     letter-spacing:.01em;
   }
   .road-label{
-    fill:#695f54;
+    fill:#776c5a;
     font-size:11px;
-    font-family:"JetBrains Mono",monospace;
-    letter-spacing:.08em;
+    font-family:"Public Sans",sans-serif;
+    font-weight:800;
+    letter-spacing:.06em;
   }
-  .route-shadow{
+  .route-base{
     fill:none;
-    stroke:rgba(71,35,16,.96);
-    stroke-width:21;
+    stroke:rgba(116,68,36,.26);
+    stroke-width:22;
     stroke-linecap:round;
     stroke-linejoin:round;
-    opacity:.82;
   }
   .route{
     fill:none;
-    stroke:url(#routeGradient);
-    stroke-width:7;
+    stroke:var(--route);
+    stroke-width:8;
     stroke-linecap:round;
     stroke-linejoin:round;
   }
-  .route-pulse{
-    fill:none;
-    stroke:rgba(255,208,138,.2);
-    stroke-width:19;
-    stroke-linecap:round;
-    stroke-linejoin:round;
+  .stop{opacity:.34;transition:opacity 160ms ease}
+  .stop circle{fill:var(--paper);stroke:#8d7d63;stroke-width:2}
+  .stop text{
+    fill:#5f513d;
+    font-family:"Archivo",sans-serif;
+    font-size:13px;
+    font-weight:900;
+    text-anchor:middle;
+    dominant-baseline:central;
   }
-  .stop{opacity:.35;transition:opacity 180ms ease}
-  .stop circle{fill:#171b17;stroke:#485044;stroke-width:2}
-  .stop text{fill:#8c8377;font-size:11px;font-weight:800;font-family:"JetBrains Mono",monospace;text-anchor:middle;dominant-baseline:central}
   .stop.is-active{opacity:1}
-  .stop.is-active circle{fill:#f17935;stroke:#ffd08a}
-  .pin-core{fill:var(--route)}
-  .pin-ring{fill:rgba(241,121,53,.18);animation:pinRing 1.7s ease-out infinite}
-  @keyframes pinRing{to{transform:scale(2.2);opacity:0}}
+  .stop.is-active circle{fill:var(--route);stroke:var(--route-dark)}
+  .stop.is-active text{fill:var(--accent-ink)}
+  .pin-core{fill:var(--route-dark)}
+  .pin-plate{fill:var(--route);stroke:var(--route-dark);stroke-width:2}
 
-  .dispatch-card{
+  .route-note{
     position:absolute;
-    z-index:4;
-    left:24px;
-    bottom:24px;
-    width:min(380px,calc(100% - 48px));
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:20px;
-    background:rgba(9,10,8,.76);
-    backdrop-filter:blur(18px);
-    padding:18px;
-    box-shadow:0 18px 70px rgba(0,0,0,.34);
+    z-index:5;
+    left:20px;
+    bottom:20px;
+    width:min(390px,calc(100% - 40px));
+    color:var(--ink);
+    background:oklch(0.94 0.031 86);
+    border:1px solid rgba(56,42,24,.24);
+    border-radius:6px;
+    padding:17px 18px 18px;
+    box-shadow:0 18px 44px rgba(50,32,12,.16);
   }
-  .dispatch-meta{
-    display:flex;
-    justify-content:space-between;
-    color:var(--dim);
-    font-size:10px;
-    margin-bottom:12px;
-  }
-  .dispatch-card strong{
+  .route-note small{
     display:block;
-    font-size:20px;
-    letter-spacing:-.025em;
-    margin-bottom:7px;
+    color:var(--blue-ink);
+    margin-bottom:10px;
   }
-  .dispatch-card p{
+  .route-note strong{
+    display:block;
+    font-family:"Archivo",sans-serif;
+    font-size:24px;
+    line-height:1;
+    letter-spacing:-.035em;
+    margin-bottom:9px;
+  }
+  .route-note p{
     color:var(--muted);
-    line-height:1.45;
     font-size:14px;
+    line-height:1.48;
   }
 
   .copy-panel{align-self:center}
-  .eyebrow{font-size:12px;color:var(--cyan);margin-bottom:14px}
+  .eyebrow{color:var(--paper-2);margin-bottom:16px}
   .copy-panel h2{
-    font-size:clamp(32px,4.7vw,62px);
-    line-height:.94;
-    letter-spacing:-.055em;
-    font-weight:800;
-    margin-bottom:18px;
+    max-width:620px;
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(36px,5.1vw,70px);
+    line-height:.9;
+    letter-spacing:-.052em;
+    font-weight:900;
+    margin-bottom:22px;
   }
   .copy-panel p{
-    color:var(--muted);
-    font-size:17px;
-    line-height:1.65;
-    max-width:44ch;
+    max-width:51ch;
+    color:oklch(0.78 0.029 88);
+    font-size:18px;
+    line-height:1.62;
   }
-  .metrics{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin:28px 0 24px;
-  }
-  .metric{
-    border:1px solid rgba(255,255,255,.08);
-    background:rgba(255,255,255,.025);
-    border-radius:14px;
-    padding:13px 12px;
-  }
-  .metric-value{
-    display:block;
-    color:var(--ink);
-    font-size:22px;
-    font-weight:800;
-    letter-spacing:-.03em;
-    line-height:1;
-  }
-  .metric-label{
-    display:block;
-    color:var(--dim);
-    font-size:9px;
-    margin-top:8px;
-  }
-  .steps{
+  .route-rules{
     display:grid;
     gap:10px;
+    margin:26px 0 24px;
+  }
+  .route-rule{
+    display:grid;
+    grid-template-columns:148px 1fr;
+    gap:14px;
+    align-items:start;
+    padding:13px 0;
+    border-top:1px solid rgba(255,255,255,.14);
+  }
+  .route-rule:last-child{border-bottom:1px solid rgba(255,255,255,.14)}
+  .route-rule b{color:var(--paper);font-size:10px}
+  .route-rule span{
+    color:oklch(0.78 0.029 88);
+    font-size:14px;
+    line-height:1.45;
+  }
+  .city-list{
+    display:grid;
+    gap:9px;
     margin-top:22px;
   }
-  .step{
+  .city-item{
     display:grid;
-    grid-template-columns:auto 1fr auto;
+    grid-template-columns:minmax(120px,.42fr) 1fr;
+    gap:16px;
     align-items:start;
-    gap:13px;
-    border:1px solid rgba(255,255,255,.075);
-    background:rgba(255,255,255,.018);
-    border-radius:16px;
-    padding:14px;
-    opacity:.45;
+    padding:16px 0;
+    border-top:1px solid rgba(255,255,255,.12);
+    opacity:.48;
     transition:
       opacity 180ms ease,
-      background 180ms ease,
       border-color 180ms ease,
       transform 180ms cubic-bezier(.23,1,.32,1);
   }
-  .step.is-active{
+  .city-item.is-active{
     opacity:1;
-    border-color:rgba(241,121,53,.58);
-    background:linear-gradient(135deg,rgba(241,121,53,.13),rgba(123,214,211,.035));
-    transform:translateX(-7px);
+    border-color:rgba(217,107,40,.72);
+    transform:translateX(-6px);
   }
-  .step-index{
-    display:grid;
-    place-items:center;
-    width:30px;
-    height:30px;
-    border-radius:50%;
-    color:#16100b;
-    background:#7c756e;
-    font-family:"JetBrains Mono",monospace;
-    font-size:11px;
-    font-weight:700;
+  .city-town{color:var(--route);font-size:11px}
+  .city-item strong{
+    display:block;
+    color:var(--paper);
+    font-size:16px;
+    line-height:1.18;
+    margin-bottom:5px;
   }
-  .step.is-active .step-index{background:var(--route)}
-  .step strong{display:block;font-size:15px;line-height:1.15;margin-bottom:5px}
-  .step span{display:block;color:#8c8377;font-size:13px;line-height:1.38}
-  .eta{
-    color:var(--cyan);
-    font-family:"JetBrains Mono",monospace;
-    font-size:11px;
-    white-space:nowrap;
-    padding-top:3px;
+  .city-item span{
+    display:block;
+    color:oklch(0.69 0.027 86);
+    font-size:13px;
+    line-height:1.42;
   }
   .meter{
-    margin-top:24px;
     height:4px;
-    background:#1b201c;
-    border-radius:999px;
+    margin-top:24px;
+    background:rgba(255,255,255,.16);
     overflow:hidden;
+    border-radius:999px;
   }
   .meter-fill{
-    height:100%;
     width:0%;
-    background:linear-gradient(90deg,var(--route),var(--route-2),var(--cyan));
+    height:100%;
+    background:var(--route);
     border-radius:inherit;
   }
 
   .use-case{
-    max-width:1060px;
+    width:min(1080px,100%);
     margin:0 auto;
-    padding:124px 24px 132px;
+    padding:124px 24px 136px;
   }
   .use-grid{
     display:grid;
-    grid-template-columns:minmax(0,.85fr) minmax(320px,1fr);
-    gap:48px;
+    grid-template-columns:minmax(0,.9fr) minmax(320px,1fr);
+    gap:52px;
     align-items:start;
   }
   .tag{
     display:inline-flex;
-    border:1px solid rgba(241,121,53,.25);
-    color:var(--route);
-    font-family:"JetBrains Mono",monospace;
-    font-size:11px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
+    color:var(--paper);
+    border:1px solid rgba(255,255,255,.16);
     border-radius:999px;
-    padding:6px 12px;
+    padding:7px 10px;
     margin-bottom:22px;
+    font-size:12px;
   }
   .use-case h2{
-    font-size:clamp(31px,4vw,54px);
-    line-height:.98;
-    letter-spacing:-.045em;
-    font-weight:800;
+    color:var(--paper);
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(34px,4.4vw,58px);
+    line-height:.95;
+    letter-spacing:-.046em;
+    font-weight:900;
   }
   .use-case p{
-    color:var(--muted);
+    color:oklch(0.78 0.029 88);
     font-size:18px;
     line-height:1.68;
   }
   .caption{
-    color:var(--dim);
-    font-size:11px;
+    color:oklch(0.67 0.028 86);
+    font-size:13px;
+    line-height:1.5;
     margin-top:18px;
   }
   footer{
     padding:28px 24px;
     text-align:center;
-    color:#5f5750;
+    color:oklch(0.65 0.027 86);
     font-size:12px;
-    border-top:1px solid rgba(255,255,255,.06);
+    border-top:1px solid rgba(255,255,255,.1);
   }
+  footer a{color:var(--route);text-decoration:none}
 
   @media(max-width:980px){
-    .dispatch-story{min-height:360vh}
-    .dispatch-sticky{grid-template-columns:1fr;gap:28px;padding:50px 18px}
-    .map-shell{min-height:auto}
-    .map-svg{min-height:480px}
-    .copy-panel{max-width:650px}
-    .step.is-active{transform:none}
-    .use-grid{grid-template-columns:1fr;gap:24px}
+    .hero-inner{grid-template-columns:1fr;align-items:start}
+    .call-strip{max-width:420px}
+    .route-story{min-height:370vh}
+    .route-sticky{grid-template-columns:1fr;gap:30px;padding:46px 18px}
+    .map-board{min-height:auto}
+    .map-svg{min-height:500px}
+    .copy-panel{max-width:680px}
+    .city-item.is-active{transform:none}
+    .use-grid{grid-template-columns:1fr;gap:26px}
   }
 
   @media(max-width:560px){
-    .hero{min-height:86dvh;padding-top:64px}
+    .hero{min-height:88dvh;padding:62px 16px 44px}
     h1{
-      font-size:clamp(42px,16vw,68px);
-      line-height:.96;
-      letter-spacing:-.035em;
+      font-size:clamp(48px,17vw,72px);
+      line-height:.88;
+      letter-spacing:-.044em;
     }
-    .hero p{font-size:16px;line-height:1.6}
-    .hero-proof{justify-content:flex-start}
-    .dispatch-sticky{padding-inline:16px}
-    .map-top{position:relative;top:auto;left:auto;right:auto;padding:14px 14px 0;flex-wrap:wrap;justify-content:flex-start}
-    .map-shell{border-radius:22px}
-    .map-svg{min-height:360px;margin-top:-14px}
-    .dispatch-card{position:relative;left:auto;bottom:auto;width:auto;margin:0 14px 14px}
-    .dispatch-card strong{font-size:18px;line-height:1.15}
+    .hero-copy{font-size:16px;line-height:1.58}
+    .call-strip{transform:none}
+    .call-strip strong{font-size:27px}
+    .service-tags{gap:7px}
+    .route-sticky{padding-inline:16px}
+    .map-head{position:relative;top:auto;left:auto;right:auto;padding:16px 16px 0;display:block}
+    .service-area-list{justify-content:flex-start;margin-top:12px}
+    .map-board{border-radius:6px}
+    .map-svg{min-height:370px;margin-top:-8px}
+    .route-note{position:relative;left:auto;bottom:auto;width:auto;margin:0 14px 14px}
+    .route-note strong{font-size:21px;line-height:1.05}
     .copy-panel h2{
-      font-size:clamp(34px,11vw,44px);
-      line-height:1.04;
-      letter-spacing:-.032em;
+      font-size:clamp(36px,12vw,48px);
+      line-height:.96;
+      letter-spacing:-.036em;
     }
     .copy-panel p,.use-case p{font-size:16px;line-height:1.62}
-    .metrics{grid-template-columns:1fr}
-    .step{grid-template-columns:auto 1fr}
-    .eta{grid-column:2}
-    .map-chip{font-size:10px}
+    .route-rule{grid-template-columns:1fr;gap:6px}
+    .city-item{grid-template-columns:1fr;gap:7px}
     .use-case{padding:92px 18px 112px}
     .use-case h2{
-      font-size:clamp(32px,10vw,42px);
-      line-height:1.04;
-      letter-spacing:-.03em;
+      font-size:clamp(34px,10vw,44px);
+      line-height:1;
+      letter-spacing:-.034em;
     }
   }
 
   @media(prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     *,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}
-    .dispatch-story{min-height:auto}
-    .dispatch-sticky{position:relative;min-height:auto}
-    .route,.route-pulse{stroke-dashoffset:0!important}
+    .route-story{min-height:auto}
+    .route-sticky{position:relative;min-height:auto}
+    .route{stroke-dashoffset:0!important}
     .meter-fill{width:100%!important}
-    .step{opacity:1}
+    .city-item,.stop{opacity:1}
   }
 </style>
 </head>
 <body>
 <section class="hero">
   <div class="hero-inner">
-    <div class="kicker">Module 31 - Service Dispatch Map</div>
-    <h1>Prove the crew is already <span>nearby.</span></h1>
-    <p>A scroll-driven dispatch map for mobile service businesses. Instead of a dead list of cities, the section shows live-looking coverage, ETA logic, job types, and the exact route from first call to booked appointment.</p>
-    <div class="hero-proof">
-      <span>Mobile glass</span>
-      <span>HVAC routes</span>
-      <span>Fleet service</span>
-      <span>Emergency repair</span>
+    <div>
+      <div class="kicker">Service area route sheet</div>
+      <h1>Make coverage <span>feel local.</span></h1>
+      <p class="hero-copy">For mobile service sites, the map should answer the homeowner's question fast: do you work where I live, and what kind of work do you actually do there?</p>
+      <div class="service-tags">
+        <span>Auto glass</span>
+        <span>HVAC</span>
+        <span>Fence repair</span>
+        <span>Courier routes</span>
+      </div>
     </div>
+    <aside class="call-strip" aria-label="Route sheet note">
+      <strong>Start with a real shop base.</strong>
+      <span>Then draw toward the towns people scan for before they call.</span>
+    </aside>
   </div>
 </section>
 
-<section class="dispatch-story" id="dispatchStory">
-  <div class="dispatch-sticky">
-    <div class="map-shell" aria-label="Animated Denver mobile service dispatch map">
-      <div class="map-top">
-        <div class="map-chip"><span class="live-dot"></span><span>RidgeLine mobile glass</span></div>
-        <div class="map-chip alt">Denver dispatch board</div>
+<section class="route-story" id="routeStory">
+  <div class="route-sticky">
+    <div class="map-board" aria-label="Animated Denver service area route sheet">
+      <div class="map-head">
+        <div>
+          <span class="sheet-label">Wheat Ridge shop base</span>
+          <p>Example route for a mobile auto glass crew serving the west, north, east, and south metro.</p>
+        </div>
+        <div class="service-area-list" aria-label="Service area towns">
+          <span>Denver</span>
+          <span>Wheat Ridge</span>
+          <span>Commerce City</span>
+          <span>Aurora</span>
+          <span>Lakewood</span>
+          <span>DTC</span>
+        </div>
       </div>
       <svg class="map-svg" viewBox="0 0 820 680" role="img" aria-labelledby="mapTitle mapDesc">
-        <title id="mapTitle">Denver mobile service dispatch route</title>
-        <desc id="mapDesc">A stylized Denver metro dispatch map with service stops, highways, and an animated route.</desc>
-        <defs>
-          <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#f17935"/>
-            <stop offset="54%" stop-color="#ffd08a"/>
-            <stop offset="100%" stop-color="#7bd6d3"/>
-          </linearGradient>
-          <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="5" result="blur"/>
-            <feMerge>
-              <feMergeNode in="blur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
+        <title id="mapTitle">Denver metro mobile service area route</title>
+        <desc id="mapDesc">A stylized Denver metro route sheet with service areas and a route that draws from Wheat Ridge through Commerce City, Aurora, Lakewood, and DTC.</desc>
 
-        <rect width="820" height="680" fill="#10120f"/>
+        <rect width="820" height="680" fill="transparent"/>
         <path class="county" d="M132 130 C250 52 453 58 592 126 C730 194 752 359 678 490 C604 622 408 646 250 579 C91 512 35 255 132 130Z"/>
         <path class="zone" d="M110 138h220v138H110z"/>
         <path class="zone" d="M357 104h238v150H357z"/>
@@ -505,13 +533,13 @@
         <path class="zone" d="M356 300h334v174H356z"/>
         <path class="zone" d="M216 502h410v98H216z"/>
 
-        <path class="artery" d="M86 255 C229 248 388 240 721 201"/>
-        <path class="artery" d="M103 410 C284 348 462 398 725 348"/>
-        <path class="artery" d="M275 88 C315 240 301 438 335 622"/>
-        <path class="artery" d="M548 86 C510 246 544 428 613 616"/>
-        <path class="artery-thin" d="M150 170 C306 172 502 170 646 154"/>
-        <path class="artery-thin" d="M140 535 C300 507 488 544 678 494"/>
-        <path class="artery-thin" d="M425 122 C425 240 450 458 438 588"/>
+        <path class="road" d="M86 255 C229 248 388 240 721 201"/>
+        <path class="road" d="M103 410 C284 348 462 398 725 348"/>
+        <path class="road" d="M275 88 C315 240 301 438 335 622"/>
+        <path class="road" d="M548 86 C510 246 544 428 613 616"/>
+        <path class="road-thin" d="M150 170 C306 172 502 170 646 154"/>
+        <path class="road-thin" d="M140 535 C300 507 488 544 678 494"/>
+        <path class="road-thin" d="M425 122 C425 240 450 458 438 588"/>
 
         <text class="road-label" x="647" y="193">I-70</text>
         <text class="road-label" x="309" y="622">I-25</text>
@@ -522,64 +550,60 @@
         <text class="map-label" x="515" y="390">Aurora</text>
         <text class="map-label" x="362" y="564">DTC</text>
 
-        <path class="route-shadow" d="M222 238 C308 155 454 162 537 215 C628 273 620 359 530 390 C436 423 318 363 246 432 C172 502 282 574 450 558 C576 546 648 492 684 425"/>
-        <path id="routePulse" class="route-pulse" d="M222 238 C308 155 454 162 537 215 C628 273 620 359 530 390 C436 423 318 363 246 432 C172 502 282 574 450 558 C576 546 648 492 684 425"/>
-        <path id="routePath" class="route" filter="url(#softGlow)" d="M222 238 C308 155 454 162 537 215 C628 273 620 359 530 390 C436 423 318 363 246 432 C172 502 282 574 450 558 C576 546 648 492 684 425"/>
+        <path class="route-base" d="M222 238 C308 155 454 162 537 215 C628 273 620 359 530 390 C436 423 318 363 246 432 C172 502 282 574 450 558 C576 546 648 492 684 425"/>
+        <path id="routePath" class="route" d="M222 238 C308 155 454 162 537 215 C628 273 620 359 530 390 C436 423 318 363 246 432 C172 502 282 574 450 558 C576 546 648 492 684 425"/>
 
-        <g class="stop is-active" data-stop="0" transform="translate(222 238)"><circle r="15"/><text>01</text></g>
-        <g class="stop" data-stop="1" transform="translate(440 179)"><circle r="15"/><text>02</text></g>
-        <g class="stop" data-stop="2" transform="translate(530 390)"><circle r="15"/><text>03</text></g>
-        <g class="stop" data-stop="3" transform="translate(290 468)"><circle r="15"/><text>04</text></g>
-        <g class="stop" data-stop="4" transform="translate(684 425)"><circle r="15"/><text>05</text></g>
+        <g class="stop is-active" data-stop="0" transform="translate(222 238)"><circle r="15"/><text>A</text></g>
+        <g class="stop" data-stop="1" transform="translate(440 179)"><circle r="15"/><text>B</text></g>
+        <g class="stop" data-stop="2" transform="translate(530 390)"><circle r="15"/><text>C</text></g>
+        <g class="stop" data-stop="3" transform="translate(290 468)"><circle r="15"/><text>D</text></g>
+        <g class="stop" data-stop="4" transform="translate(684 425)"><circle r="15"/><text>E</text></g>
 
         <g id="mapPin" class="map-pin">
-          <circle class="pin-ring" r="17"/>
-          <circle class="pin-core" r="7"/>
-          <path d="M0 12 L6 25 L0 21 L-6 25 Z" fill="#f17935"/>
+          <circle class="pin-plate" r="12"/>
+          <circle class="pin-core" r="4"/>
+          <path d="M0 11 L6 25 L0 21 L-6 25 Z" fill="oklch(0.37 0.088 48)"/>
         </g>
       </svg>
 
-      <div class="dispatch-card">
-        <div class="dispatch-meta"><span id="ticketTime">07:42 MDT</span><span id="ticketCode">JOB RG-1842</span></div>
-        <strong id="ticketTitle">Warehouse dispatch, west bay</strong>
-        <p id="ticketBody">Two mobile techs leave the Wadsworth shop with OEM glass, calibration rig, and a locked route window.</p>
+      <div class="route-note">
+        <small id="noteMeta">Shop base</small>
+        <strong id="noteTitle">Start from the shop, not a mystery pin</strong>
+        <p id="noteBody">Put the real shop, yard, office, or first service base on the map. A local visitor should recognize the starting point before the route moves.</p>
       </div>
     </div>
 
     <div class="copy-panel">
-      <div class="eyebrow">Service proof module</div>
-      <h2>Show coverage like an operations team would.</h2>
-      <p>The map is not decoration. It gives the visitor a reason to believe the business serves their area today: route, ETA, job type, and proof points all move together.</p>
-      <div class="metrics">
-        <div class="metric"><span class="metric-value">42m</span><span class="metric-label">avg response</span></div>
-        <div class="metric"><span class="metric-value">18mi</span><span class="metric-label">route span</span></div>
-        <div class="metric"><span class="metric-value">5</span><span class="metric-label">live stops</span></div>
+      <div class="eyebrow">Local service proof</div>
+      <h2>Each town earns its place on the route.</h2>
+      <p>The service claim gets easier to trust when every town has a job type attached. A route from the shop base gives the visitor something more concrete than a city list.</p>
+
+      <div class="route-rules" aria-label="Route sheet rules">
+        <div class="route-rule"><b>Use real towns</b><span>Write the exact cities the customer is looking for, not a vague radius.</span></div>
+        <div class="route-rule"><b>Name real work</b><span>Windshield install, chip repair, calibration, fleet calls, tuneups, gate repair.</span></div>
+        <div class="route-rule"><b>Finish with action</b><span>The last stop can lead into call, quote, or availability copy.</span></div>
       </div>
-      <div class="steps" id="steps">
-        <div class="step is-active" data-title="Warehouse dispatch, west bay" data-time="07:42 MDT" data-code="JOB RG-1842" data-body="Two mobile techs leave the Wadsworth shop with OEM glass, calibration rig, and a locked route window.">
-          <span class="step-index">01</span>
-          <div><strong>Wadsworth dispatch</strong><span>Inventory is already loaded before the first appointment window opens.</span></div>
-          <span class="eta">0 min</span>
+
+      <div class="city-list" id="cityList">
+        <div class="city-item is-active" data-meta="Shop base" data-title="Start from the shop, not a mystery pin" data-body="Put the real shop, yard, office, or first service base on the map. A local visitor should recognize the starting point before the route moves.">
+          <div class="city-town">Wheat Ridge</div>
+          <div><strong>Shop base</strong><span>Start with where the crew leaves from.</span></div>
         </div>
-        <div class="step" data-title="Commercial van, I-70 corridor" data-time="08:18 MDT" data-code="JOB RG-1849" data-body="A fleet van gets a driver-side glass replacement near the I-70 commercial corridor without returning to the shop.">
-          <span class="step-index">02</span>
-          <div><strong>I-70 fleet stop</strong><span>Useful for logistics, delivery fleets, and shops that need proof of corridor coverage.</span></div>
-          <span class="eta">24 min</span>
+        <div class="city-item" data-meta="North corridor" data-title="Show commercial coverage with a named corridor" data-body="The north stretch can speak to fleet lots, delivery vans, and commercial calls with the work categories you actually take there.">
+          <div class="city-town">Commerce City</div>
+          <div><strong>Fleet and commercial calls</strong><span>A corridor story beats a bare city list.</span></div>
         </div>
-        <div class="step" data-title="ADAS calibration, Aurora lane" data-time="09:05 MDT" data-code="JOB RG-1856" data-body="The route crosses east for a windshield install with portable calibration, framed as a premium same-day service.">
-          <span class="step-index">03</span>
-          <div><strong>Aurora calibration</strong><span>Show the high-value work, not just the city name.</span></div>
-          <span class="eta">41 min</span>
+        <div class="city-item" data-meta="East metro" data-title="Name the higher-value service area" data-body="Use a major eastern suburb to show the work the business wants more of, such as windshield replacement with calibration.">
+          <div class="city-town">Aurora</div>
+          <div><strong>Install and calibration work</strong><span>Specific work makes the map useful.</span></div>
         </div>
-        <div class="step" data-title="Residential repair, Lakewood" data-time="10:12 MDT" data-code="JOB RG-1863" data-body="A chip repair is slotted between bigger jobs, proving the schedule has range without looking chaotic.">
-          <span class="step-index">04</span>
-          <div><strong>Lakewood quick repair</strong><span>Small-ticket work gets a believable place in the route.</span></div>
-          <span class="eta">55 min</span>
+        <div class="city-item" data-meta="West metro" data-title="Keep smaller calls in the story" data-body="A route can also show quick repairs and repeat neighborhood calls, so the section does not overpromise only big-ticket jobs.">
+          <div class="city-town">Lakewood</div>
+          <div><strong>Same-day repair calls</strong><span>Small jobs still get a real place on the route.</span></div>
         </div>
-        <div class="step" data-title="Booked quote, DTC perimeter" data-time="11:30 MDT" data-code="JOB RG-1870" data-body="The last stop turns the animation into an action: request a quote, check the next route, or book a window.">
-          <span class="step-index">05</span>
-          <div><strong>DTC quote window</strong><span>End with the conversion moment instead of a decorative finish.</span></div>
-          <span class="eta">78 min</span>
+        <div class="city-item" data-meta="South route" data-title="End where the customer can act" data-body="Use the final stop to point at the next route window, a call button, or a quote form. The animation should land on a decision.">
+          <div class="city-town">DTC</div>
+          <div><strong>Quote and schedule window</strong><span>The route finishes near the conversion.</span></div>
         </div>
       </div>
       <div class="meter" aria-hidden="true"><div class="meter-fill" id="meterFill"></div></div>
@@ -590,64 +614,58 @@
 <section class="use-case">
   <div class="use-grid">
     <div>
-      <div class="tag">Why it belongs</div>
-      <h2>A cinematic map that can sell something.</h2>
+      <div class="tag">Where it works</div>
+      <h2>A route sheet people can believe.</h2>
     </div>
     <div>
-      <p>Most service-area sections are dead text: "serving Denver, Aurora, Lakewood..." This module turns that claim into an operational story. Swap the labels, stops, and job cards for HVAC, auto repair, security installs, courier routes, catering, event production, or franchise coverage.</p>
-      <div class="caption">Quality gate note: built because it has storytelling, hierarchy, spatial clarity, proof, and direct reuse across SYVR local-service sites.</div>
+      <p>Use this for shops where place matters: auto glass, HVAC, handyman, courier, event crews, and field service. The section names the towns, shows the route, and keeps each stop tied to real work.</p>
+      <div class="caption">Works best when the town list comes from the client's actual service area.</div>
     </div>
   </div>
 </section>
 
-<footer>Cinematic Module - Service Dispatch Map</footer>
+<footer><span class="footer-tag">Service Area Route Sheet</span> - Created by Jay from <a href="https://robonuggets.com">RoboLabs</a>. Learn more at <a href="https://robonuggets.com">RoboNuggets</a></footer>
 
 <script>
 (function(){
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var route = document.getElementById('routePath');
-  var routePulse = document.getElementById('routePulse');
   var pin = document.getElementById('mapPin');
   var meter = document.getElementById('meterFill');
-  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var items = Array.prototype.slice.call(document.querySelectorAll('.city-item'));
   var stops = Array.prototype.slice.call(document.querySelectorAll('.stop'));
-  var ticketTitle = document.getElementById('ticketTitle');
-  var ticketBody = document.getElementById('ticketBody');
-  var ticketTime = document.getElementById('ticketTime');
-  var ticketCode = document.getElementById('ticketCode');
+  var noteMeta = document.getElementById('noteMeta');
+  var noteTitle = document.getElementById('noteTitle');
+  var noteBody = document.getElementById('noteBody');
   var length = route.getTotalLength();
 
   route.style.strokeDasharray = length;
   route.style.strokeDashoffset = length;
-  routePulse.style.strokeDasharray = length;
-  routePulse.style.strokeDashoffset = length;
 
   function setProgress(progress){
     var clamped = Math.max(0, Math.min(1, progress));
     var point = route.getPointAtLength(length * clamped);
     route.style.strokeDashoffset = length * (1 - clamped);
-    routePulse.style.strokeDashoffset = length * (1 - clamped);
     pin.setAttribute('transform','translate(' + point.x + ' ' + point.y + ')');
     meter.style.width = (clamped * 100).toFixed(1) + '%';
 
-    var active = Math.min(steps.length - 1, Math.floor(clamped * steps.length));
-    steps.forEach(function(step,index){
-      step.classList.toggle('is-active',index === active);
+    var active = Math.min(items.length - 1, Math.floor(clamped * items.length));
+    items.forEach(function(item,index){
+      item.classList.toggle('is-active',index === active);
     });
     stops.forEach(function(stop,index){
       stop.classList.toggle('is-active',index <= active);
     });
 
-    var activeStep = steps[active];
-    ticketTitle.textContent = activeStep.dataset.title;
-    ticketBody.textContent = activeStep.dataset.body;
-    ticketTime.textContent = activeStep.dataset.time;
-    ticketCode.textContent = activeStep.dataset.code;
+    var activeItem = items[active];
+    noteMeta.textContent = activeItem.dataset.meta;
+    noteTitle.textContent = activeItem.dataset.title;
+    noteBody.textContent = activeItem.dataset.body;
   }
 
   if (reduced) {
     setProgress(1);
-    steps.forEach(function(step){ step.classList.add('is-active'); });
+    items.forEach(function(item){ item.classList.add('is-active'); });
     stops.forEach(function(stop){ stop.classList.add('is-active'); });
     return;
   }
@@ -656,7 +674,7 @@
   setProgress(0);
 
   ScrollTrigger.create({
-    trigger:'#dispatchStory',
+    trigger:'#routeStory',
     start:'top top',
     end:'bottom bottom',
     scrub:true,
@@ -664,6 +682,5 @@
   });
 })();
 </script>
-<div style="position:fixed;bottom:0;left:0;right:0;padding:8px 16px;font-size:11px;color:#5a5a5e;text-align:center;z-index:99;background:rgba(9,9,11,.85);backdrop-filter:blur(8px);border-top:1px solid #1e1e22;font-family:Instrument Sans,sans-serif">&copy; Created by Jay from <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboLabs</a>. Learn more at <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboNuggets</a></div>
 </body>
 </html>
