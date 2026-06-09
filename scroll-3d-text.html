@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Scroll Text Cylinder - Cinematic Module</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080909;
+    --panel:#101313;
+    --panel-2:#171a19;
+    --text:#f1eee5;
+    --muted:#858177;
+    --line:#262b29;
+    --green:#79a787;
+    --rust:#d06f3c;
+    --blue:#7fb0c9;
+    --gold:#d9b768;
+    --radius:clamp(130px,24vw,290px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    min-height:100%;
+    overflow-x:hidden;
+    color:var(--text);
+    background:
+      radial-gradient(circle at 20% 12%,rgba(121,167,135,.18),transparent 32%),
+      radial-gradient(circle at 78% 78%,rgba(208,111,60,.12),transparent 34%),
+      var(--bg);
+    font-family:"Public Sans",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.11;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170' viewBox='0 0 170 170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.74' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='170' height='170' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+    mix-blend-mode:screen;
+  }
+  .hero{
+    min-height:86dvh;
+    display:grid;
+    place-items:end center;
+    padding:92px 24px 46px;
+  }
+  .hero-inner{
+    width:min(1160px,100%);
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(300px,410px);
+    gap:42px;
+    align-items:end;
+  }
+  .eyebrow,.rail-label,.chapter-kicker,.meta-label,.footer-note{
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+  }
+  .eyebrow{color:var(--rust);margin-bottom:18px}
+  h1{
+    max-width:820px;
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(48px,8.8vw,116px);
+    line-height:.88;
+    letter-spacing:-.055em;
+  }
+  h1 span{color:var(--green)}
+  .hero-copy{
+    max-width:63ch;
+    margin-top:26px;
+    color:var(--muted);
+    font-size:18px;
+    line-height:1.62;
+  }
+  .sample-card{
+    position:relative;
+    min-height:270px;
+    display:grid;
+    align-content:end;
+    gap:18px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:10px;
+    background:
+      linear-gradient(145deg,rgba(255,255,255,.06),transparent 36%),
+      var(--panel);
+    box-shadow:0 28px 90px rgba(0,0,0,.28);
+    padding:24px;
+  }
+  .sample-card::before{
+    content:"";
+    position:absolute;
+    inset:auto -12% 46px -12%;
+    height:72px;
+    background:linear-gradient(90deg,transparent,rgba(121,167,135,.45),rgba(217,183,104,.42),transparent);
+    filter:blur(24px);
+  }
+  .sample-card strong{
+    position:relative;
+    font-family:"Archivo",sans-serif;
+    font-size:38px;
+    line-height:.96;
+    letter-spacing:-.04em;
+  }
+  .sample-track{
+    position:relative;
+    display:flex;
+    gap:9px;
+    flex-wrap:wrap;
+  }
+  .sample-track span{
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:999px;
+    padding:7px 9px;
+    color:rgba(241,238,229,.76);
+    font-size:12px;
+  }
+  .text-story{
+    position:relative;
+    min-height:430vh;
+    border-top:1px solid rgba(255,255,255,.07);
+    border-bottom:1px solid rgba(255,255,255,.07);
+  }
+  .text-sticky{
+    position:sticky;
+    top:0;
+    min-height:100dvh;
+    display:grid;
+    place-items:center;
+    padding:42px 24px;
+  }
+  .story-grid{
+    width:min(1180px,100%);
+    display:grid;
+    grid-template-columns:minmax(300px,.78fr) minmax(0,1.22fr);
+    gap:34px;
+    align-items:center;
+  }
+  .copy-panel{
+    display:grid;
+    gap:22px;
+    align-content:center;
+  }
+  .rail-label{color:var(--rust)}
+  .copy-panel h2{
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(36px,5.4vw,72px);
+    line-height:.9;
+    letter-spacing:-.055em;
+  }
+  .copy-panel h2 span{color:var(--blue)}
+  .copy-panel p{
+    color:var(--muted);
+    font-size:17px;
+    line-height:1.62;
+    max-width:46ch;
+  }
+  .chapter-card{
+    min-height:180px;
+    display:grid;
+    align-content:center;
+    gap:12px;
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:8px;
+    background:rgba(16,19,19,.78);
+    padding:20px;
+  }
+  .chapter-kicker{color:var(--green)}
+  .chapter-card h3{
+    font-family:"Archivo",sans-serif;
+    font-size:34px;
+    line-height:1;
+    letter-spacing:-.04em;
+  }
+  .chapter-card p{
+    color:rgba(241,238,229,.62);
+    font-size:15px;
+  }
+  .word-rail{
+    display:grid;
+    gap:8px;
+  }
+  .rail-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    color:rgba(241,238,229,.4);
+    border-top:1px solid var(--line);
+    padding-top:8px;
+    font-size:13px;
+    transition:color .35s,border-color .35s;
+  }
+  .rail-item.is-active{color:var(--text);border-color:rgba(121,167,135,.55)}
+  .rail-item span:last-child{font-size:11px;color:var(--muted)}
+  .stage{
+    position:relative;
+    min-height:680px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:10px;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 50%,rgba(127,176,201,.1),transparent 34%),
+      linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01)),
+      #0d0f0f;
+    box-shadow:0 34px 100px rgba(0,0,0,.28);
+    perspective:1050px;
+  }
+  .stage-grid{
+    position:absolute;
+    inset:0;
+    opacity:.22;
+    background:
+      linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px),
+      linear-gradient(0deg,rgba(255,255,255,.12) 1px,transparent 1px);
+    background-size:72px 72px;
+    mask-image:radial-gradient(circle at 50% 50%,#000 0 48%,transparent 72%);
+  }
+  .cylinder-wrap{
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    transform-style:preserve-3d;
+  }
+  .cylinder{
+    position:relative;
+    width:1px;
+    height:1px;
+    transform-style:preserve-3d;
+    transform:rotateX(0deg);
+    transition:transform .08s linear;
+  }
+  .word{
+    position:absolute;
+    left:50%;
+    top:50%;
+    display:block;
+    transform-style:preserve-3d;
+    backface-visibility:hidden;
+    white-space:nowrap;
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(42px,6vw,86px);
+    font-weight:900;
+    line-height:.85;
+    letter-spacing:-.06em;
+    color:var(--text);
+    text-shadow:0 24px 58px rgba(0,0,0,.34);
+    will-change:transform,opacity,filter;
+  }
+  .word.is-active{color:#fffaf0}
+  .axis-line{
+    position:absolute;
+    left:50%;
+    top:10%;
+    bottom:10%;
+    width:1px;
+    background:linear-gradient(180deg,transparent,var(--green),transparent);
+    opacity:.45;
+  }
+  .stage-caption{
+    position:absolute;
+    left:22px;
+    right:22px;
+    bottom:20px;
+    display:flex;
+    justify-content:space-between;
+    gap:14px;
+    color:rgba(241,238,229,.42);
+    font-size:12px;
+  }
+  .progress-shell{
+    position:absolute;
+    left:22px;
+    right:22px;
+    top:20px;
+    height:5px;
+    border-radius:999px;
+    background:rgba(255,255,255,.08);
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--green),var(--gold),var(--rust));
+    border-radius:inherit;
+  }
+  .explain{
+    max-width:1020px;
+    margin:0 auto;
+    padding:112px 24px 132px;
+    display:grid;
+    grid-template-columns:.8fr 1.2fr;
+    gap:44px;
+  }
+  .explain h2{
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(32px,5vw,58px);
+    line-height:.96;
+    letter-spacing:-.045em;
+  }
+  .explain p{
+    color:var(--muted);
+    font-size:17px;
+    line-height:1.72;
+  }
+  footer{
+    border-top:1px solid rgba(255,255,255,.07);
+    padding:24px;
+    color:var(--muted);
+    text-align:center;
+    font-size:12px;
+  }
+  .credit{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:20;
+    padding:8px 16px;
+    color:rgba(241,238,229,.38);
+    background:rgba(8,9,9,.84);
+    border-top:1px solid rgba(255,255,255,.08);
+    text-align:center;
+    font-size:11px;
+    backdrop-filter:blur(8px);
+  }
+  .credit a{color:var(--gold);text-decoration:none}
+  @media(max-width:900px){
+    .hero-inner,.story-grid,.explain{grid-template-columns:1fr}
+    .text-sticky{padding:28px 16px 68px}
+    .story-grid{gap:14px;align-items:stretch}
+    .copy-panel{gap:12px}
+    .copy-panel > p,.word-rail{display:none}
+    .copy-panel h2{font-size:clamp(30px,8vw,46px);max-width:13ch}
+    .chapter-card{min-height:auto;padding:16px}
+    .chapter-card h3{font-size:clamp(25px,7vw,34px)}
+    .chapter-card p{font-size:14px}
+    .stage{min-height:min(48dvh,430px)}
+    .text-story{min-height:360vh}
+  }
+  @media(max-width:560px){
+    :root{--radius:112px}
+    h1{font-size:clamp(42px,16vw,72px)}
+    .text-sticky{padding:22px 14px 62px}
+    .stage{min-height:360px}
+    .stage-caption{display:none}
+    .word{font-size:clamp(30px,10.5vw,48px)}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    .text-story{min-height:auto}
+    .text-sticky{position:relative;min-height:auto}
+    .stage{min-height:auto;padding:88px 22px}
+    .cylinder-wrap{position:relative;inset:auto;display:block}
+    .cylinder{width:auto;height:auto;display:flex;flex-wrap:wrap;gap:10px;transform:none!important}
+    .word{position:relative;left:auto;top:auto;transform:none!important;font-size:28px;opacity:1!important;filter:none!important;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:999px;padding:8px 12px}
+    .axis-line,.stage-grid{display:none}
+  }
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Module 37 - 3D Scroll Text</div>
+      <h1>Turn a word list into a <span>spatial argument.</span></h1>
+      <p class="hero-copy">Use this when a brand, product, or service has a tight set of pillars. The words rotate through depth while the side panel explains why each one matters.</p>
+    </div>
+    <aside class="sample-card">
+      <strong>Language with weight.</strong>
+      <div class="sample-track" aria-hidden="true">
+        <span>Positioning</span><span>Proof</span><span>Speed</span><span>Care</span><span>Launch</span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="text-story" id="textStory">
+  <div class="text-sticky">
+    <div class="story-grid">
+      <aside class="copy-panel">
+        <div class="rail-label">Scroll-linked CSS 3D</div>
+        <h2>One active word, <span>one clear reason.</span></h2>
+        <p>The cylinder is not a word cloud. It is a controlled sequence for the few attributes a visitor should remember after the section.</p>
+        <article class="chapter-card" aria-live="polite">
+          <div class="chapter-kicker" id="chapterKicker">Positioning</div>
+          <h3 id="chapterTitle">Make the angle obvious.</h3>
+          <p id="chapterCopy">Lead with the market claim, not with decorative motion. The word should name the argument the section is making.</p>
+        </article>
+        <div class="word-rail" aria-label="Text sequence">
+          <div class="rail-item is-active"><span>Positioning</span><span>angle</span></div>
+          <div class="rail-item"><span>Proof</span><span>evidence</span></div>
+          <div class="rail-item"><span>Rhythm</span><span>motion</span></div>
+          <div class="rail-item"><span>Speed</span><span>delivery</span></div>
+          <div class="rail-item"><span>Clarity</span><span>copy</span></div>
+          <div class="rail-item"><span>Launch</span><span>action</span></div>
+        </div>
+      </aside>
+      <div class="stage" aria-label="Rotating text cylinder">
+        <div class="progress-shell" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="stage-grid" aria-hidden="true"></div>
+        <div class="axis-line" aria-hidden="true"></div>
+        <div class="cylinder-wrap">
+          <div class="cylinder" id="cylinder">
+            <span class="word is-active" data-word="Positioning">Positioning</span>
+            <span class="word" data-word="Proof">Proof</span>
+            <span class="word" data-word="Rhythm">Rhythm</span>
+            <span class="word" data-word="Speed">Speed</span>
+            <span class="word" data-word="Clarity">Clarity</span>
+            <span class="word" data-word="Launch">Launch</span>
+          </div>
+        </div>
+        <div class="stage-caption">
+          <span>Best for brand pillars, product attributes, capability spectra, and short editorial chapters.</span>
+          <span>Keep it under 8 words.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="explain">
+  <h2>Why this belongs in the library.</h2>
+  <p>Most animated text is just reveal timing. This pattern adds depth only when the words deserve sequencing. It is strongest when a page needs a memorable vocabulary: the visitor scrolls from the claim, through proof, into the final action without reading a flat list of buzzwords.</p>
+</section>
+
+<footer>Cinematic Module - 3D Scroll Text Cylinder</footer>
+<div class="credit">&copy; Created by Jay from <a href="https://robonuggets.com">RoboLabs</a>. Learn more at <a href="https://robonuggets.com">RoboNuggets</a></div>
+
+<script>
+(function(){
+  var section = document.getElementById("textStory");
+  var cylinder = document.getElementById("cylinder");
+  var words = Array.prototype.slice.call(document.querySelectorAll(".word"));
+  var rail = Array.prototype.slice.call(document.querySelectorAll(".rail-item"));
+  var progressFill = document.getElementById("progressFill");
+  var kicker = document.getElementById("chapterKicker");
+  var title = document.getElementById("chapterTitle");
+  var copy = document.getElementById("chapterCopy");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var ticking = false;
+  var step = 360 / words.length;
+  var details = [
+    ["Positioning","Make the angle obvious.","Lead with the market claim, not with decorative motion. The word should name the argument the section is making."],
+    ["Proof","Bring evidence forward.","Rotate into results, reviews, artifacts, locations, screenshots, or product details that make the claim believable."],
+    ["Rhythm","Use timing as tone.","Let the motion feel premium and deliberate. Avoid fast carnival rotation, especially around body copy."],
+    ["Speed","Show momentum without rushing.","Good for delivery, launch, turnaround, or performance pages where forward progress is part of the sale."],
+    ["Clarity","Keep the vocabulary tight.","Six strong words beat a cloud of weak ones. The 3D treatment only works when every word earns its frame."],
+    ["Launch","Resolve into an action.","The final word should connect to a button, booking step, case-study link, or product reveal."]
+  ];
+
+  function clamp(value,min,max){return Math.max(min,Math.min(max,value));}
+  function normalizeAngle(angle){
+    return Math.abs((((angle + 180) % 360) + 360) % 360 - 180);
+  }
+  function setActive(index){
+    words.forEach(function(word,i){word.classList.toggle("is-active",i === index);});
+    rail.forEach(function(item,i){item.classList.toggle("is-active",i === index);});
+    kicker.textContent = details[index][0];
+    title.textContent = details[index][1];
+    copy.textContent = details[index][2];
+  }
+  function render(){
+    ticking = false;
+    var progress = 0;
+    if(!reduce){
+      var rect = section.getBoundingClientRect();
+      var travel = Math.max(1, rect.height - window.innerHeight * 1.12);
+      progress = clamp(-rect.top / travel, 0, 1);
+    }
+    var rotation = -progress * step * (words.length - 1);
+    cylinder.style.transform = "rotateX(" + rotation.toFixed(3) + "deg)";
+    progressFill.style.width = (progress * 100).toFixed(1) + "%";
+    var active = Math.min(words.length - 1, Math.round(progress * (words.length - 1)));
+    words.forEach(function(word,i){
+      var angle = i * step;
+      var distance = normalizeAngle(angle + rotation);
+      var focus = 1 - clamp(distance / 120, 0, 1);
+      var opacity = .12 + focus * .88;
+      var scale = .72 + focus * .34;
+      var blur = (1 - focus) * 2.2;
+      word.style.opacity = opacity.toFixed(3);
+      word.style.filter = "blur(" + blur.toFixed(2) + "px)";
+      word.style.transform = "translate(-50%,-50%) rotateX(" + angle.toFixed(3) + "deg) translateZ(var(--radius)) scale(" + scale.toFixed(3) + ")";
+    });
+    setActive(active);
+  }
+  function queue(){
+    if(!ticking){
+      ticking = true;
+      requestAnimationFrame(render);
+    }
+  }
+  render();
+  window.addEventListener("scroll", queue, {passive:true});
+  window.addEventListener("resize", queue, {passive:true});
+})();
+</script>
+</body>
+</html>

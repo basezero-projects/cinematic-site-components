@@ -1,10 +1,10 @@
 # Cinematic Site Modules
 
-35 cinematic website modules. Each one is a single HTML file. No frameworks. No build step. No npm. Just open it.
+37 cinematic website modules. Each one is a single HTML file. No frameworks. No build step. No npm. Just open it.
 
 ## Preview
 
-Open `index.html` to browse all 35 modules with animated mini-demos, or open any individual module file directly in a browser.
+Open `index.html` to browse all 37 modules with animated mini-demos, or open any individual module file directly in a browser.
 
 ## Curation Rules
 
@@ -43,9 +43,9 @@ http://100.x.x.x:8035/index.html
 
 Open that URL on the phone while Tailscale is connected. Keep the Windows machine awake. If the phone cannot connect, run the script once from an elevated PowerShell with `-OpenFirewall`, or manually allow inbound TCP port `8035`.
 
-## The 35 Modules
+## The 37 Modules
 
-### Scroll-Driven (13)
+### Scroll-Driven (15)
 | # | Module | What It Does |
 |---|---|---|
 | 01 | Text Mask Reveal | Headline fills with colour as you scroll |
@@ -61,6 +61,8 @@ Open that URL on the phone while Tailscale is connected. Keep the Windows machin
 | 32 | SVG Mask Chapters | Fullscreen image chapters reveal through an expanding SVG mask |
 | 33 | Scroll Filter Distortion | SVG turbulence bends an image on scroll before resolving cleanly |
 | 35 | WebGL Rotating Gallery | WebGL image planes rotate through a spatial gallery as the page moves |
+| 36 | Curved Path Motion | A meaningful object travels along a responsive SVG path through proof points |
+| 37 | 3D Scroll Text | Short brand or product vocabulary rotates through a CSS 3D scroll cylinder |
 
 ### Cursor & Hover (9)
 | # | Module | What It Does |

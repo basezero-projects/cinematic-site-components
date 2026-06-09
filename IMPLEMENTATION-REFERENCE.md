@@ -4,7 +4,7 @@ Use this file when an LLM is asked to add animation from this folder to a real s
 
 ## Current Status
 
-- **Module count:** 35 standalone examples.
+- **Module count:** 37 standalone examples.
 - **Last verification pass:** 2026-06-09.
 - **Preview URL pattern:** run `serve-over-tailscale.ps1`, then open the printed Tailscale URL.
 - **Cache behavior:** the Tailscale helper now serves no-cache headers. If Chrome or a phone shows an old effect, restart the helper and reload with a cache-busting query string.
@@ -67,6 +67,8 @@ If the target page is a SYVR/client marketing page, also point it at the relevan
 | `svg-mask-chapters.html` | Product/editorial chapters with strong image changes. | Controls stay inside the chapter panel; mask change has narrative meaning. | Weak imagery or service pages where the reveal does not add meaning. |
 | `scroll-filter-distortion.html` | Music, event, experimental brand, or image-led editorial moments. | Distortion resolves back to clarity. | Trust-heavy pages where distortion makes the asset harder to inspect. |
 | `webgl-rotating-gallery.html` | Lookbooks, art, architecture, premium visual galleries. | WebGL fallback and readable mobile composition. | Low-asset service pages or performance-sensitive landing pages. |
+| `curved-path-motion.html` | Product flows, quote funnels, service journeys, case-study timelines, fulfillment routes, or any page where scattered proof needs one clear route. | The moving object must mean something, the active cards should sync with path position, and the final stop needs a concrete action. | Decorative route lines, pages with no real sequence, or dense content where the moving object competes with reading. |
+| `scroll-3d-text.html` | Brand pillars, product attributes, capability spectra, and short editorial chapter vocabularies. | Keep the word set tight, sync the active word to explanatory copy, and verify mobile/reduced-motion fallbacks. | Buzzword clouds, long lists, body-copy replacement, or fast spinning text that users have to read. |
 
 ### Cursor & Hover
 

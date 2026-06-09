@@ -1,5 +1,12 @@
 # Cinematic Site Components Changelog
 
+## [0.5.0] - 2026-06-09
+
+### Added
+
+- **Two new quality-gated scroll modules**: Added module 36, `curved-path-motion.html`, a warm paper-style scroll section where a meaningful offer token travels along a responsive SVG curve through four proof/action cards. It is meant for product flows, quote funnels, service journeys, case-study timelines, and fulfillment routes, with a full-route reduced-motion state. Added module 37, `scroll-3d-text.html`, a CSS 3D text cylinder where short brand or product vocabulary rotates through depth while the side panel explains the active word. It is meant for brand pillars, product attributes, capability spectra, and short editorial chapters, with a static chip fallback for reduced motion. `index.html`, `README.md`, `IMPLEMENTATION-REFERENCE.md`, `CLAUDE.md`, and generated `AGENTS.md` now list 37 modules and 15 scroll-driven examples.
+- **Second source-intake batch**: Added distilled Codrops source notes for responsive curved path motion, 3D scroll-driven text, cinematic 3D scroll scenes, WebGL shader ripples/reveals/blur, layered image-grid zoom, and GSAP animation tips. `_notes/source-log.md` and `_notes/pattern-backlog.md` now score those candidates, promote the two strongest examples, backlog the heavier shader/3D/zoom ideas, and reject the tips article as a standalone module source while keeping it as craft reference.
+
 ## [0.4.7] - 2026-06-09
 
 ### Added

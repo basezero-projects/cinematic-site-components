@@ -23,6 +23,108 @@ Why it belongs here:
 
 ## Entries
 
+### 2026-06-09 - Responsive curved path motion
+
+Date: 2026-06-09
+Source: Codrops
+URL: https://tympanus.net/codrops/2025/12/17/building-responsive-scroll-triggered-curved-path-animations-with-gsap/
+Scrape method: Firecrawl
+Candidate pattern: A meaningful object travels along a responsive curved SVG path while proof cards activate in sequence
+Score: 9/10
+Decision: Build
+Good for: Product flows, quote funnels, service journeys, case-study timelines, fulfillment routes, launch stories, process sections
+Avoid for: Pages with no real sequence, decorative route lines, dense copy sections, or situations where every content card needs equal attention
+Motion risk: If the moving object has no content meaning, the path becomes decoration; token and path can drift if implemented in separate coordinate systems
+Reduced motion fallback: Show the full path, final token position, readable cards, and full progress state without scroll-linked movement
+Dependencies: Vanilla SVG and JavaScript in the local module; source pattern used GSAP MotionPath concepts
+License/attribution: Original local implementation inspired by public pattern research; no source code copied
+Why it belongs here: Built as `curved-path-motion.html`, it gives future sites a concrete way to connect scattered proof points into one sequenced route instead of adding another generic reveal.
+
+### 2026-06-09 - 3D scroll-driven text cylinder
+
+Date: 2026-06-09
+Source: Codrops
+URL: https://tympanus.net/codrops/2025/11/04/creating-3d-scroll-driven-text-animations-with-css-and-gsap/
+Scrape method: Firecrawl
+Candidate pattern: Short brand or product vocabulary rotates through CSS 3D depth while explanatory copy syncs to the active word
+Score: 8/10
+Decision: Build
+Good for: Brand pillars, product attributes, capability spectra, short editorial chapters, campaign vocabulary sections
+Avoid for: Buzzword clouds, long lists, body-copy replacement, navigation, or fast spinning type users need to read
+Motion risk: 3D text can crop or blur on small screens, and a weak word list feels gimmicky
+Reduced motion fallback: Display the words as readable static chips with the sequence copy visible
+Dependencies: CSS 3D transforms and vanilla JavaScript in the local module
+License/attribution: Original local implementation inspired by public pattern research; no source code copied
+Why it belongs here: Built as `scroll-3d-text.html`, it turns a small vocabulary set into a sequenced section with a real explanation for each active word.
+
+### 2026-06-09 - Cinematic 3D scroll scenes
+
+Date: 2026-06-09
+Source: Codrops
+URL: https://tympanus.net/codrops/2025/11/19/how-to-build-cinematic-3d-scroll-experiences-with-gsap/
+Scrape method: Firecrawl
+Candidate pattern: Scroll-controlled 3D scene direction with camera paths, image cylinders, particles, shader depth, and timed copy
+Score: 7/10
+Decision: Backlog
+Good for: Premium product storytelling, venue walkthroughs, architecture, art, editorial campaigns, immersive launches
+Avoid for: Local service pages, low-asset pages, conversion pages where performance and clarity matter more than immersion
+Motion risk: Heavy WebGL/3D complexity can create a spectacle without a page job and needs deeper mobile/canvas verification
+Reduced motion fallback: Static scene stills or a non-3D chapter stack
+Dependencies: OGL/Three-like renderer, GSAP, ScrollTrigger, shader or particle logic
+License/attribution: Source noted for pattern research only
+Why it belongs here: It is worth keeping as a future high-end reference, but not worth building until there is a sharper local module concept than "cinematic 3D scene."
+
+### 2026-06-09 - WebGL shader ripples, reveals, and blur
+
+Date: 2026-06-09
+Source: Codrops
+URL: https://tympanus.net/codrops/2025/10/08/how-to-animate-webgl-shaders-with-gsap-ripples-reveals-and-dynamic-blur-effects/
+Scrape method: Firecrawl
+Candidate pattern: Shader uniforms driven by click, drag, or scroll for ripples, texture blends, dynamic blur, and image reveals
+Score: 6/10
+Decision: Backlog
+Good for: Music, event, editorial, premium galleries, product material reveals, high-quality visual campaigns
+Avoid for: Trust-heavy service pages, low-asset sites, and simple image reveals that CSS can handle
+Motion risk: Shader effects can look like noisy distortion if they do not reveal real content; canvas fallback and performance checks are mandatory
+Reduced motion fallback: Static image or simple opacity/clip reveal
+Dependencies: Three.js or WebGL, GSAP, shader code, image preloading
+License/attribution: Source noted for pattern research only
+Why it belongs here: Strong reference material, but the next local module needs a specific image-treatment job before this is built.
+
+### 2026-06-09 - Layered image grid zoom
+
+Date: 2026-06-09
+Source: Codrops
+URL: https://tympanus.net/codrops/2025/10/29/building-a-layered-zoom-scroll-effect-with-gsap-scrollsmoother-and-scrolltrigger/
+Scrape method: Firecrawl
+Candidate pattern: Deconstructed image grid, split text, masked central image, and depth zoom on scroll
+Score: 6/10
+Decision: Backlog
+Good for: Campaign intros, editorial image stories, portfolio launches, product imagery with strong art direction
+Avoid for: Weak image sets, mobile-first service pages, or cases already covered by `zoom-parallax.html`
+Motion risk: Duplicates the existing zoom module unless it adds a sharper use case; split text and grids can crop badly on phones
+Reduced motion fallback: Static image grid or simple hero image with final copy visible
+Dependencies: GSAP, ScrollTrigger, ScrollSmoother concepts
+License/attribution: Source noted for pattern research only
+Why it belongs here: Good depth-study reference, but not promoted yet because it overlaps the current Layered Zoom Parallax module.
+
+### 2026-06-09 - GSAP tips article
+
+Date: 2026-06-09
+Source: Codrops
+URL: https://tympanus.net/codrops/2025/09/03/7-must-know-gsap-animation-tips-for-creative-developers/
+Scrape method: Firecrawl
+Candidate pattern: General GSAP craft techniques, including text masking and timeline hygiene
+Score: 5/10 as a module, useful as a reference
+Decision: Reject as a standalone module
+Good for: Refining text reveals, masked copy, and future GSAP timelines
+Avoid for: Building a sampler page or adding a module without one specific effect
+Motion risk: Technique lists can encourage disconnected demo snippets
+Reduced motion fallback: Depends on the future module using the technique
+Dependencies: GSAP concepts
+License/attribution: Source noted for reference only
+Why it belongs here: It informs craft decisions, but it is not itself a cinematic module candidate.
+
 ### 2026-06-09 - Service-area map route narrative
 
 Date: 2026-06-09
