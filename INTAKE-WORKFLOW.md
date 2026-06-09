@@ -45,7 +45,7 @@ Invoke-RestMethod `
 
 Save useful markdown summaries under `_sources/<source-name>/<slug>.md`. Do not save raw page dumps unless the page is genuinely valuable.
 
-## 3. Use FlareSolverr only as a fallback
+## 3. Use the existing FlareSolverr container only as a fallback
 
 FlareSolverr is for public pages that show a Cloudflare challenge to normal Firecrawl. It is not a license to scrape login walls, paywalls, captcha-heavy sites, or private content.
 
@@ -55,10 +55,14 @@ Use it only when:
 - The target content is public.
 - The source is worth the extra cost.
 
-Suggested local service if it is not already running:
+Local FlareSolverr is already provisioned as the Docker container `flaresolverr` and exposed at `http://localhost:8191`. Do not create a second container.
+
+Check or start the existing container:
 
 ```powershell
-docker run -d --name flaresolverr -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:latest
+docker ps -a --filter "name=^/flaresolverr$" --format "{{.Names}} {{.Status}} {{.Ports}}"
+$running = docker inspect -f "{{.State.Running}}" flaresolverr 2>$null
+if ($running -ne "true") { docker start flaresolverr }
 ```
 
 Request example:

@@ -1,5 +1,11 @@
 # Cinematic Site Components Changelog
 
+## [0.1.1] - 2026-06-09
+
+### Fixed
+
+- **FlareSolverr fallback instructions use the existing container**: Updated the cinematic animation intake workflow so agents use the already-provisioned local `flaresolverr` Docker container on `http://localhost:8191` instead of creating a duplicate container. The Firecrawl-first workflow is unchanged; FlareSolverr remains a fallback only for public source pages that return Cloudflare challenge content.
+
 ## [0.1.0] - 2026-06-09
 
 ### Added
