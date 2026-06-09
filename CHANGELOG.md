@@ -1,5 +1,11 @@
 # Cinematic Site Components Changelog
 
+## [0.4.1] - 2026-06-09
+
+### Added
+
+- **Tailscale phone preview helper**: Added `serve-over-tailscale.ps1` so the static animation gallery can be viewed from an iPhone or other tailnet device without a build step. The script finds the Windows machine's Tailscale IPv4 address, starts Python's static file server against the module folder on port `8035`, prints the phone URL for `index.html`, supports `-Stop`, and can attempt an inbound firewall rule with `-OpenFirewall` when run from an elevated PowerShell. `README.md` now documents the phone preview workflow and the requirement to keep the Windows machine awake.
+
 ## [0.4.0] - 2026-06-09
 
 ### Added

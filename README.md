@@ -21,6 +21,22 @@ cd cinematic-site-components
 
 Then open `index.html` in your browser, or open any module file directly.
 
+## Tailscale Phone Preview
+
+To view the full gallery from an iPhone on the same tailnet, run this from the repo:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\serve-over-tailscale.ps1
+```
+
+The script binds a static server to the current Tailscale IPv4 address and prints a URL like:
+
+```text
+http://100.x.x.x:8035/index.html
+```
+
+Open that URL on the phone while Tailscale is connected. Keep the Windows machine awake. If the phone cannot connect, run the script once from an elevated PowerShell with `-OpenFirewall`, or manually allow inbound TCP port `8035`.
+
 ## The 35 Modules
 
 ### Scroll-Driven (13)
