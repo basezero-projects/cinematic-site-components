@@ -134,6 +134,20 @@
   }
   .detail-body {
     padding: 32px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.24s ease, transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .product-overlay.morphing .detail-image,
+  .product-overlay.morphing .detail-body {
+    opacity: 0;
+  }
+  .product-overlay.morphing .detail-body {
+    transform: translateY(8px);
+  }
+  .product-overlay.morphing.text-ready .detail-body {
+    opacity: 1;
+    transform: translateY(0);
   }
   .detail-body h2 {
     font-size: 28px; font-weight: 600;
@@ -172,6 +186,14 @@
     transition: background 0.2s;
   }
   .btn-ghost:hover { background: var(--bg); }
+
+  .morph-ghost {
+    position: fixed;
+    z-index: 300;
+    pointer-events: none;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.22);
+    will-change: left, top, width, height, border-radius;
+  }
 
   ::view-transition-group(product-morph) {
     z-index: 200;
@@ -374,7 +396,6 @@ var detailImage = document.getElementById('detailImage');
 var detailName = document.getElementById('detailName');
 var detailPrice = document.getElementById('detailPrice');
 var detailDesc = document.getElementById('detailDesc');
-var activeSwatch = null;
 
 function setProductDetail(product) {
   detailImage.style.background = product.bg;
@@ -389,6 +410,60 @@ function showOverlay() {
   overlay.classList.add('visible');
 }
 
+function runProductMorph(swatch, product) {
+  var start = swatch.getBoundingClientRect();
+  setProductDetail(product);
+  overlay.classList.remove('text-ready');
+  overlay.classList.add('open', 'morphing');
+  overlay.offsetHeight;
+
+  var end = detailImage.getBoundingClientRect();
+  var ghost = document.createElement('div');
+  ghost.className = 'morph-ghost';
+  ghost.style.background = product.bg;
+  ghost.style.left = start.left + 'px';
+  ghost.style.top = start.top + 'px';
+  ghost.style.width = start.width + 'px';
+  ghost.style.height = start.height + 'px';
+  ghost.style.borderRadius = '12px';
+  document.body.appendChild(ghost);
+
+  requestAnimationFrame(function () {
+    overlay.classList.add('visible');
+    var animation = ghost.animate([
+      {
+        left: start.left + 'px',
+        top: start.top + 'px',
+        width: start.width + 'px',
+        height: start.height + 'px',
+        borderRadius: '12px'
+      },
+      {
+        left: end.left + 'px',
+        top: end.top + 'px',
+        width: end.width + 'px',
+        height: end.height + 'px',
+        borderRadius: '24px'
+      }
+    ], {
+      duration: 720,
+      easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      fill: 'forwards'
+    });
+
+    setTimeout(function () {
+      if (overlay.classList.contains('morphing')) {
+        overlay.classList.add('text-ready');
+      }
+    }, 460);
+
+    animation.finished.finally(function () {
+      ghost.remove();
+      overlay.classList.remove('morphing', 'text-ready');
+    });
+  });
+}
+
 function openProduct(card) {
   var id = card.dataset.product;
   var p = products[id];
@@ -396,37 +471,19 @@ function openProduct(card) {
 
   if (!p) return;
 
-  if (!swatch || !document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (!swatch || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     setProductDetail(p);
     showOverlay();
     return;
   }
 
-  if (activeSwatch) {
-    activeSwatch.style.viewTransitionName = '';
-  }
-
-  detailImage.style.viewTransitionName = 'none';
-  swatch.style.viewTransitionName = 'product-morph';
-
-  var transition = document.startViewTransition(function () {
-    activeSwatch = swatch;
-    swatch.style.viewTransitionName = 'none';
-    detailImage.style.viewTransitionName = 'product-morph';
-    setProductDetail(p);
-    overlay.classList.add('open', 'visible');
-  });
-
-  transition.finished.finally(function () {
-    swatch.style.viewTransitionName = '';
-    detailImage.style.viewTransitionName = 'none';
-  });
+  runProductMorph(swatch, p);
 }
 
 function closeProduct(e, force) {
   if (force || e.target === overlay) {
     overlay.classList.remove('visible');
-    setTimeout(function() { overlay.classList.remove('open'); }, 300);
+    setTimeout(function() { overlay.classList.remove('open', 'morphing', 'text-ready'); }, 300);
   }
 }
 

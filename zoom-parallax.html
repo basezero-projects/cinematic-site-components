@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Layered Zoom Parallax - Cinematic Module</title>
+<link rel="icon" href="data:,">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -120,6 +121,8 @@
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
   .product-card {
     background: #111114;
@@ -290,15 +293,14 @@
 
   // Product card: fades in after headline zooms away
   gsap.fromTo('.layer-product',
-    { opacity: 0, scale: 0.85 },
-    { opacity: 1, scale: 1, ease: 'power2.out',
+    { autoAlpha: 0, scale: 0.85 },
+    { autoAlpha: 1, scale: 1, ease: 'power2.out',
       scrollTrigger: { trigger: section, start: '40% top', end: '60% top', scrub: true }
     });
 
   // Product card fades out at the end
-  gsap.fromTo('.layer-product',
-    { opacity: 1 },
-    { opacity: 0,
+  gsap.to('.layer-product',
+    { autoAlpha: 0, scale: 0.96, immediateRender: false,
       scrollTrigger: { trigger: section, start: '75% top', end: '90% top', scrub: true }
     });
 

@@ -1,5 +1,11 @@
 # Cinematic Site Components Changelog
 
+## [0.4.5] - 2026-06-09
+
+### Fixed
+
+- **Second targeted animation correction pass**: `cursor-reveal.html` now renders the circular spotlight over embedded SVG scene artwork, so the section cannot degrade into only brown and green colour fields when external images fail or stale browser cache is involved. `view-transitions.html` now uses a deterministic FLIP morph ghost from the clicked product swatch into the modal image area, with even 720ms timing and early body text reveal, so the transition visibly travels instead of popping or landing off-time. `sticky-cards.html` keeps every stacked card fully opaque while older cards scale back, removing the see-through overlap. `zoom-parallax.html` keeps the product card at `opacity: 0` and `visibility: hidden` at section start, then reveals it only during the intended scroll window by replacing the immediate-rendering fade-out tween with an `autoAlpha` tween that does not render early.
+
 ## [0.4.4] - 2026-06-09
 
 ### Fixed

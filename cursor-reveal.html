@@ -110,6 +110,12 @@
     background-position: center;
     background-size: cover;
   }
+  .spotlight-base svg,
+  .spotlight-reveal svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
   .spotlight-base {
     position: absolute; inset: 0; z-index: 1;
     filter: grayscale(1) brightness(0.48) contrast(0.92);
@@ -280,8 +286,49 @@
 <section class="reveal-section">
   <div class="reveal-label">Circular spotlight - move mouse to reveal</div>
   <div class="spotlight-container" id="spotContainer">
-    <div class="spotlight-base" style="background-image: linear-gradient(135deg, rgba(20,16,13,0.62), rgba(6,7,8,0.52)), url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&h=700&fit=crop');"></div>
-    <div class="spotlight-reveal" id="spotReveal" style="background-image: url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&h=700&fit=crop');"></div>
+    <div class="spotlight-base">
+      <svg viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="spotSkyBase" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#aeb8bb"/><stop offset="1" stop-color="#d4d0c5"/></linearGradient>
+          <linearGradient id="spotWallBase" x1="0" x2="1"><stop offset="0" stop-color="#a7a39a"/><stop offset="1" stop-color="#d7d2c5"/></linearGradient>
+        </defs>
+        <rect width="1200" height="675" fill="url(#spotSkyBase)"/>
+        <circle cx="1040" cy="110" r="64" fill="#f3d996" opacity=".46"/>
+        <path d="M0 520 C190 485 315 510 455 470 C630 420 835 472 1200 408 L1200 675 L0 675 Z" fill="#807b6e"/>
+        <path d="M180 390 L510 205 L920 390 Z" fill="#494a47"/>
+        <rect x="245" y="366" width="620" height="210" rx="8" fill="url(#spotWallBase)"/>
+        <rect x="298" y="402" width="182" height="116" fill="#3f4544"/>
+        <rect x="520" y="402" width="280" height="116" fill="#444a49"/>
+        <rect x="302" y="531" width="500" height="22" fill="#7f735d"/>
+        <path d="M220 590 L910 590" stroke="#5c5346" stroke-width="18" stroke-linecap="round"/>
+        <path d="M128 579 C170 520 230 515 260 579 Z" fill="#4a4c43"/>
+        <path d="M920 575 C970 500 1060 500 1108 575 Z" fill="#585743"/>
+      </svg>
+    </div>
+    <div class="spotlight-reveal" id="spotReveal">
+      <svg viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="spotSkyLit" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8fc4df"/><stop offset="1" stop-color="#f1dfbd"/></linearGradient>
+          <linearGradient id="spotWallLit" x1="0" x2="1"><stop offset="0" stop-color="#f6efe0"/><stop offset="1" stop-color="#d7c3a4"/></linearGradient>
+          <linearGradient id="spotGlassLit" x1="0" x2="1"><stop offset="0" stop-color="#24404f"/><stop offset="1" stop-color="#6da2b1"/></linearGradient>
+        </defs>
+        <rect width="1200" height="675" fill="url(#spotSkyLit)"/>
+        <circle cx="1040" cy="110" r="72" fill="#ffd772" opacity=".78"/>
+        <path d="M0 520 C190 485 315 510 455 470 C630 420 835 472 1200 408 L1200 675 L0 675 Z" fill="#9f8d69"/>
+        <path d="M180 390 L510 205 L920 390 Z" fill="#272b2b"/>
+        <rect x="245" y="366" width="620" height="210" rx="8" fill="url(#spotWallLit)"/>
+        <rect x="298" y="402" width="182" height="116" fill="url(#spotGlassLit)"/>
+        <rect x="520" y="402" width="280" height="116" fill="url(#spotGlassLit)"/>
+        <path d="M315 492 C380 456 430 458 476 494" stroke="#c8e5ea" stroke-width="4" opacity=".45"/>
+        <path d="M548 492 C642 438 726 452 792 495" stroke="#c8e5ea" stroke-width="4" opacity=".45"/>
+        <rect x="302" y="531" width="500" height="22" fill="#b98544"/>
+        <path d="M220 590 L910 590" stroke="#7e542b" stroke-width="18" stroke-linecap="round"/>
+        <path d="M128 579 C170 520 230 515 260 579 Z" fill="#2e6f45"/>
+        <path d="M920 575 C970 500 1060 500 1108 575 Z" fill="#4f7b3a"/>
+        <path d="M1015 505 C1038 450 1082 438 1110 505" stroke="#6f8f39" stroke-width="18" stroke-linecap="round"/>
+        <path d="M80 320 C128 270 185 270 230 318" stroke="#456d37" stroke-width="26" stroke-linecap="round"/>
+      </svg>
+    </div>
     <div class="spotlight-cursor" id="spotCursor"></div>
     <div class="spotlight-hint" id="spotHint">Move to inspect the finished surface</div>
   </div>
