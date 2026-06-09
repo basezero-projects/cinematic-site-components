@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebGL Rotating Gallery - Cinematic Module</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#090909;--ink:#f2ebde;--muted:#91887b;--line:#24221f;--gold:#c9a45d;--rust:#c96936}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{min-height:360vh;background:var(--bg);color:var(--ink);font-family:"Public Sans",sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  canvas{position:fixed;inset:0;width:100%;height:100%;display:block;background:radial-gradient(circle at 50% 38%,#191713,#090909 62%);z-index:0}
+  .noise{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.13;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");mix-blend-mode:soft-light}
+  .copy{position:relative;z-index:2;min-height:100dvh;display:grid;align-items:center;padding:70px 28px;pointer-events:none}
+  .copy-inner{width:min(1160px,100%);margin:0 auto;display:grid;grid-template-columns:minmax(0,.8fr) minmax(300px,.55fr);gap:44px;align-items:end}
+  .kicker,.stat b,.fallback b{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+  .kicker{color:var(--gold);margin-bottom:18px}
+  h1{font-family:Archivo,sans-serif;font-size:clamp(54px,10vw,132px);line-height:.82;letter-spacing:-.065em;font-weight:900}
+  .copy p{color:var(--muted);font-size:18px;line-height:1.58;max-width:50ch}
+  .stats{display:grid;gap:12px}
+  .stat{padding:14px 0;border-top:1px solid rgba(255,255,255,.12)}
+  .stat b{display:block;color:var(--gold);margin-bottom:7px}
+  .stat span{display:block;color:#c9beb0;font-size:14px;line-height:1.45}
+  .spacer{height:170vh}
+  .fallback{position:relative;z-index:2;width:min(1100px,100%);margin:0 auto 120px;padding:0 24px;display:none}
+  .fallback-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+  .fallback-card{min-height:220px;border:1px solid var(--line);background:#15130f;border-radius:8px;padding:18px}
+  .fallback b{color:var(--gold)}
+  footer{position:relative;z-index:2;padding:28px 24px;text-align:center;color:#70685d;font-size:12px;border-top:1px solid var(--line);background:#090909}
+  @media(max-width:760px){.copy-inner{grid-template-columns:1fr}.copy{padding:56px 18px;background:linear-gradient(180deg,rgba(9,9,9,.94),rgba(9,9,9,.78) 58%,rgba(9,9,9,.28))}h1{font-size:clamp(48px,17vw,76px)}.copy p{font-size:16px}.fallback-grid{grid-template-columns:1fr}}
+  @media(prefers-reduced-motion:reduce){canvas{display:none}.fallback{display:block}body{min-height:auto}.spacer{display:none}}
+</style>
+</head>
+<body>
+<canvas id="glCanvas" aria-label="WebGL rotating image gallery"></canvas>
+<div class="noise"></div>
+<section class="copy">
+  <div class="copy-inner">
+    <div>
+      <div class="kicker">WebGL rotating image gallery</div>
+      <h1>Rotate the gallery as the page moves.</h1>
+    </div>
+    <div>
+      <p>Useful for lookbooks, architecture, art, and premium portfolios where the gallery itself should feel spatial. The fallback is a plain image grid.</p>
+      <div class="stats">
+        <div class="stat"><b>Input</b><span>Five textured planes generated in canvas, uploaded as WebGL textures.</span></div>
+        <div class="stat"><b>Motion</b><span>Scroll controls the ring rotation. The render loop eases toward the scroll position.</span></div>
+        <div class="stat"><b>Fallback</b><span>No WebGL or reduced motion switches to static cards.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="spacer"></div>
+<section class="fallback" id="fallback">
+  <b>Static fallback</b>
+  <div class="fallback-grid"><div class="fallback-card">Stone lobby</div><div class="fallback-card">Glass corner</div><div class="fallback-card">Garden room</div></div>
+</section>
+<footer>Module 35 - WebGL Rotating Gallery</footer>
+<script>
+(function(){
+  var canvas = document.getElementById('glCanvas');
+  var fallback = document.getElementById('fallback');
+  var spacer = document.querySelector('.spacer');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) return;
+  function showFallback(){
+    canvas.style.display = 'none';
+    fallback.style.display = 'block';
+    if (spacer) spacer.style.display = 'none';
+    document.body.style.minHeight = 'auto';
+  }
+  var gl = canvas.getContext('webgl', {antialias:true,alpha:false});
+  if (!gl) { showFallback(); return; }
+  var vertex = 'attribute vec2 p;attribute vec2 uv;uniform vec2 center;uniform vec2 size;uniform float squash;varying vec2 v;void main(){v=uv;vec2 pos=vec2(p.x*size.x*squash,p.y*size.y)+center;gl_Position=vec4(pos,0.0,1.0);}';
+  var fragment = 'precision mediump float;varying vec2 v;uniform sampler2D tex;uniform float fade;void main(){vec2 u=v;float d=distance(u,vec2(.5));vec4 c=texture2D(tex,u);c.rgb*=1.0-d*.55;c.rgb+=vec3(.04,.032,.02);gl_FragColor=vec4(c.rgb,fade);}';
+  function shader(type,src){var s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return gl.getShaderParameter(s,gl.COMPILE_STATUS) ? s : null;}
+  var vertexShader = shader(gl.VERTEX_SHADER, vertex);
+  var fragmentShader = shader(gl.FRAGMENT_SHADER, fragment);
+  if (!vertexShader || !fragmentShader) { showFallback(); return; }
+  var program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program); gl.useProgram(program);
+  if (!gl.getProgramParameter(program,gl.LINK_STATUS)) { showFallback(); return; }
+  var vertices = new Float32Array([-1,-1,0,1, 1,-1,1,1, -1,1,0,0, 1,1,1,0]);
+  var buffer = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buffer); gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+  var pLoc = gl.getAttribLocation(program,'p'); var uvLoc = gl.getAttribLocation(program,'uv');
+  gl.enableVertexAttribArray(pLoc); gl.vertexAttribPointer(pLoc,2,gl.FLOAT,false,16,0);
+  gl.enableVertexAttribArray(uvLoc); gl.vertexAttribPointer(uvLoc,2,gl.FLOAT,false,16,8);
+  var centerLoc = gl.getUniformLocation(program,'center');
+  var sizeLoc = gl.getUniformLocation(program,'size');
+  var squashLoc = gl.getUniformLocation(program,'squash');
+  var fadeLoc = gl.getUniformLocation(program,'fade');
+  function makeTexture(label,bg,accent){
+    var c=document.createElement('canvas'); c.width=512; c.height=384; var x=c.getContext('2d');
+    x.fillStyle=bg; x.fillRect(0,0,c.width,c.height);
+    x.fillStyle=accent; x.globalAlpha=.78; x.fillRect(48,52,416,208); x.globalAlpha=1;
+    x.fillStyle='rgba(255,255,255,.18)'; for(var i=0;i<9;i++) x.fillRect(34+i*54,0,1,384);
+    x.fillStyle='#f2ebde'; x.font='800 42px Archivo, sans-serif'; x.fillText(label,42,320);
+    var t=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,t); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,c);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    return t;
+  }
+  var textures=[makeTexture('STONE LOBBY','#1f2522','#7a8a68'),makeTexture('GLASS CORNER','#151d24','#5f8da8'),makeTexture('GARDEN ROOM','#202417','#889b56'),makeTexture('BRASS DETAIL','#241a13','#c28a42'),makeTexture('NIGHT FACADE','#151416','#8f5b45')];
+  var current=0,target=0;
+  function resize(){var dpr=Math.min(2,window.devicePixelRatio||1);canvas.width=innerWidth*dpr;canvas.height=innerHeight*dpr;gl.viewport(0,0,canvas.width,canvas.height);}
+  addEventListener('resize',resize); resize();
+  function render(){
+    target = (scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight)) * Math.PI * 2.2;
+    current += (target-current)*.055;
+    gl.clearColor(.035,.035,.033,1); gl.clear(gl.COLOR_BUFFER_BIT); gl.disable(gl.DEPTH_TEST); gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+    var aspect=canvas.width/canvas.height;
+    var narrow=innerWidth<760;
+    var planes=textures.map(function(texture,i){
+      var a=current+i*(Math.PI*2/textures.length);
+      var depth=(Math.cos(a)+1)/2;
+      var sy=(narrow ? .14 : .22)+depth*(narrow ? .09 : .16);
+      var sx=Math.min(narrow ? .52 : .64,sy*1.333/aspect);
+      return {texture:texture,x:Math.sin(a)*(narrow ? .34 : .56),y:(narrow ? -.56 : 0)+Math.sin(a*.72)*(narrow ? .04 : .08),depth:depth,sx:sx,sy:sy,squash:.42+Math.abs(Math.cos(a))*.58,fade:(narrow ? .14 : .30)+depth*(narrow ? .40 : .70)};
+    }).sort(function(a,b){return a.depth-b.depth;});
+    planes.forEach(function(plane){
+      gl.uniform2f(centerLoc,plane.x,plane.y);
+      gl.uniform2f(sizeLoc,plane.sx,plane.sy);
+      gl.uniform1f(squashLoc,plane.squash);
+      gl.uniform1f(fadeLoc,plane.fade);
+      gl.bindTexture(gl.TEXTURE_2D,plane.texture);
+      gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    });
+    requestAnimationFrame(render);
+  }
+  render();
+})();
+</script>
+</body>
+</html>

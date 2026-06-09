@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hover Intro Grid - Cinematic Module</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f1110;--ink:#f3ead8;--muted:#988f80;--line:#282b28;--orange:#df6b2d;--green:#6f8f63;--blue:#698da8}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100dvh;background:var(--bg);color:var(--ink);font-family:"Public Sans",sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  .stage{min-height:100dvh;display:grid;grid-template-columns:minmax(360px,.82fr) minmax(0,1.18fr);gap:32px;padding:34px;align-items:stretch}
+  .intro{position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:28px;border:1px solid var(--line);border-radius:10px;background:#141713}
+  .kicker,.project-count,.tile-label,.action-row button,.panel-kicker{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+  .kicker{color:var(--orange)}
+  h1{font-family:Archivo,sans-serif;font-size:clamp(50px,7vw,96px);line-height:.86;letter-spacing:-.06em;margin-top:24px;max-width:640px}
+  .intro p{color:var(--muted);font-size:17px;line-height:1.58;max-width:48ch;margin-top:22px}
+  .project-count{color:#746c60}
+  .grid-wrap{position:relative;min-height:calc(100dvh - 68px);border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0b0d0c}
+  .tile-grid{position:absolute;inset:0 0 246px 0;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:1px;background:#20231f}
+  .tile{position:relative;overflow:hidden;border:0;background:#111;cursor:pointer;transform:translate3d(var(--x,0),var(--y,0),0) scale(var(--s,1));transition:transform 420ms cubic-bezier(.22,1,.36,1),opacity 220ms ease;will-change:transform}
+  .tile img{width:100%;height:100%;object-fit:cover;filter:saturate(.82) contrast(1.05);transform:scale(1.08);transition:transform 520ms cubic-bezier(.22,1,.36,1),filter 220ms ease}
+  .tile:hover img,.tile:focus-visible img{transform:scale(1.16);filter:saturate(1.05) contrast(1.08)}
+  .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.62));opacity:.76}
+  .tile-label{position:absolute;z-index:1;left:14px;right:14px;bottom:14px;color:var(--ink);text-align:left}
+  .feature-panel{position:absolute;z-index:4;inset:auto 24px 24px 24px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end;padding:22px;border:1px solid rgba(255,255,255,.12);border-radius:9px;background:rgba(14,15,14,.82);backdrop-filter:blur(18px);box-shadow:0 24px 90px rgba(0,0,0,.38)}
+  .panel-kicker{color:var(--orange);margin-bottom:10px}
+  .feature-panel h2{font-family:Archivo,sans-serif;font-size:clamp(28px,3vw,46px);line-height:.92;letter-spacing:-.052em}
+  .feature-panel p{color:#bfb6a7;max-width:48ch;line-height:1.5;margin-top:12px}
+  .action-row{display:flex;gap:8px;align-items:center}
+  .action-row button{border:1px solid rgba(255,255,255,.16);background:transparent;color:var(--ink);border-radius:999px;padding:10px 13px;cursor:pointer}
+  .action-row button[aria-pressed="true"]{background:var(--orange);border-color:var(--orange);color:#160b06}
+  footer{padding:24px;text-align:center;color:#6d655b;font-size:12px;border-top:1px solid var(--line)}
+  @media(max-width:960px){.stage{grid-template-columns:1fr}.grid-wrap{min-height:680px}.intro{min-height:440px}.tile-grid{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:560px){.stage{padding:16px}.intro{min-height:auto;padding:22px}h1{font-size:clamp(48px,16vw,72px)}.grid-wrap{min-height:720px}.tile-grid{inset:0 0 310px 0;grid-template-columns:repeat(2,1fr)}.feature-panel{inset:auto 12px 12px 12px;grid-template-columns:1fr}.feature-panel h2{font-size:34px}.action-row{flex-wrap:wrap}}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:1ms!important;transition-duration:1ms!important}.tile{transform:none!important}.tile img{transform:none!important}}
+</style>
+</head>
+<body>
+<main class="stage">
+  <section class="intro">
+    <div>
+      <div class="kicker">Hover motion intro grid</div>
+      <h1>Let project browsing become the intro.</h1>
+      <p>Move across the grid to give each tile a small physical response. Click or tap a tile to turn passive browsing into a focused opening panel.</p>
+    </div>
+    <div class="project-count">Pointer reactive on desktop. Tap-ready on mobile.</div>
+  </section>
+  <section class="grid-wrap" aria-label="Interactive project intro grid">
+    <div class="tile-grid" id="tileGrid">
+      <button class="tile" data-title="Night market identity" data-type="Campaign" data-copy="Good for studio and campaign pages where hovering over visual fragments should lead into a full case intro."><img src="https://picsum.photos/seed/night-market-identity/700/900" alt=""><span class="tile-label">Night market</span></button>
+      <button class="tile" data-title="Concrete house study" data-type="Architecture" data-copy="Use the motion to make a dense portfolio grid feel tactile before the visitor commits to one story."><img src="https://picsum.photos/seed/concrete-house-study/700/900" alt=""><span class="tile-label">Concrete house</span></button>
+      <button class="tile" data-title="Signal festival launch" data-type="Event" data-copy="The grid can tease lineups, posters, venue images, and campaign stills before opening one clear feature."><img src="https://picsum.photos/seed/signal-festival-launch/700/900" alt=""><span class="tile-label">Signal fest</span></button>
+      <button class="tile" data-title="Independent label drop" data-type="Music" data-copy="Strong when the page has real art direction and each tile points to a specific release, artist, or chapter."><img src="https://picsum.photos/seed/independent-label-drop/700/900" alt=""><span class="tile-label">Label drop</span></button>
+      <button class="tile" data-title="Ceramic studio archive" data-type="Portfolio" data-copy="Use it when a studio wants the index itself to feel handled, sorted, and alive without turning the page into a control panel."><img src="https://picsum.photos/seed/ceramic-studio-archive/700/900" alt=""><span class="tile-label">Ceramics</span></button>
+      <button class="tile" data-title="Hotel garden rooms" data-type="Hospitality" data-copy="Hover exploration can introduce rooms, amenities, and locations before the page settles on a booking story."><img src="https://picsum.photos/seed/hotel-garden-rooms/700/900" alt=""><span class="tile-label">Garden rooms</span></button>
+      <button class="tile" data-title="Watch material lab" data-type="Product" data-copy="Works for launch pages with enough product imagery to reward browsing before the first detailed section."><img src="https://picsum.photos/seed/watch-material-lab/700/900" alt=""><span class="tile-label">Material lab</span></button>
+      <button class="tile" data-title="Editorial food issue" data-type="Editorial" data-copy="The pattern turns a cover grid into a real entry point for a magazine issue, lookbook, or story collection."><img src="https://picsum.photos/seed/editorial-food-issue/700/900" alt=""><span class="tile-label">Food issue</span></button>
+    </div>
+    <aside class="feature-panel" aria-live="polite">
+      <div>
+        <div class="panel-kicker" id="panelType">Campaign</div>
+        <h2 id="panelTitle">Night market identity</h2>
+        <p id="panelCopy">Good for studio and campaign pages where hovering over visual fragments should lead into a full case intro.</p>
+      </div>
+      <div class="action-row" id="actionRow" aria-label="Choose featured tile"></div>
+    </aside>
+  </section>
+</main>
+<footer>Module 34 - Hover Intro Grid</footer>
+<script>
+(function(){
+  var grid = document.getElementById('tileGrid');
+  var tiles = Array.prototype.slice.call(document.querySelectorAll('.tile'));
+  var title = document.getElementById('panelTitle');
+  var type = document.getElementById('panelType');
+  var copy = document.getElementById('panelCopy');
+  var row = document.getElementById('actionRow');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  tiles.forEach(function(tile,index){
+    var control = document.createElement('button');
+    control.type = 'button';
+    control.textContent = String(index + 1);
+    control.setAttribute('aria-label','Show ' + tile.dataset.title);
+    control.addEventListener('click',function(){ activate(index); });
+    row.appendChild(control);
+    tile.addEventListener('click',function(){ activate(index); });
+    tile.addEventListener('focus',function(){ activate(index); });
+  });
+  var controls = Array.prototype.slice.call(row.querySelectorAll('button'));
+  function activate(index){
+    var tile = tiles[index];
+    title.textContent = tile.dataset.title;
+    type.textContent = tile.dataset.type;
+    copy.textContent = tile.dataset.copy;
+    controls.forEach(function(btn,i){ btn.setAttribute('aria-pressed', i === index ? 'true' : 'false'); });
+  }
+  activate(0);
+  if (!reduced) {
+    grid.addEventListener('pointermove',function(event){
+      var rect = grid.getBoundingClientRect();
+      var cx = event.clientX - rect.left;
+      var cy = event.clientY - rect.top;
+      tiles.forEach(function(tile){
+        var r = tile.getBoundingClientRect();
+        var tx = ((r.left + r.width / 2) - event.clientX) / rect.width;
+        var ty = ((r.top + r.height / 2) - event.clientY) / rect.height;
+        var distance = Math.min(1, Math.hypot(tx,ty) * 2.8);
+        tile.style.setProperty('--x', ((1 - distance) * -tx * 34).toFixed(1) + 'px');
+        tile.style.setProperty('--y', ((1 - distance) * -ty * 34).toFixed(1) + 'px');
+        tile.style.setProperty('--s', (1 + (1 - distance) * .035).toFixed(3));
+      });
+    });
+    grid.addEventListener('pointerleave',function(){ tiles.forEach(function(tile){ tile.style.setProperty('--x','0px'); tile.style.setProperty('--y','0px'); tile.style.setProperty('--s','1'); }); });
+  }
+})();
+</script>
+</body>
+</html>

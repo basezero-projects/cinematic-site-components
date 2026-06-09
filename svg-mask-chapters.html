@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SVG Mask Chapters - Cinematic Module</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  :root{--ink:#11100e;--paper:#eee7d7;--muted:#7f7668;--line:#d3c6ae;--red:#b7472a;--green:#274c3c;--gold:#c19a45}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:Archivo,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  .hero{min-height:86dvh;display:grid;place-items:end start;padding:70px 24px 80px}
+  .hero-inner{width:min(1180px,100%);margin:0 auto}
+  .kicker,.chapter-kicker,.rule b,.ticker{font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+  .kicker{color:var(--red);margin-bottom:18px}
+  h1{max-width:960px;font-size:clamp(56px,10vw,134px);line-height:.83;letter-spacing:-.065em;font-weight:900}
+  .hero p{max-width:58ch;margin-top:24px;color:var(--muted);font-family:Newsreader,serif;font-size:22px;line-height:1.42}
+  .chapter-story{min-height:430vh;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .chapter-sticky{position:sticky;top:0;min-height:100dvh;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);gap:38px;align-items:center;width:min(1320px,100%);margin:0 auto;padding:48px 28px}
+  .mask-frame{position:relative;min-height:680px;overflow:hidden;background:#15130f;border:1px solid #211e18;border-radius:8px;box-shadow:0 32px 100px rgba(31,22,10,.22)}
+  .mask-stage{display:block;width:100%;height:680px}
+  .base-image,.chapter-image{opacity:0;transition:opacity 180ms ease}
+  .base-image.is-active{opacity:.38}
+  .chapter-image.is-active{opacity:1}
+  .mask-vignette{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.46))}
+  .chapter-label{position:absolute;left:24px;right:24px;bottom:22px;display:flex;justify-content:space-between;align-items:end;gap:18px;color:#f7f0e0}
+  .chapter-label strong{display:block;font-size:clamp(30px,4vw,56px);line-height:.88;letter-spacing:-.052em;max-width:560px}
+  .chapter-label span{font-family:Newsreader,serif;color:#d8ccb7;font-size:17px;line-height:1.35;max-width:34ch}
+  .copy-panel{align-self:center}
+  .chapter-kicker{color:var(--red);margin-bottom:16px}
+  .copy-panel h2{font-size:clamp(38px,5vw,76px);line-height:.87;letter-spacing:-.055em;margin-bottom:22px}
+  .copy-panel p{font-family:Newsreader,serif;color:#655d52;font-size:21px;line-height:1.43;max-width:52ch}
+  .rules{display:grid;gap:0;margin-top:30px;border-top:1px solid var(--line)}
+  .rule{display:grid;grid-template-columns:150px 1fr;gap:18px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .rule b{color:var(--green)}
+  .rule span{font-family:Newsreader,serif;color:#665d51;font-size:18px;line-height:1.35}
+  .progress{height:4px;margin-top:28px;background:#d9ccb5;border-radius:999px;overflow:hidden}
+  .progress-fill{height:100%;width:0;background:var(--red)}
+  .chapters{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+  .chapter-tab{padding:20px 24px;border-right:1px solid var(--line);opacity:.44;transition:opacity 180ms ease,background 180ms ease}
+  .chapter-tab:last-child{border-right:0}
+  .chapter-tab.is-active{opacity:1;background:rgba(183,71,42,.08)}
+  .chapter-tab b{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+  .chapter-tab span{display:block;font-family:Newsreader,serif;color:#655d52;font-size:17px;line-height:1.34}
+  .notes{width:min(980px,100%);margin:0 auto;padding:104px 24px 124px}
+  .notes h2{font-size:clamp(34px,5vw,68px);line-height:.9;letter-spacing:-.055em;margin-bottom:22px}
+  .notes p{font-family:Newsreader,serif;color:#655d52;font-size:22px;line-height:1.45;max-width:64ch}
+  footer{padding:28px 24px;text-align:center;font-size:12px;color:#7b7162;border-top:1px solid var(--line)}
+  @media(max-width:900px){.chapter-sticky{grid-template-columns:1fr}.mask-frame,.mask-stage{min-height:520px;height:520px}.chapters{grid-template-columns:1fr}.chapter-tab{border-right:0}.rule{grid-template-columns:1fr;gap:6px}}
+  @media(max-width:560px){.hero{padding:54px 18px 64px}h1{font-size:clamp(48px,17vw,74px);line-height:.87}.hero p,.copy-panel p,.notes p{font-size:18px}.chapter-sticky{padding:30px 16px}.mask-frame,.mask-stage{min-height:430px;height:430px}.chapter-label{display:block}.chapter-label strong{font-size:34px}.chapter-label span{display:block;margin-top:10px}.copy-panel h2{font-size:clamp(38px,12vw,52px);line-height:.92}.notes{padding:82px 18px 104px}}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:1ms!important;transition-duration:1ms!important}.chapter-story{min-height:auto}.chapter-sticky{position:relative}.chapter-image{opacity:1!important;clip-path:none}.progress-fill{width:100%!important}}
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="kicker">SVG mask chapter transitions</div>
+    <h1>Reveal each chapter through the product.</h1>
+    <p>A scroll-driven mask works best when it feels like the page is opening a sequence, not just wiping a random photo into view.</p>
+  </div>
+</section>
+
+<section class="chapter-story" id="chapterStory">
+  <div class="chapter-sticky">
+    <div class="mask-frame" aria-label="Masked product chapter sequence">
+      <svg class="mask-stage" viewBox="0 0 900 680" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="maskTitle maskDesc">
+        <title id="maskTitle">Masked chapter image reveal</title>
+        <desc id="maskDesc">Three product chapters are revealed through an expanding SVG circle mask.</desc>
+        <defs><clipPath id="chapterClip"><circle id="maskCircle" cx="450" cy="340" r="0"/></clipPath></defs>
+        <image class="base-image is-active" data-base="0" href="https://picsum.photos/seed/ceramic-product-black/1200/900" x="-60" y="0" width="1020" height="680" preserveAspectRatio="xMidYMid slice"/>
+        <image class="base-image" data-base="1" href="https://picsum.photos/seed/atelier-glass-surface/1200/900" x="-60" y="0" width="1020" height="680" preserveAspectRatio="xMidYMid slice"/>
+        <image class="base-image" data-base="2" href="https://picsum.photos/seed/hotel-garden-lobby/1200/900" x="-60" y="0" width="1020" height="680" preserveAspectRatio="xMidYMid slice"/>
+        <image class="chapter-image is-active" data-image="0" clip-path="url(#chapterClip)" href="https://picsum.photos/seed/ceramic-product-black/1200/900" x="-60" y="0" width="1020" height="680" preserveAspectRatio="xMidYMid slice"/>
+        <image class="chapter-image" data-image="1" clip-path="url(#chapterClip)" href="https://picsum.photos/seed/atelier-glass-surface/1200/900" x="-60" y="0" width="1020" height="680" preserveAspectRatio="xMidYMid slice"/>
+        <image class="chapter-image" data-image="2" clip-path="url(#chapterClip)" href="https://picsum.photos/seed/hotel-garden-lobby/1200/900" x="-60" y="0" width="1020" height="680" preserveAspectRatio="xMidYMid slice"/>
+      </svg>
+      <div class="mask-vignette"></div>
+      <div class="chapter-label">
+        <strong id="chapterTitle">Ceramic body</strong>
+        <span id="chapterText">Open on the material, not a generic hero. The mask gives the product a chapter change.</span>
+      </div>
+    </div>
+    <div class="copy-panel">
+      <div class="chapter-kicker">Best for product or editorial chapters</div>
+      <h2>Use the mask as the page turn.</h2>
+      <p>The shape expands with scroll, swaps the image, and updates the chapter copy. It is useful when each section has a strong visual asset and a real narrative step.</p>
+      <div class="rules">
+        <div class="rule"><b>Good fit</b><span>Product launches, hospitality stories, portfolio cases, editorial sequences.</span></div>
+        <div class="rule"><b>Avoid</b><span>Weak image sets, service pages, or pages where the reveal does not change meaning.</span></div>
+        <div class="rule"><b>Fallback</b><span>Show all chapters as clean stills with no expanding mask.</span></div>
+      </div>
+      <div class="progress" aria-hidden="true"><div id="progressFill" class="progress-fill"></div></div>
+    </div>
+  </div>
+  <div class="chapters" id="chapterTabs">
+    <div class="chapter-tab is-active"><b>Ceramic body</b><span>Start with material and shape.</span></div>
+    <div class="chapter-tab"><b>Light study</b><span>Move into surface and reflection.</span></div>
+    <div class="chapter-tab"><b>Room context</b><span>End with the product in place.</span></div>
+  </div>
+</section>
+
+<section class="notes">
+  <h2>The reusable idea.</h2>
+  <p>This is not just a reveal. It is a way to connect scroll progress, image choice, chapter label, and pacing. The mask should feel like the next chapter is being cut out of the current one.</p>
+</section>
+<footer>Module 32 - SVG Mask Chapters</footer>
+
+<script>
+(function(){
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var circle = document.getElementById('maskCircle');
+  var fill = document.getElementById('progressFill');
+  var images = Array.prototype.slice.call(document.querySelectorAll('.chapter-image'));
+  var bases = Array.prototype.slice.call(document.querySelectorAll('.base-image'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.chapter-tab'));
+  var title = document.getElementById('chapterTitle');
+  var text = document.getElementById('chapterText');
+  var chapters = [
+    ['Ceramic body','Open on the material, not a generic hero. The mask gives the product a chapter change.'],
+    ['Light study','Let the image shift into surface, reflection, and detail as the mask opens again.'],
+    ['Room context','Finish by placing the product in the environment where the customer understands scale.']
+  ];
+  function setProgress(progress){
+    var p = Math.max(0, Math.min(1, progress));
+    var active = Math.min(2, Math.floor(p * 3));
+    var local = (p * 3) - active;
+    var radius = 70 + local * 650;
+    circle.setAttribute('r', radius.toFixed(1));
+    fill.style.width = (p * 100).toFixed(1) + '%';
+    images.forEach(function(img,i){ img.classList.toggle('is-active', i === active); });
+    bases.forEach(function(img,i){ img.classList.toggle('is-active', i === Math.max(0, active - 1)); });
+    tabs.forEach(function(tab,i){ tab.classList.toggle('is-active', i === active); });
+    title.textContent = chapters[active][0];
+    text.textContent = chapters[active][1];
+  }
+  if (reduced) { setProgress(1); return; }
+  gsap.registerPlugin(ScrollTrigger);
+  setProgress(0);
+  ScrollTrigger.create({trigger:'#chapterStory',start:'top top',end:'bottom bottom',scrub:true,onUpdate:function(self){setProgress(self.progress);}});
+})();
+</script>
+</body>
+</html>

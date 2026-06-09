@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll Filter Distortion - Cinematic Module</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  :root{--bg:#10100f;--ink:#f4efe4;--muted:#9d9589;--acid:#d4f36a;--blue:#5eb1bf;--rust:#d96e38;--line:#282621}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:Archivo,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  .hero{min-height:90dvh;display:grid;place-items:center;padding:70px 24px;text-align:center;background:radial-gradient(circle at 50% 32%,rgba(212,243,106,.11),transparent 36%),#10100f}
+  .hero-inner{max-width:920px}
+  .kicker,.readout b,.tag{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+  .kicker{color:var(--acid);margin-bottom:18px}
+  h1{font-size:clamp(54px,9vw,126px);line-height:.82;letter-spacing:-.065em;font-weight:900}
+  .hero p{max-width:60ch;margin:24px auto 0;color:var(--muted);font-size:18px;line-height:1.58}
+  .filter-story{min-height:380vh;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .filter-sticky{position:sticky;top:0;min-height:100dvh;display:grid;grid-template-columns:minmax(0,1.04fr) minmax(330px,.96fr);gap:42px;align-items:center;width:min(1320px,100%);margin:0 auto;padding:48px 28px}
+  .image-shell{position:relative;min-height:650px;border:1px solid #302d27;background:#171612;overflow:hidden;border-radius:10px;box-shadow:0 36px 120px rgba(0,0,0,.36)}
+  .distort-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:url(#liquidDistort);transform:scale(1.06);will-change:transform,filter}
+  .image-shell::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,16,15,.08),rgba(16,16,15,.62));pointer-events:none}
+  .readout{position:absolute;left:22px;right:22px;bottom:22px;z-index:2;display:flex;justify-content:space-between;gap:18px;align-items:end}
+  .readout b{color:var(--acid)}
+  .readout span{max-width:36ch;color:#d8d2c7;font-size:14px;line-height:1.45}
+  .copy h2{font-size:clamp(38px,5.4vw,78px);line-height:.88;letter-spacing:-.055em;margin-bottom:22px}
+  .copy p{color:var(--muted);font-size:18px;line-height:1.6;max-width:52ch}
+  .settings{display:grid;gap:12px;margin-top:30px}
+  .setting{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center}
+  .setting b{font-family:"IBM Plex Mono",monospace;color:var(--acid);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+  .bar{height:5px;background:#282720;border-radius:999px;overflow:hidden}
+  .bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acid),var(--blue),var(--rust))}
+  .use-case{width:min(1080px,100%);margin:0 auto;padding:110px 24px 132px;display:grid;grid-template-columns:.9fr 1fr;gap:52px}
+  .tag{display:inline-flex;color:var(--acid);border:1px solid rgba(212,243,106,.28);border-radius:999px;padding:7px 10px;margin-bottom:22px}
+  .use-case h2{font-size:clamp(34px,5vw,66px);line-height:.92;letter-spacing:-.052em}
+  .use-case p{color:var(--muted);font-size:18px;line-height:1.62}
+  footer{padding:28px 24px;text-align:center;color:#706b60;font-size:12px;border-top:1px solid var(--line)}
+  @media(max-width:900px){.filter-sticky{grid-template-columns:1fr}.image-shell{min-height:520px}.use-case{grid-template-columns:1fr;gap:22px}}
+  @media(max-width:560px){.hero{padding:54px 18px}.hero p,.copy p,.use-case p{font-size:16px}h1{font-size:clamp(48px,17vw,76px);line-height:.86}.filter-sticky{padding:32px 16px}.image-shell{min-height:420px}.readout{display:block}.readout span{display:block;margin-top:10px}.copy h2{font-size:clamp(38px,12vw,54px)}.setting{grid-template-columns:1fr;gap:7px}.use-case{padding:86px 18px 112px}}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:1ms!important;transition-duration:1ms!important}.filter-story{min-height:auto}.filter-sticky{position:relative}.distort-img{filter:none!important;transform:none}.bar span{width:100%!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" aria-hidden="true">
+  <filter id="liquidDistort">
+    <feTurbulence id="turbulence" type="fractalNoise" baseFrequency="0.006 0.012" numOctaves="2" seed="7" result="noise"/>
+    <feDisplacementMap id="displacement" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="kicker">On-scroll SVG filter distortion</div>
+    <h1>Let the image bend before it resolves.</h1>
+    <p>A turbulence filter can make an event, music, or image-led page feel unstable for a moment, then land back on a clear visual.</p>
+  </div>
+</section>
+<section class="filter-story" id="filterStory">
+  <div class="filter-sticky">
+    <div class="image-shell">
+      <img class="distort-img" src="https://picsum.photos/seed/night-stage-lens/1300/1000" alt="Abstract stage-like image used for scroll distortion">
+      <div class="readout"><b id="modeLabel">Build noise</b><span id="modeText">The distortion starts quiet, climbs in the middle, then clears as the section resolves.</span></div>
+    </div>
+    <div class="copy">
+      <div class="kicker">Use with restraint</div>
+      <h2>Distort the transition, not the message.</h2>
+      <p>The effect is useful when a brand can carry tension: music, events, experimental campaigns, editorial intros, and premium image-led launches.</p>
+      <div class="settings">
+        <div class="setting"><b>Displace</b><div class="bar"><span id="scaleBar"></span></div></div>
+        <div class="setting"><b>Frequency</b><div class="bar"><span id="freqBar"></span></div></div>
+        <div class="setting"><b>Clarity</b><div class="bar"><span id="clarityBar"></span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="use-case">
+  <div><div class="tag">Where it belongs</div><h2>A sharp image treatment, not a whole-site gimmick.</h2></div>
+  <p>Use one focused distortion moment on a hero, chapter break, album page, festival lineup, or high-end visual reveal. Keep text readable and give reduced-motion users the clean image.</p>
+</section>
+<footer>Module 33 - Scroll Filter Distortion</footer>
+<script>
+(function(){
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var turbulence = document.getElementById('turbulence');
+  var displacement = document.getElementById('displacement');
+  var scaleBar = document.getElementById('scaleBar');
+  var freqBar = document.getElementById('freqBar');
+  var clarityBar = document.getElementById('clarityBar');
+  var label = document.getElementById('modeLabel');
+  var text = document.getElementById('modeText');
+  function setProgress(progress){
+    var p = Math.max(0, Math.min(1, progress));
+    var pulse = Math.sin(p * Math.PI);
+    var scale = pulse * 54;
+    var freq = 0.006 + pulse * 0.018;
+    displacement.setAttribute('scale', scale.toFixed(1));
+    turbulence.setAttribute('baseFrequency', freq.toFixed(4) + ' ' + (freq * 1.8).toFixed(4));
+    scaleBar.style.width = (pulse * 100).toFixed(1) + '%';
+    freqBar.style.width = (pulse * 100).toFixed(1) + '%';
+    clarityBar.style.width = ((1 - pulse) * 100).toFixed(1) + '%';
+    if (p < .34) { label.textContent = 'Build noise'; text.textContent = 'The visual starts legible, then pressure builds as the section starts moving.'; }
+    else if (p < .72) { label.textContent = 'Peak distortion'; text.textContent = 'The image bends hardest in the middle, where motion has a reason to be felt.'; }
+    else { label.textContent = 'Resolve image'; text.textContent = 'The effect clears before the next message, so the user is not left fighting the image.'; }
+  }
+  if (reduced) { setProgress(1); displacement.setAttribute('scale','0'); return; }
+  gsap.registerPlugin(ScrollTrigger);
+  setProgress(0);
+  ScrollTrigger.create({trigger:'#filterStory',start:'top top',end:'bottom bottom',scrub:true,onUpdate:function(self){setProgress(self.progress);}});
+})();
+</script>
+</body>
+</html>

@@ -48,14 +48,14 @@ URL: https://tympanus.net/codrops/2026/03/11/svg-mask-transitions-on-scroll-with
 Scrape method: Firecrawl
 Candidate pattern: Fullscreen image chapter reveals through SVG masks
 Score: 7/10
-Decision: Backlog
+Decision: Build
 Good for: Product chapter pages, portfolio case studies, hospitality, editorial stories
 Avoid for: Weak image sets, basic local-service pages, content-heavy pages
 Motion risk: Can duplicate existing reveal modules unless the use case is sharper
 Reduced motion fallback: Static images with instant or short opacity transitions
 Dependencies: GSAP, ScrollTrigger, SVG masks
 License/attribution: Source noted for pattern research only
-Why it belongs here: Promising, but needs a more distinct local module concept before build.
+Why it belongs here: Built as `svg-mask-chapters.html`, a product/editorial chapter module where the SVG mask acts as the page turn instead of a generic reveal.
 
 ### 2026-06-09 - On-scroll SVG filter distortion
 
@@ -65,14 +65,14 @@ URL: https://tympanus.net/codrops/2023/07/05/on-scroll-svg-filter-effect/
 Scrape method: Firecrawl
 Candidate pattern: Scroll-linked SVG turbulence mask distortion
 Score: 7/10
-Decision: Backlog
+Decision: Build
 Good for: Experimental brands, event pages, music, premium product imagery, editorial intros
 Avoid for: Trust-heavy service sites and pages where image clarity matters
 Motion risk: Turbulence effects can look cheap or hurt performance if overused
 Reduced motion fallback: Clean clip or opacity reveal with no filter distortion
 Dependencies: GSAP, ScrollTrigger, SVG filters
 License/attribution: Source noted for pattern research only
-Why it belongs here: Distinctive image treatment, but too niche to build before stronger general-purpose modules.
+Why it belongs here: Built as `scroll-filter-distortion.html`, a restrained image-treatment module for event, music, editorial, and high-impact visual intros.
 
 ### 2026-06-09 - Hover motion intro grid
 
@@ -82,14 +82,14 @@ URL: https://tympanus.net/codrops/2024/05/29/hover-motion-intro-animation/
 Scrape method: Firecrawl
 Candidate pattern: Pointer-reactive grid that transitions into a full intro
 Score: 7/10
-Decision: Backlog
+Decision: Build
 Good for: Creative studios, portfolio intros, product campaign pages
 Avoid for: Mobile-first service pages and critical navigation
 Motion risk: Desktop hover dependency and high visual energy
 Reduced motion fallback: Static grid with direct click/tap transition
 Dependencies: GSAP, pointer tracking, image grid
 License/attribution: Source noted for pattern research only
-Why it belongs here: Strong idea, but it needs a careful touch fallback before becoming a local module.
+Why it belongs here: Built as `hover-intro-grid.html`, with a pointer-reactive desktop grid plus tap/focus controls so the pattern works beyond hover-only browsing.
 
 ### 2026-06-09 - WebGL rotating image gallery
 
@@ -99,11 +99,11 @@ URL: https://tympanus.net/codrops/2024/12/03/how-to-create-a-webgl-rotating-imag
 Scrape method: Firecrawl
 Candidate pattern: Shader-based image planes that rotate with scroll
 Score: 6/10
-Decision: Backlog
+Decision: Build
 Good for: High-end galleries, lookbooks, art, architecture, portfolio showcases
 Avoid for: Most client service pages, low-asset pages, performance-sensitive pages
 Motion risk: WebGL setup and mobile performance cost
 Reduced motion fallback: Static or simple horizontal gallery
 Dependencies: OGL or Three.js, GLSL shaders, image preloading
 License/attribution: Source noted for pattern research only
-Why it belongs here: Visually strong, but should wait for a dedicated WebGL pass.
+Why it belongs here: Built as `webgl-rotating-gallery.html`, using raw WebGL texture planes, scroll-controlled rotation, and a static fallback for reduced motion or missing WebGL.

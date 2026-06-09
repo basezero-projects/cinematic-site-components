@@ -1,10 +1,10 @@
 # Cinematic Site Modules
 
-31 cinematic website modules. Each one is a single HTML file. No frameworks. No build step. No npm. Just open it.
+35 cinematic website modules. Each one is a single HTML file. No frameworks. No build step. No npm. Just open it.
 
 ## Preview
 
-Open `index.html` to browse all 31 modules with animated mini-demos, or open any individual module file directly in a browser.
+Open `index.html` to browse all 35 modules with animated mini-demos, or open any individual module file directly in a browser.
 
 ## Curation Rules
 
@@ -21,9 +21,9 @@ cd cinematic-site-components
 
 Then open `index.html` in your browser, or open any module file directly.
 
-## The 31 Modules
+## The 35 Modules
 
-### Scroll-Driven (10)
+### Scroll-Driven (13)
 | # | Module | What It Does |
 |---|---|---|
 | 01 | Text Mask Reveal | Headline fills with colour as you scroll |
@@ -36,11 +36,15 @@ Then open `index.html` in your browser, or open any module file directly.
 | 08 | Split Screen Scroll | Two halves scroll opposite directions |
 | 09 | Scroll Color Shift | Background changes per section |
 | 31 | Service Area Map | Paper route sheet draws across real service towns with example variants for trades, service, and delivery routes |
+| 32 | SVG Mask Chapters | Fullscreen image chapters reveal through an expanding SVG mask |
+| 33 | Scroll Filter Distortion | SVG turbulence bends an image on scroll before resolving cleanly |
+| 35 | WebGL Rotating Gallery | WebGL image planes rotate through a spatial gallery as the page moves |
 
-### Cursor & Hover (8)
+### Cursor & Hover (9)
 | # | Module | What It Does |
 |---|---|---|
 | 10 | Cursor-Reactive | Glow, 3D tilt, magnetic buttons, ripples |
+| 34 | Hover Intro Grid | Pointer-reactive project grid opens into a focused intro panel |
 | 11 | Accordion Slider | Strips expand on hover |
 | 12 | Cursor Image Reveal | Before/after with wipe, spotlight, split |
 | 13 | Hover Image Trail | Cursor leaves fading images behind |

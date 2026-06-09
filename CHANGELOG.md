@@ -1,5 +1,11 @@
 # Cinematic Site Components Changelog
 
+## [0.4.0] - 2026-06-09
+
+### Added
+
+- **Built examples for the remaining scraped animation candidates**: Added four standalone modules from the Firecrawl intake backlog and linked them from `index.html`. Module 32, `svg-mask-chapters.html`, shows fullscreen product/editorial chapters revealed through an expanding SVG mask. Module 33, `scroll-filter-distortion.html`, uses a restrained SVG turbulence displacement filter that bends a high-impact image during scroll and resolves back to clarity. Module 34, `hover-intro-grid.html`, turns a pointer-reactive project grid into a tap-friendly intro panel for portfolio, campaign, and studio sites. Module 35, `webgl-rotating-gallery.html`, renders a rotating WebGL gallery with generated texture planes, scroll-controlled rotation, and a static fallback for reduced motion or missing WebGL.
+
 ## [0.2.3] - 2026-06-09
 
 ### Added
