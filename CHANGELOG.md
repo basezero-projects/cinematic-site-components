@@ -1,5 +1,11 @@
 # Cinematic Site Components Changelog
 
+## [0.2.1] - 2026-06-09
+
+### Changed
+
+- **Service Area Map example sharpened into a dispatch board**: Reworked `service-area-map.html` from a generic service-radius sketch into a RidgeLine mobile glass dispatch board for Denver metro visitors. The module now shows a branded live route panel, neighborhood and road labels, five numbered service stops, job-ticket copy, ETAs, response metrics, and concrete cards for Wadsworth dispatch, I-70 fleet work, Aurora calibration, Lakewood repair, and a DTC quote window. Mobile typography was tightened so the large explanatory headline and use-case section keep readable line breaks on narrow screens.
+
 ## [0.2.0] - 2026-06-09
 
 ### Added

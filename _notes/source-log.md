@@ -29,16 +29,16 @@ Date: 2026-06-09
 Source: Codrops, GSAP docs
 URL: https://tympanus.net/codrops/2026/05/21/creating-scroll-driven-svg-map-animations-with-gsap/ and https://gsap.com/docs/v3/Plugins/ScrollTrigger/
 Scrape method: Firecrawl
-Candidate pattern: Scroll-driven SVG map route with marker and synced copy
+Candidate pattern: Scroll-driven SVG map route with marker, synced copy, and job-ticket state
 Score: 9/10
 Decision: Build
-Good for: Local service areas, delivery routes, franchise coverage, tourism paths, event recaps, logistics pages
+Good for: Local service areas, mobile dispatch stories, delivery routes, franchise coverage, tourism paths, event recaps, logistics pages
 Avoid for: Dense content pages, sites with no geographic/service-area story, pages where geographic accuracy cannot be verified
 Motion risk: Scroll-linked map movement can become hard to read if too many regions animate at once
 Reduced motion fallback: Show full route, final pin position, all step cards, and full progress meter
 Dependencies: GSAP and ScrollTrigger CDN, matching existing repo pattern
 License/attribution: Original local implementation inspired by public pattern research; no source code copied
-Why it belongs here: It is cinematic and useful. It turns service coverage into proof instead of decoration.
+Why it belongs here: It is cinematic and useful. The built module uses a concrete RidgeLine mobile glass dispatch board so service coverage becomes operational proof instead of decoration.
 
 ### 2026-06-09 - SVG mask chapter transitions
 

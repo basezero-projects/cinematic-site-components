@@ -4,7 +4,7 @@
 
 ## Preview
 
-Open `index.html` to browse all 30 modules with animated mini-demos, or open any individual module file directly in a browser.
+Open `index.html` to browse all 31 modules with animated mini-demos, or open any individual module file directly in a browser.
 
 ## Curation Rules
 
@@ -35,7 +35,7 @@ Then open `index.html` in your browser, or open any module file directly.
 | 07 | Curtain Reveal | Hero splits open like curtains |
 | 08 | Split Screen Scroll | Two halves scroll opposite directions |
 | 09 | Scroll Color Shift | Background changes per section |
-| 31 | Service Area Map | Route draws across a stylized coverage map as section copy updates |
+| 31 | Service Area Map | Dispatch route draws across a local-service map as job cards, ETAs, and proof points update |
 
 ### Cursor & Hover (8)
 | # | Module | What It Does |

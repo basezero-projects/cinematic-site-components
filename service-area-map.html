@@ -3,86 +3,455 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Service Area Map - Cinematic Module</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Service Dispatch Map - Cinematic Module</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
   :root{
-    --bg:#08090a;
-    --panel:#101214;
-    --panel-2:#15181b;
-    --text:#f1eee8;
-    --muted:#8a8177;
-    --line:#2a2f34;
-    --road:#353b42;
-    --accent:#e8793a;
-    --accent-2:#5eadb5;
-    --green:#74a674;
+    --bg:#070806;
+    --ink:#f3efe6;
+    --muted:#9b9184;
+    --dim:#6e665d;
+    --panel:#10120f;
+    --panel-2:#151813;
+    --line:#252a22;
+    --line-2:#31382f;
+    --route:#f17935;
+    --route-2:#ffd08a;
+    --cyan:#7bd6d3;
+    --green:#87b978;
+    --red:#df6d5f;
+    --shadow:0 36px 120px rgba(0,0,0,.36);
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  .hero{min-height:100dvh;display:grid;place-items:center;padding:48px 24px;text-align:center}
-  .hero-inner{max-width:780px}
-  .kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
-  h1{font-size:clamp(40px,8vw,92px);font-weight:750;line-height:.95;letter-spacing:-.04em}
-  h1 span{color:var(--accent)}
-  .hero p{max-width:58ch;margin:22px auto 0;color:var(--muted);font-size:18px;line-height:1.6}
-  .scroll-hint{margin-top:34px;font-size:12px;color:#625b54;letter-spacing:.12em;text-transform:uppercase}
 
-  .map-story{position:relative;min-height:380vh;border-top:1px solid #171a1d;border-bottom:1px solid #171a1d}
-  .map-sticky{position:sticky;top:0;min-height:100dvh;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:48px;align-items:center;max-width:1240px;margin:0 auto;padding:72px 28px}
-  .map-shell{position:relative;border:1px solid #1d2226;background:linear-gradient(145deg,#0d1012,#111519);border-radius:22px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.28)}
-  .map-shell::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(94,173,181,.16),transparent 34%),radial-gradient(circle at 72% 64%,rgba(232,121,58,.14),transparent 32%);pointer-events:none}
-  .map-topbar{position:absolute;left:18px;right:18px;top:18px;z-index:2;display:flex;align-items:center;gap:10px;color:rgba(241,238,232,.72);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
-  .pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(116,166,116,.6);animation:pulse 2s ease-out infinite}
-  @keyframes pulse{to{box-shadow:0 0 0 14px rgba(116,166,116,0)}}
-  .map-svg{display:block;width:100%;height:auto;min-height:520px}
-  .land{fill:#101417}
-  .neighborhood{fill:#151a1f;stroke:#22282d;stroke-width:1}
-  .road{fill:none;stroke:var(--road);stroke-width:2;stroke-linecap:round;stroke-dasharray:2 10;opacity:.75}
-  .route-bg{fill:none;stroke:#2a211b;stroke-width:16;stroke-linecap:round;stroke-linejoin:round;opacity:.88}
-  .route{fill:none;stroke:url(#routeGradient);stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
-  .area-ring{fill:none;stroke:rgba(94,173,181,.16);stroke-width:2;stroke-dasharray:10 14}
-  .area-fill{fill:rgba(94,173,181,.055)}
-  .label{font-size:14px;fill:#8a8177;font-weight:600;letter-spacing:.02em}
-  .pin-core{fill:var(--accent)}
-  .pin-halo{fill:rgba(232,121,58,.2);transform-origin:center;animation:pinHalo 1.8s ease-out infinite}
-  @keyframes pinHalo{to{transform:scale(2.1);opacity:0}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    min-height:100%;
+    background:
+      radial-gradient(circle at 76% 12%,rgba(123,214,211,.08),transparent 34%),
+      radial-gradient(circle at 20% 18%,rgba(241,121,53,.1),transparent 30%),
+      linear-gradient(180deg,#070806 0%,#090a08 56%,#070806 100%);
+    color:var(--ink);
+    font-family:"Instrument Sans",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  .hero{
+    min-height:92dvh;
+    display:grid;
+    place-items:center;
+    padding:80px 24px 52px;
+    text-align:center;
+  }
+  .hero-inner{max-width:920px}
+  .kicker,.eyebrow,.map-chip,.route-code,.dispatch-meta,.caption,.metric-label{
+    font-family:"JetBrains Mono",monospace;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+  }
+  .kicker{font-size:12px;color:var(--cyan);margin-bottom:18px}
+  h1{
+    font-size:clamp(42px,7.5vw,104px);
+    line-height:.9;
+    letter-spacing:-.065em;
+    font-weight:800;
+  }
+  h1 span{color:var(--route)}
+  .hero p{
+    max-width:62ch;
+    margin:24px auto 0;
+    color:var(--muted);
+    font-size:18px;
+    line-height:1.65;
+  }
+  .hero-proof{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    margin-top:32px;
+  }
+  .hero-proof span{
+    border:1px solid rgba(123,214,211,.22);
+    color:#c9d8d3;
+    background:rgba(123,214,211,.055);
+    border-radius:999px;
+    padding:9px 12px;
+    font-size:12px;
+  }
+
+  .dispatch-story{
+    position:relative;
+    min-height:420vh;
+    border-top:1px solid rgba(255,255,255,.06);
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .dispatch-sticky{
+    position:sticky;
+    top:0;
+    min-height:100dvh;
+    display:grid;
+    grid-template-columns:minmax(0,1.16fr) minmax(340px,.84fr);
+    gap:42px;
+    align-items:center;
+    max-width:1330px;
+    margin:0 auto;
+    padding:58px 28px;
+  }
+
+  .map-shell{
+    position:relative;
+    overflow:hidden;
+    min-height:660px;
+    border:1px solid rgba(255,255,255,.075);
+    border-radius:28px;
+    background:
+      linear-gradient(145deg,rgba(16,18,15,.96),rgba(12,14,12,.98)),
+      radial-gradient(circle at 50% 30%,rgba(123,214,211,.12),transparent 42%);
+    box-shadow:var(--shadow);
+  }
+  .map-shell::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(rgba(255,255,255,.026) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.026) 1px,transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(circle at center,black 0%,black 58%,transparent 86%);
+  }
+  .map-shell::after{
+    content:"";
+    position:absolute;
+    inset:-1px;
+    pointer-events:none;
+    background:linear-gradient(180deg,transparent 0%,rgba(7,8,6,.28) 72%,rgba(7,8,6,.82) 100%);
+  }
+  .map-top{
+    position:absolute;
+    z-index:3;
+    top:20px;
+    left:20px;
+    right:20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .map-chip{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:11px;
+    color:#d5d0c8;
+    border:1px solid rgba(255,255,255,.09);
+    background:rgba(7,8,6,.52);
+    backdrop-filter:blur(12px);
+    border-radius:999px;
+    padding:9px 12px;
+  }
+  .live-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 0 0 rgba(135,185,120,.62);
+    animation:pulse 1.8s ease-out infinite;
+  }
+  @keyframes pulse{to{box-shadow:0 0 0 14px rgba(135,185,120,0)}}
+  .map-chip.alt{color:var(--cyan)}
+
+  .map-svg{
+    position:relative;
+    z-index:1;
+    width:100%;
+    height:auto;
+    min-height:660px;
+    display:block;
+  }
+  .county{fill:rgba(123,214,211,.045);stroke:rgba(123,214,211,.18);stroke-width:1.5;stroke-dasharray:12 14}
+  .zone{fill:rgba(255,255,255,.025);stroke:rgba(255,255,255,.075);stroke-width:1}
+  .artery{fill:none;stroke:#3c443c;stroke-width:8;stroke-linecap:round;opacity:.68}
+  .artery-thin{fill:none;stroke:#31382f;stroke-width:3;stroke-linecap:round;stroke-dasharray:2 13;opacity:.78}
+  .map-label{
+    fill:#aaa093;
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:.01em;
+  }
+  .road-label{
+    fill:#695f54;
+    font-size:11px;
+    font-family:"JetBrains Mono",monospace;
+    letter-spacing:.08em;
+  }
+  .route-shadow{
+    fill:none;
+    stroke:rgba(71,35,16,.96);
+    stroke-width:21;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    opacity:.82;
+  }
+  .route{
+    fill:none;
+    stroke:url(#routeGradient);
+    stroke-width:7;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .route-pulse{
+    fill:none;
+    stroke:rgba(255,208,138,.2);
+    stroke-width:19;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .stop{opacity:.35;transition:opacity 180ms ease}
+  .stop circle{fill:#171b17;stroke:#485044;stroke-width:2}
+  .stop text{fill:#8c8377;font-size:11px;font-weight:800;font-family:"JetBrains Mono",monospace;text-anchor:middle;dominant-baseline:central}
+  .stop.is-active{opacity:1}
+  .stop.is-active circle{fill:#f17935;stroke:#ffd08a}
+  .pin-core{fill:var(--route)}
+  .pin-ring{fill:rgba(241,121,53,.18);animation:pinRing 1.7s ease-out infinite}
+  @keyframes pinRing{to{transform:scale(2.2);opacity:0}}
+
+  .dispatch-card{
+    position:absolute;
+    z-index:4;
+    left:24px;
+    bottom:24px;
+    width:min(380px,calc(100% - 48px));
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    background:rgba(9,10,8,.76);
+    backdrop-filter:blur(18px);
+    padding:18px;
+    box-shadow:0 18px 70px rgba(0,0,0,.34);
+  }
+  .dispatch-meta{
+    display:flex;
+    justify-content:space-between;
+    color:var(--dim);
+    font-size:10px;
+    margin-bottom:12px;
+  }
+  .dispatch-card strong{
+    display:block;
+    font-size:20px;
+    letter-spacing:-.025em;
+    margin-bottom:7px;
+  }
+  .dispatch-card p{
+    color:var(--muted);
+    line-height:1.45;
+    font-size:14px;
+  }
 
   .copy-panel{align-self:center}
-  .copy-panel .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--accent-2);margin-bottom:14px}
-  .copy-panel h2{font-size:clamp(30px,4.5vw,56px);line-height:1;letter-spacing:-.035em;margin-bottom:18px}
-  .copy-panel p{color:var(--muted);font-size:17px;line-height:1.65;max-width:42ch}
-  .steps{display:grid;gap:12px;margin-top:30px}
-  .step{border:1px solid #20262b;background:rgba(16,18,20,.72);border-radius:14px;padding:15px 16px;opacity:.46;transform:translateX(0);transition:opacity 180ms ease,background 180ms ease,border-color 180ms ease,transform 180ms cubic-bezier(.23,1,.32,1)}
-  .step.is-active{opacity:1;border-color:rgba(232,121,58,.55);background:rgba(232,121,58,.08);transform:translateX(-6px)}
-  .step strong{display:block;font-size:15px;margin-bottom:4px}
-  .step span{display:block;color:#81786f;font-size:13px;line-height:1.4}
-  .meter{margin-top:28px;height:3px;background:#1a1f23;border-radius:99px;overflow:hidden}
-  .meter-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:inherit}
+  .eyebrow{font-size:12px;color:var(--cyan);margin-bottom:14px}
+  .copy-panel h2{
+    font-size:clamp(32px,4.7vw,62px);
+    line-height:.94;
+    letter-spacing:-.055em;
+    font-weight:800;
+    margin-bottom:18px;
+  }
+  .copy-panel p{
+    color:var(--muted);
+    font-size:17px;
+    line-height:1.65;
+    max-width:44ch;
+  }
+  .metrics{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:28px 0 24px;
+  }
+  .metric{
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.025);
+    border-radius:14px;
+    padding:13px 12px;
+  }
+  .metric-value{
+    display:block;
+    color:var(--ink);
+    font-size:22px;
+    font-weight:800;
+    letter-spacing:-.03em;
+    line-height:1;
+  }
+  .metric-label{
+    display:block;
+    color:var(--dim);
+    font-size:9px;
+    margin-top:8px;
+  }
+  .steps{
+    display:grid;
+    gap:10px;
+    margin-top:22px;
+  }
+  .step{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:start;
+    gap:13px;
+    border:1px solid rgba(255,255,255,.075);
+    background:rgba(255,255,255,.018);
+    border-radius:16px;
+    padding:14px;
+    opacity:.45;
+    transition:
+      opacity 180ms ease,
+      background 180ms ease,
+      border-color 180ms ease,
+      transform 180ms cubic-bezier(.23,1,.32,1);
+  }
+  .step.is-active{
+    opacity:1;
+    border-color:rgba(241,121,53,.58);
+    background:linear-gradient(135deg,rgba(241,121,53,.13),rgba(123,214,211,.035));
+    transform:translateX(-7px);
+  }
+  .step-index{
+    display:grid;
+    place-items:center;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    color:#16100b;
+    background:#7c756e;
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;
+    font-weight:700;
+  }
+  .step.is-active .step-index{background:var(--route)}
+  .step strong{display:block;font-size:15px;line-height:1.15;margin-bottom:5px}
+  .step span{display:block;color:#8c8377;font-size:13px;line-height:1.38}
+  .eta{
+    color:var(--cyan);
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;
+    white-space:nowrap;
+    padding-top:3px;
+  }
+  .meter{
+    margin-top:24px;
+    height:4px;
+    background:#1b201c;
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .meter-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--route),var(--route-2),var(--cyan));
+    border-radius:inherit;
+  }
 
-  .use-case{max-width:940px;margin:0 auto;padding:120px 24px;text-align:center}
-  .use-case .tag{display:inline-flex;border:1px solid rgba(232,121,58,.25);color:var(--accent);font-size:11px;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;padding:5px 12px;margin-bottom:22px}
-  .use-case h2{font-size:clamp(28px,4vw,48px);letter-spacing:-.03em;line-height:1.08;margin-bottom:16px}
-  .use-case p{color:var(--muted);font-size:18px;line-height:1.65;max-width:64ch;margin:0 auto}
-  footer{padding:28px 24px;text-align:center;color:#5f5750;font-size:12px;border-top:1px solid #171a1d}
+  .use-case{
+    max-width:1060px;
+    margin:0 auto;
+    padding:124px 24px 132px;
+  }
+  .use-grid{
+    display:grid;
+    grid-template-columns:minmax(0,.85fr) minmax(320px,1fr);
+    gap:48px;
+    align-items:start;
+  }
+  .tag{
+    display:inline-flex;
+    border:1px solid rgba(241,121,53,.25);
+    color:var(--route);
+    font-family:"JetBrains Mono",monospace;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    border-radius:999px;
+    padding:6px 12px;
+    margin-bottom:22px;
+  }
+  .use-case h2{
+    font-size:clamp(31px,4vw,54px);
+    line-height:.98;
+    letter-spacing:-.045em;
+    font-weight:800;
+  }
+  .use-case p{
+    color:var(--muted);
+    font-size:18px;
+    line-height:1.68;
+  }
+  .caption{
+    color:var(--dim);
+    font-size:11px;
+    margin-top:18px;
+  }
+  footer{
+    padding:28px 24px;
+    text-align:center;
+    color:#5f5750;
+    font-size:12px;
+    border-top:1px solid rgba(255,255,255,.06);
+  }
 
-  @media(max-width:860px){
-    .map-story{min-height:320vh}
-    .map-sticky{grid-template-columns:1fr;gap:24px;padding:56px 18px}
-    .map-svg{min-height:360px}
-    .copy-panel{text-align:left}
-    .step.is-active{transform:translateX(0)}
+  @media(max-width:980px){
+    .dispatch-story{min-height:360vh}
+    .dispatch-sticky{grid-template-columns:1fr;gap:28px;padding:50px 18px}
+    .map-shell{min-height:auto}
+    .map-svg{min-height:480px}
+    .copy-panel{max-width:650px}
+    .step.is-active{transform:none}
+    .use-grid{grid-template-columns:1fr;gap:24px}
+  }
+
+  @media(max-width:560px){
+    .hero{min-height:86dvh;padding-top:64px}
+    h1{
+      font-size:clamp(42px,16vw,68px);
+      line-height:.96;
+      letter-spacing:-.035em;
+    }
+    .hero p{font-size:16px;line-height:1.6}
+    .hero-proof{justify-content:flex-start}
+    .dispatch-sticky{padding-inline:16px}
+    .map-top{position:relative;top:auto;left:auto;right:auto;padding:14px 14px 0;flex-wrap:wrap;justify-content:flex-start}
+    .map-shell{border-radius:22px}
+    .map-svg{min-height:360px;margin-top:-14px}
+    .dispatch-card{position:relative;left:auto;bottom:auto;width:auto;margin:0 14px 14px}
+    .dispatch-card strong{font-size:18px;line-height:1.15}
+    .copy-panel h2{
+      font-size:clamp(34px,11vw,44px);
+      line-height:1.04;
+      letter-spacing:-.032em;
+    }
+    .copy-panel p,.use-case p{font-size:16px;line-height:1.62}
+    .metrics{grid-template-columns:1fr}
+    .step{grid-template-columns:auto 1fr}
+    .eta{grid-column:2}
+    .map-chip{font-size:10px}
+    .use-case{padding:92px 18px 112px}
+    .use-case h2{
+      font-size:clamp(32px,10vw,42px);
+      line-height:1.04;
+      letter-spacing:-.03em;
+    }
   }
 
   @media(prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     *,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}
-    .map-story{min-height:auto}
-    .map-sticky{position:relative;min-height:auto}
-    .route{stroke-dashoffset:0!important}
+    .dispatch-story{min-height:auto}
+    .dispatch-sticky{position:relative;min-height:auto}
+    .route,.route-pulse{stroke-dashoffset:0!important}
     .meter-fill{width:100%!important}
     .step{opacity:1}
   }
@@ -91,25 +460,33 @@
 <body>
 <section class="hero">
   <div class="hero-inner">
-    <div class="kicker">Module 31 - Service Area Map</div>
-    <h1>Turn coverage into a <span>scroll story</span></h1>
-    <p>A cinematic map pattern for local businesses, delivery zones, franchise pages, event routes, and service-area proof. The route draws with the scroll while the story explains each region.</p>
-    <div class="scroll-hint">Scroll the route</div>
+    <div class="kicker">Module 31 - Service Dispatch Map</div>
+    <h1>Prove the crew is already <span>nearby.</span></h1>
+    <p>A scroll-driven dispatch map for mobile service businesses. Instead of a dead list of cities, the section shows live-looking coverage, ETA logic, job types, and the exact route from first call to booked appointment.</p>
+    <div class="hero-proof">
+      <span>Mobile glass</span>
+      <span>HVAC routes</span>
+      <span>Fleet service</span>
+      <span>Emergency repair</span>
+    </div>
   </div>
 </section>
 
-<section class="map-story" id="mapStory">
-  <div class="map-sticky">
-    <div class="map-shell" aria-label="Animated service area map">
-      <div class="map-topbar"><span class="pulse-dot"></span><span>Live coverage route</span></div>
-      <svg class="map-svg" viewBox="0 0 760 620" role="img" aria-labelledby="mapTitle mapDesc">
-        <title id="mapTitle">Service area route map</title>
-        <desc id="mapDesc">A stylized service map with a route drawing between neighborhood zones.</desc>
+<section class="dispatch-story" id="dispatchStory">
+  <div class="dispatch-sticky">
+    <div class="map-shell" aria-label="Animated Denver mobile service dispatch map">
+      <div class="map-top">
+        <div class="map-chip"><span class="live-dot"></span><span>RidgeLine mobile glass</span></div>
+        <div class="map-chip alt">Denver dispatch board</div>
+      </div>
+      <svg class="map-svg" viewBox="0 0 820 680" role="img" aria-labelledby="mapTitle mapDesc">
+        <title id="mapTitle">Denver mobile service dispatch route</title>
+        <desc id="mapDesc">A stylized Denver metro dispatch map with service stops, highways, and an animated route.</desc>
         <defs>
           <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#e8793a"/>
-            <stop offset="54%" stop-color="#f1b264"/>
-            <stop offset="100%" stop-color="#5eadb5"/>
+            <stop offset="0%" stop-color="#f17935"/>
+            <stop offset="54%" stop-color="#ffd08a"/>
+            <stop offset="100%" stop-color="#7bd6d3"/>
           </linearGradient>
           <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
             <feGaussianBlur stdDeviation="5" result="blur"/>
@@ -119,43 +496,91 @@
             </feMerge>
           </filter>
         </defs>
-        <rect class="land" width="760" height="620" rx="0"/>
-        <path class="area-fill" d="M148 146 C242 62 416 70 514 118 C634 177 657 315 604 425 C545 548 384 572 255 526 C113 476 55 251 148 146Z"/>
-        <path class="area-ring" d="M148 146 C242 62 416 70 514 118 C634 177 657 315 604 425 C545 548 384 572 255 526 C113 476 55 251 148 146Z"/>
-        <path class="neighborhood" d="M120 130h188v118H120z"/>
-        <path class="neighborhood" d="M326 96h214v136H326z"/>
-        <path class="neighborhood" d="M92 280h198v148H92z"/>
-        <path class="neighborhood" d="M322 274h288v164H322z"/>
-        <path class="neighborhood" d="M208 462h316v94H208z"/>
-        <path class="road" d="M90 212 C240 196 360 210 656 176"/>
-        <path class="road" d="M80 360 C230 312 406 350 650 306"/>
-        <path class="road" d="M160 96 C206 214 204 410 248 560"/>
-        <path class="road" d="M492 82 C458 226 490 382 552 542"/>
-        <path class="route-bg" d="M174 198 C248 126 402 130 478 178 C559 229 562 316 493 350 C419 386 303 328 238 386 C174 444 260 519 404 505 C503 496 570 448 612 386"/>
-        <path id="routePath" class="route" filter="url(#softGlow)" d="M174 198 C248 126 402 130 478 178 C559 229 562 316 493 350 C419 386 303 328 238 386 C174 444 260 519 404 505 C503 496 570 448 612 386"/>
-        <text class="label" x="146" y="178">North</text>
-        <text class="label" x="385" y="154">Commerce</text>
-        <text class="label" x="140" y="336">Core</text>
-        <text class="label" x="418" y="334">East</text>
-        <text class="label" x="325" y="516">South</text>
+
+        <rect width="820" height="680" fill="#10120f"/>
+        <path class="county" d="M132 130 C250 52 453 58 592 126 C730 194 752 359 678 490 C604 622 408 646 250 579 C91 512 35 255 132 130Z"/>
+        <path class="zone" d="M110 138h220v138H110z"/>
+        <path class="zone" d="M357 104h238v150H357z"/>
+        <path class="zone" d="M80 310h240v162H80z"/>
+        <path class="zone" d="M356 300h334v174H356z"/>
+        <path class="zone" d="M216 502h410v98H216z"/>
+
+        <path class="artery" d="M86 255 C229 248 388 240 721 201"/>
+        <path class="artery" d="M103 410 C284 348 462 398 725 348"/>
+        <path class="artery" d="M275 88 C315 240 301 438 335 622"/>
+        <path class="artery" d="M548 86 C510 246 544 428 613 616"/>
+        <path class="artery-thin" d="M150 170 C306 172 502 170 646 154"/>
+        <path class="artery-thin" d="M140 535 C300 507 488 544 678 494"/>
+        <path class="artery-thin" d="M425 122 C425 240 450 458 438 588"/>
+
+        <text class="road-label" x="647" y="193">I-70</text>
+        <text class="road-label" x="309" y="622">I-25</text>
+        <text class="road-label" x="623" y="606">E-470</text>
+        <text class="map-label" x="148" y="218">Wheat Ridge</text>
+        <text class="map-label" x="422" y="180">Commerce City</text>
+        <text class="map-label" x="129" y="393">Lakewood</text>
+        <text class="map-label" x="515" y="390">Aurora</text>
+        <text class="map-label" x="362" y="564">DTC</text>
+
+        <path class="route-shadow" d="M222 238 C308 155 454 162 537 215 C628 273 620 359 530 390 C436 423 318 363 246 432 C172 502 282 574 450 558 C576 546 648 492 684 425"/>
+        <path id="routePulse" class="route-pulse" d="M222 238 C308 155 454 162 537 215 C628 273 620 359 530 390 C436 423 318 363 246 432 C172 502 282 574 450 558 C576 546 648 492 684 425"/>
+        <path id="routePath" class="route" filter="url(#softGlow)" d="M222 238 C308 155 454 162 537 215 C628 273 620 359 530 390 C436 423 318 363 246 432 C172 502 282 574 450 558 C576 546 648 492 684 425"/>
+
+        <g class="stop is-active" data-stop="0" transform="translate(222 238)"><circle r="15"/><text>01</text></g>
+        <g class="stop" data-stop="1" transform="translate(440 179)"><circle r="15"/><text>02</text></g>
+        <g class="stop" data-stop="2" transform="translate(530 390)"><circle r="15"/><text>03</text></g>
+        <g class="stop" data-stop="3" transform="translate(290 468)"><circle r="15"/><text>04</text></g>
+        <g class="stop" data-stop="4" transform="translate(684 425)"><circle r="15"/><text>05</text></g>
+
         <g id="mapPin" class="map-pin">
-          <circle class="pin-halo" r="16"/>
+          <circle class="pin-ring" r="17"/>
           <circle class="pin-core" r="7"/>
-          <path d="M0 13 L6 26 L0 22 L-6 26 Z" fill="#e8793a"/>
+          <path d="M0 12 L6 25 L0 21 L-6 25 Z" fill="#f17935"/>
         </g>
       </svg>
+
+      <div class="dispatch-card">
+        <div class="dispatch-meta"><span id="ticketTime">07:42 MDT</span><span id="ticketCode">JOB RG-1842</span></div>
+        <strong id="ticketTitle">Warehouse dispatch, west bay</strong>
+        <p id="ticketBody">Two mobile techs leave the Wadsworth shop with OEM glass, calibration rig, and a locked route window.</p>
+      </div>
     </div>
 
     <div class="copy-panel">
-      <div class="eyebrow">Local proof module</div>
-      <h2>Make the service radius feel real.</h2>
-      <p>Instead of listing cities in a flat paragraph, use scroll progress to show where the business goes, what happens in each zone, and why that area matters.</p>
+      <div class="eyebrow">Service proof module</div>
+      <h2>Show coverage like an operations team would.</h2>
+      <p>The map is not decoration. It gives the visitor a reason to believe the business serves their area today: route, ETA, job type, and proof points all move together.</p>
+      <div class="metrics">
+        <div class="metric"><span class="metric-value">42m</span><span class="metric-label">avg response</span></div>
+        <div class="metric"><span class="metric-value">18mi</span><span class="metric-label">route span</span></div>
+        <div class="metric"><span class="metric-value">5</span><span class="metric-label">live stops</span></div>
+      </div>
       <div class="steps" id="steps">
-        <div class="step is-active"><strong>Dispatch starts central</strong><span>Anchor the route from the shop, office, or primary service hub.</span></div>
-        <div class="step"><strong>North corridor</strong><span>Show fast coverage for nearby neighborhoods and same-day calls.</span></div>
-        <div class="step"><strong>Core service area</strong><span>Use the middle stretch for trust signals, response times, or review volume.</span></div>
-        <div class="step"><strong>Outer coverage</strong><span>Prove the business reaches suburbs, job sites, or delivery zones.</span></div>
-        <div class="step"><strong>Booked and routed</strong><span>End on a concrete action: schedule, quote, call, or check availability.</span></div>
+        <div class="step is-active" data-title="Warehouse dispatch, west bay" data-time="07:42 MDT" data-code="JOB RG-1842" data-body="Two mobile techs leave the Wadsworth shop with OEM glass, calibration rig, and a locked route window.">
+          <span class="step-index">01</span>
+          <div><strong>Wadsworth dispatch</strong><span>Inventory is already loaded before the first appointment window opens.</span></div>
+          <span class="eta">0 min</span>
+        </div>
+        <div class="step" data-title="Commercial van, I-70 corridor" data-time="08:18 MDT" data-code="JOB RG-1849" data-body="A fleet van gets a driver-side glass replacement near the I-70 commercial corridor without returning to the shop.">
+          <span class="step-index">02</span>
+          <div><strong>I-70 fleet stop</strong><span>Useful for logistics, delivery fleets, and shops that need proof of corridor coverage.</span></div>
+          <span class="eta">24 min</span>
+        </div>
+        <div class="step" data-title="ADAS calibration, Aurora lane" data-time="09:05 MDT" data-code="JOB RG-1856" data-body="The route crosses east for a windshield install with portable calibration, framed as a premium same-day service.">
+          <span class="step-index">03</span>
+          <div><strong>Aurora calibration</strong><span>Show the high-value work, not just the city name.</span></div>
+          <span class="eta">41 min</span>
+        </div>
+        <div class="step" data-title="Residential repair, Lakewood" data-time="10:12 MDT" data-code="JOB RG-1863" data-body="A chip repair is slotted between bigger jobs, proving the schedule has range without looking chaotic.">
+          <span class="step-index">04</span>
+          <div><strong>Lakewood quick repair</strong><span>Small-ticket work gets a believable place in the route.</span></div>
+          <span class="eta">55 min</span>
+        </div>
+        <div class="step" data-title="Booked quote, DTC perimeter" data-time="11:30 MDT" data-code="JOB RG-1870" data-body="The last stop turns the animation into an action: request a quote, check the next route, or book a window.">
+          <span class="step-index">05</span>
+          <div><strong>DTC quote window</strong><span>End with the conversion moment instead of a decorative finish.</span></div>
+          <span class="eta">78 min</span>
+        </div>
       </div>
       <div class="meter" aria-hidden="true"><div class="meter-fill" id="meterFill"></div></div>
     </div>
@@ -163,41 +588,67 @@
 </section>
 
 <section class="use-case">
-  <div class="tag">Why it belongs</div>
-  <h2>A cinematic effect with a real business job.</h2>
-  <p>This pattern works for trades, auto shops, delivery companies, field services, tourism routes, event recaps, and franchise pages. It gives visitors a spatial reason to trust the business without adding a distracting visual toy.</p>
+  <div class="use-grid">
+    <div>
+      <div class="tag">Why it belongs</div>
+      <h2>A cinematic map that can sell something.</h2>
+    </div>
+    <div>
+      <p>Most service-area sections are dead text: "serving Denver, Aurora, Lakewood..." This module turns that claim into an operational story. Swap the labels, stops, and job cards for HVAC, auto repair, security installs, courier routes, catering, event production, or franchise coverage.</p>
+      <div class="caption">Quality gate note: built because it has storytelling, hierarchy, spatial clarity, proof, and direct reuse across SYVR local-service sites.</div>
+    </div>
+  </div>
 </section>
 
-<footer>Cinematic Module - Service Area Map</footer>
+<footer>Cinematic Module - Service Dispatch Map</footer>
 
 <script>
 (function(){
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var route = document.getElementById('routePath');
+  var routePulse = document.getElementById('routePulse');
   var pin = document.getElementById('mapPin');
   var meter = document.getElementById('meterFill');
   var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var stops = Array.prototype.slice.call(document.querySelectorAll('.stop'));
+  var ticketTitle = document.getElementById('ticketTitle');
+  var ticketBody = document.getElementById('ticketBody');
+  var ticketTime = document.getElementById('ticketTime');
+  var ticketCode = document.getElementById('ticketCode');
   var length = route.getTotalLength();
 
   route.style.strokeDasharray = length;
   route.style.strokeDashoffset = length;
+  routePulse.style.strokeDasharray = length;
+  routePulse.style.strokeDashoffset = length;
 
   function setProgress(progress){
     var clamped = Math.max(0, Math.min(1, progress));
     var point = route.getPointAtLength(length * clamped);
     route.style.strokeDashoffset = length * (1 - clamped);
-    pin.setAttribute('transform', 'translate(' + point.x + ' ' + point.y + ')');
+    routePulse.style.strokeDashoffset = length * (1 - clamped);
+    pin.setAttribute('transform','translate(' + point.x + ' ' + point.y + ')');
     meter.style.width = (clamped * 100).toFixed(1) + '%';
 
     var active = Math.min(steps.length - 1, Math.floor(clamped * steps.length));
-    steps.forEach(function(step, index){
-      step.classList.toggle('is-active', index === active);
+    steps.forEach(function(step,index){
+      step.classList.toggle('is-active',index === active);
     });
+    stops.forEach(function(stop,index){
+      stop.classList.toggle('is-active',index <= active);
+    });
+
+    var activeStep = steps[active];
+    ticketTitle.textContent = activeStep.dataset.title;
+    ticketBody.textContent = activeStep.dataset.body;
+    ticketTime.textContent = activeStep.dataset.time;
+    ticketCode.textContent = activeStep.dataset.code;
   }
 
   if (reduced) {
     setProgress(1);
     steps.forEach(function(step){ step.classList.add('is-active'); });
+    stops.forEach(function(stop){ stop.classList.add('is-active'); });
     return;
   }
 
@@ -205,16 +656,14 @@
   setProgress(0);
 
   ScrollTrigger.create({
-    trigger: '#mapStory',
-    start: 'top top',
-    end: 'bottom bottom',
-    scrub: true,
-    onUpdate: function(self){
-      setProgress(self.progress);
-    }
+    trigger:'#dispatchStory',
+    start:'top top',
+    end:'bottom bottom',
+    scrub:true,
+    onUpdate:function(self){ setProgress(self.progress); }
   });
 })();
 </script>
-<div style="position:fixed;bottom:0;left:0;right:0;padding:8px 16px;font-size:11px;color:#5a5a5e;text-align:center;z-index:99;background:rgba(9,9,11,.85);backdrop-filter:blur(8px);border-top:1px solid #1e1e22;font-family:Outfit,sans-serif">&copy; Created by Jay from <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboLabs</a>. Learn more at <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboNuggets</a></div>
+<div style="position:fixed;bottom:0;left:0;right:0;padding:8px 16px;font-size:11px;color:#5a5a5e;text-align:center;z-index:99;background:rgba(9,9,11,.85);backdrop-filter:blur(8px);border-top:1px solid #1e1e22;font-family:Instrument Sans,sans-serif">&copy; Created by Jay from <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboLabs</a>. Learn more at <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboNuggets</a></div>
 </body>
 </html>
