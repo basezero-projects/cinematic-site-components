@@ -82,6 +82,15 @@
   .mini-svg-line{stroke:var(--accent);stroke-width:2;fill:none;stroke-dasharray:200;stroke-dashoffset:200;animation:drawLine 3s ease infinite}
   @keyframes drawLine{0%{stroke-dashoffset:200}50%{stroke-dashoffset:0}100%{stroke-dashoffset:200}}
 
+  /* Service Area Map */
+  .mini-service-map{width:88%;height:74%;position:relative}
+  .mini-map-area{fill:rgba(94,173,181,.08);stroke:rgba(94,173,181,.24);stroke-width:1;stroke-dasharray:4 6}
+  .mini-map-road{fill:none;stroke:#31363c;stroke-width:1.6;stroke-linecap:round;stroke-dasharray:1 6}
+  .mini-map-route{fill:none;stroke:url(#miniRouteGradient);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:220;stroke-dashoffset:220;animation:mapRoute 3.8s ease infinite}
+  .mini-map-pin{fill:var(--accent);animation:mapPin 3.8s ease infinite}
+  @keyframes mapRoute{0%{stroke-dashoffset:220}55%,72%{stroke-dashoffset:0}100%{stroke-dashoffset:220}}
+  @keyframes mapPin{0%{transform:translate(22px,52px)}28%{transform:translate(70px,24px)}55%,72%{transform:translate(126px,66px)}100%{transform:translate(22px,52px)}}
+
   /* Curtain */
   .mini-curtain{display:flex;width:100%;height:100%;position:absolute;inset:0}
   .mini-curtain-l,.mini-curtain-r{flex:1;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700}
@@ -223,9 +232,9 @@
 
   /* Dock */
   .mini-dock{display:flex;align-items:flex-end;gap:3px;padding:4px 8px;background:rgba(26,26,31,.6);border-radius:10px}
-  .mini-dock-item{width:16px;height:16px;border-radius:4px;transition:all .2s}
-  .mini-dock:hover .mini-dock-item:nth-child(3){width:22px;height:22px}
-  .mini-dock:hover .mini-dock-item:nth-child(2),.mini-dock:hover .mini-dock-item:nth-child(4){width:19px;height:19px}
+  .mini-dock-item{width:16px;height:16px;border-radius:4px;transform-origin:bottom;transition:transform .2s cubic-bezier(.23,1,.32,1)}
+  .mini-dock:hover .mini-dock-item:nth-child(3){transform:scale(1.38)}
+  .mini-dock:hover .mini-dock-item:nth-child(2),.mini-dock:hover .mini-dock-item:nth-child(4){transform:scale(1.19)}
 
   /* Mesh */
   .mini-mesh{width:80%;height:70%;border-radius:10px;overflow:hidden;position:relative}
@@ -257,7 +266,7 @@
 
 <div class="header">
   <div class="label">Cinematic Site Modules</div>
-  <h1>30 <span>cinematic modules</span> for websites that move</h1>
+  <h1>31 <span>cinematic modules</span> for websites that move</h1>
   <p>Each module is a standalone HTML file. No frameworks, no build step. Click any card to see it live.</p>
   <div style="margin-top:20px;font-size:12px;color:var(--muted)">&copy; Created by Jay from <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboLabs</a>. Learn more at <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboNuggets</a></div>
 </div>
@@ -267,7 +276,7 @@
   <div class="section-head">
     <div class="section-dot" style="background:#e8793a"></div>
     <div class="section-title">Scroll-Driven</div>
-    <div class="section-count">9 modules</div>
+    <div class="section-count">10 modules</div>
   </div>
   <div class="bento bento-scroll">
     <a href="text-mask.html" class="card span-2c"><div class="card-demo"><div class="mini-mask">REVEAL</div><div class="mini-mask-fill">REVEAL</div></div><div class="card-info"><span class="card-num">01</span><span class="card-name">Text Mask Reveal</span><span class="card-arrow">&rarr;</span></div></a>
@@ -276,6 +285,7 @@
     <a href="horizontal-scroll.html" class="card span-2c"><div class="card-demo"><div class="mini-hscroll"><div class="mini-hcard" style="background:#2a1a10"></div><div class="mini-hcard" style="background:#1a2a1e"></div><div class="mini-hcard" style="background:#1a1a2e"></div><div class="mini-hcard" style="background:#2e1a2a"></div><div class="mini-hcard" style="background:#2e2a1a"></div></div></div><div class="card-info"><span class="card-num">04</span><span class="card-name">Horizontal Scroll Hijack</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="sticky-cards.html" class="card"><div class="card-demo"><div class="mini-stickyc"></div><div class="mini-stickyc"></div><div class="mini-stickyc"></div></div><div class="card-info"><span class="card-num">05</span><span class="card-name">Sticky Cards</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="svg-draw.html" class="card"><div class="card-demo"><svg width="80" height="80" viewBox="0 0 80 80"><path class="mini-svg-line" d="M10,70 Q40,10 70,40 Q50,70 30,50"/></svg></div><div class="card-info"><span class="card-num">06</span><span class="card-name">SVG Draw</span><span class="card-arrow">&rarr;</span></div></a>
+    <a href="service-area-map.html" class="card span-2c"><div class="card-demo"><svg class="mini-service-map" viewBox="0 0 150 92"><defs><linearGradient id="miniRouteGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e8793a"/><stop offset="100%" stop-color="#5eadb5"/></linearGradient></defs><path class="mini-map-area" d="M25,18 C45,4 91,8 117,25 C140,42 134,70 108,82 C74,97 25,83 15,55 C10,39 12,27 25,18Z"/><path class="mini-map-road" d="M15,34 C46,27 92,33 137,24"/><path class="mini-map-road" d="M20,68 C52,53 91,64 132,51"/><path class="mini-map-route" d="M22,52 C44,22 83,20 99,38 C119,60 88,75 62,58 C43,46 72,31 126,66"/><circle class="mini-map-pin" r="4"/></svg></div><div class="card-info"><span class="card-num">31</span><span class="card-name">Service Area Map</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="curtain-reveal.html" class="card span-2c"><div class="card-demo"><div class="mini-curtain"><div class="mini-curtain-bg">Reveal</div><div class="mini-curtain-l">DIS</div><div class="mini-curtain-r">COVER</div></div></div><div class="card-info"><span class="card-num">07</span><span class="card-name">Curtain Reveal</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="split-scroll.html" class="card"><div class="card-demo"><div class="mini-split"><div class="mini-split-col"><div class="mini-split-item" style="background:#1a1a2e"></div><div class="mini-split-item" style="background:#2d4a3e"></div><div class="mini-split-item" style="background:#4a3a2d"></div><div class="mini-split-item" style="background:#1a1a2e"></div></div><div class="mini-split-col"><div class="mini-split-item" style="background:#2e1a1a"></div><div class="mini-split-item" style="background:#1a2e2a"></div><div class="mini-split-item" style="background:#2e2a1a"></div><div class="mini-split-item" style="background:#2e1a1a"></div></div></div></div><div class="card-info"><span class="card-num">08</span><span class="card-name">Split Screen</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="color-shift.html" class="card"><div class="card-demo"><div class="mini-colorshift"></div></div><div class="card-info"><span class="card-num">09</span><span class="card-name">Color Shift</span><span class="card-arrow">&rarr;</span></div></a>

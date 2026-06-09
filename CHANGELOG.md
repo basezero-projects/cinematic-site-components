@@ -1,5 +1,16 @@
 # Cinematic Site Components Changelog
 
+## [0.2.0] - 2026-06-09
+
+### Added
+
+- **Service Area Map cinematic module**: Added `service-area-map.html`, a new scroll-driven module for local service sites, delivery zones, franchise pages, tourism routes, event recaps, and logistics pages. The module shows a stylized coverage map in a dark framed panel while a route draws across neighborhood zones, an orange pin travels along the route, a progress meter fills, and five step cards update for dispatch, north corridor, core service area, outer coverage, and booking. It includes a reduced-motion fallback that shows the full route, final pin position, full meter, and all step cards without scroll-linked movement. The module is linked from the gallery index as module 31 under Scroll-Driven.
+- **First source intake batch**: Added distilled source notes under `_sources/` for Codrops scroll-driven SVG maps, SVG mask transitions, on-scroll SVG filter distortion, hover motion intro animation, WebGL rotating image galleries, GSAP ScrollTrigger, and animations.dev motion theory. Updated `_notes/source-log.md` and `_notes/pattern-backlog.md` so the built module and backlogged candidates are scored and traceable.
+
+### Fixed
+
+- **Catalog preview motion cleanup**: Updated the macOS Dock mini preview in `index.html` to scale items with `transform` and a targeted transition instead of animating width/height through `transition: all`, keeping the gallery aligned with the new quality gate.
+
 ## [0.1.1] - 2026-06-09
 
 ### Fixed

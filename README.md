@@ -1,6 +1,6 @@
 # Cinematic Site Modules
 
-30 cinematic website modules. Each one is a single HTML file. No frameworks. No build step. No npm. Just open it.
+31 cinematic website modules. Each one is a single HTML file. No frameworks. No build step. No npm. Just open it.
 
 ## Preview
 
@@ -21,9 +21,9 @@ cd cinematic-site-components
 
 Then open `index.html` in your browser, or open any module file directly.
 
-## The 30 Modules
+## The 31 Modules
 
-### Scroll-Driven (9)
+### Scroll-Driven (10)
 | # | Module | What It Does |
 |---|---|---|
 | 01 | Text Mask Reveal | Headline fills with colour as you scroll |
@@ -35,6 +35,7 @@ Then open `index.html` in your browser, or open any module file directly.
 | 07 | Curtain Reveal | Hero splits open like curtains |
 | 08 | Split Screen Scroll | Two halves scroll opposite directions |
 | 09 | Scroll Color Shift | Background changes per section |
+| 31 | Service Area Map | Route draws across a stylized coverage map as section copy updates |
 
 ### Cursor & Hover (8)
 | # | Module | What It Does |
