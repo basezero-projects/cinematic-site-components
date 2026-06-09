@@ -1,5 +1,11 @@
 # Cinematic Site Components Changelog
 
+## [0.4.6] - 2026-06-09
+
+### Fixed
+
+- **Third targeted interaction correction pass**: `view-transitions.html` now morphs both directions: clicking a product swatch expands it into the modal image, and closing the modal animates the same coloured image block back into the original swatch instead of snapping the overlay away. `sticky-cards.html` now gives the final "Launch and iterate" card the highest stack layer and its intended 160px sticky offset, so it lands on top of the process stack and remains readable. `cursor-reveal.html` now uses a real bright interior photo for the circular spotlight, with a dim grayscale base layer and a clipped full-colour reveal that follows the cursor, replacing the flat brown/green vector look. `serve-over-tailscale.ps1` now runs `no-cache-http-server.py`, which serves the examples with no-cache headers so Chrome and phone previews stop holding stale animation frames.
+
 ## [0.4.5] - 2026-06-09
 
 ### Fixed

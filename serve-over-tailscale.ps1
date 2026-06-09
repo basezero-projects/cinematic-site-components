@@ -63,7 +63,8 @@ if ($existing) {
   exit 0
 }
 
-$args = @("-m", "http.server", "$Port", "--bind", $tailscaleIp, "--directory", $Root)
+$serverScript = Join-Path $Root "no-cache-http-server.py"
+$args = @($serverScript, "$Port", $tailscaleIp, $Root)
 $process = Start-Process -FilePath python -ArgumentList $args -WindowStyle Hidden -PassThru
 Start-Sleep -Seconds 2
 

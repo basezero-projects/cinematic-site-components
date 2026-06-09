@@ -396,6 +396,9 @@ var detailImage = document.getElementById('detailImage');
 var detailName = document.getElementById('detailName');
 var detailPrice = document.getElementById('detailPrice');
 var detailDesc = document.getElementById('detailDesc');
+var activeSwatch = null;
+var activeProduct = null;
+var closingProduct = false;
 
 function setProductDetail(product) {
   detailImage.style.background = product.bg;
@@ -410,46 +413,69 @@ function showOverlay() {
   overlay.classList.add('visible');
 }
 
-function runProductMorph(swatch, product) {
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function makeMorphGhost(rect, product, radius) {
+  var ghost = document.createElement('div');
+  ghost.className = 'morph-ghost';
+  ghost.style.background = product.bg;
+  ghost.style.left = rect.left + 'px';
+  ghost.style.top = rect.top + 'px';
+  ghost.style.width = rect.width + 'px';
+  ghost.style.height = rect.height + 'px';
+  ghost.style.borderRadius = radius;
+  document.body.appendChild(ghost);
+  return ghost;
+}
+
+function runMorphAnimation(ghost, start, end, startRadius, endRadius, duration) {
+  return ghost.animate([
+    {
+      left: start.left + 'px',
+      top: start.top + 'px',
+      width: start.width + 'px',
+      height: start.height + 'px',
+      borderRadius: startRadius
+    },
+    {
+      left: end.left + 'px',
+      top: end.top + 'px',
+      width: end.width + 'px',
+      height: end.height + 'px',
+      borderRadius: endRadius
+    }
+  ], {
+    duration: duration,
+    easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    fill: 'forwards'
+  });
+}
+
+function clearOverlayState() {
+  overlay.classList.remove('open', 'visible', 'morphing', 'text-ready');
+  activeSwatch = null;
+  activeProduct = null;
+  closingProduct = false;
+}
+
+function runProductMorphOpen(swatch, product) {
   var start = swatch.getBoundingClientRect();
   setProductDetail(product);
+  activeSwatch = swatch;
+  activeProduct = product;
+  closingProduct = false;
   overlay.classList.remove('text-ready');
   overlay.classList.add('open', 'morphing');
   overlay.offsetHeight;
 
   var end = detailImage.getBoundingClientRect();
-  var ghost = document.createElement('div');
-  ghost.className = 'morph-ghost';
-  ghost.style.background = product.bg;
-  ghost.style.left = start.left + 'px';
-  ghost.style.top = start.top + 'px';
-  ghost.style.width = start.width + 'px';
-  ghost.style.height = start.height + 'px';
-  ghost.style.borderRadius = '12px';
-  document.body.appendChild(ghost);
+  var ghost = makeMorphGhost(start, product, '12px');
 
   requestAnimationFrame(function () {
     overlay.classList.add('visible');
-    var animation = ghost.animate([
-      {
-        left: start.left + 'px',
-        top: start.top + 'px',
-        width: start.width + 'px',
-        height: start.height + 'px',
-        borderRadius: '12px'
-      },
-      {
-        left: end.left + 'px',
-        top: end.top + 'px',
-        width: end.width + 'px',
-        height: end.height + 'px',
-        borderRadius: '24px'
-      }
-    ], {
-      duration: 720,
-      easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-      fill: 'forwards'
-    });
+    var animation = runMorphAnimation(ghost, start, end, '12px', '24px', 720);
 
     setTimeout(function () {
       if (overlay.classList.contains('morphing')) {
@@ -459,7 +485,9 @@ function runProductMorph(swatch, product) {
 
     animation.finished.finally(function () {
       ghost.remove();
-      overlay.classList.remove('morphing', 'text-ready');
+      if (!closingProduct) {
+        overlay.classList.remove('morphing', 'text-ready');
+      }
     });
   });
 }
@@ -471,20 +499,43 @@ function openProduct(card) {
 
   if (!p) return;
 
-  if (!swatch || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (!swatch || prefersReducedMotion()) {
     setProductDetail(p);
+    activeSwatch = swatch;
+    activeProduct = p;
     showOverlay();
     return;
   }
 
-  runProductMorph(swatch, p);
+  runProductMorphOpen(swatch, p);
 }
 
 function closeProduct(e, force) {
-  if (force || e.target === overlay) {
+  var shouldClose = force || e.target === overlay;
+  if (!shouldClose || closingProduct) return;
+
+  if (!activeSwatch || !activeSwatch.isConnected || !activeProduct || prefersReducedMotion()) {
     overlay.classList.remove('visible');
-    setTimeout(function() { overlay.classList.remove('open', 'morphing', 'text-ready'); }, 300);
+    setTimeout(clearOverlayState, 300);
+    return;
   }
+
+  closingProduct = true;
+  overlay.classList.remove('text-ready');
+  overlay.classList.add('morphing');
+
+  var start = detailImage.getBoundingClientRect();
+  var end = activeSwatch.getBoundingClientRect();
+  var ghost = makeMorphGhost(start, activeProduct, '24px');
+
+  requestAnimationFrame(function () {
+    overlay.classList.remove('visible');
+    var animation = runMorphAnimation(ghost, start, end, '24px', '12px', 640);
+    animation.finished.finally(function () {
+      ghost.remove();
+      clearOverlayState();
+    });
+  });
 }
 
 function toggleMorph() {
