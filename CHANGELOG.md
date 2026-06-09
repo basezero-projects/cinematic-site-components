@@ -1,5 +1,11 @@
 # Cinematic Site Components Changelog
 
+## [0.2.3] - 2026-06-09
+
+### Added
+
+- **Service Area Map example bank**: Added a "Same motion, different route story" section to `service-area-map.html` so the route-sheet effect is easier to understand beyond the auto-glass demo. The page now includes four grounded route examples for auto glass, HVAC service, fence/handyman work, and courier/event crews, each with a small paper-map sketch and concrete work notes that show how the same scroll-drawn route can prove local coverage without fake telemetry.
+
 ## [0.2.2] - 2026-06-09
 
 ### Changed

@@ -417,6 +417,115 @@
     line-height:1.5;
     margin-top:18px;
   }
+  .example-bank{
+    width:min(1180px,100%);
+    margin:0 auto;
+    padding:0 24px 136px;
+  }
+  .example-head{
+    display:grid;
+    grid-template-columns:minmax(0,.82fr) minmax(320px,1fr);
+    gap:48px;
+    align-items:end;
+    margin-bottom:34px;
+  }
+  .example-head h2{
+    color:var(--paper);
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(36px,5vw,72px);
+    line-height:.9;
+    letter-spacing:-.052em;
+    font-weight:900;
+  }
+  .example-head p{
+    color:oklch(0.78 0.029 88);
+    font-size:17px;
+    line-height:1.62;
+  }
+  .example-grid{
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    gap:16px;
+  }
+  .example-card{
+    display:grid;
+    grid-template-columns:174px 1fr;
+    gap:18px;
+    color:var(--ink);
+    background:var(--paper);
+    border:1px solid rgba(0,0,0,.18);
+    border-radius:7px;
+    padding:18px;
+    min-height:188px;
+    box-shadow:0 22px 60px rgba(0,0,0,.14);
+  }
+  .example-card:nth-child(2),
+  .example-card:nth-child(3){
+    background:oklch(0.86 0.042 84);
+  }
+  .example-card:nth-child(1){transform:rotate(-.45deg)}
+  .example-card:nth-child(2){transform:rotate(.35deg)}
+  .example-card:nth-child(3){transform:rotate(.3deg)}
+  .example-card:nth-child(4){transform:rotate(-.35deg)}
+  .example-map{
+    width:100%;
+    height:122px;
+    align-self:center;
+  }
+  .example-map .sheet{fill:rgba(255,255,255,.22);stroke:rgba(75,62,42,.24)}
+  .example-map .street{fill:none;stroke:rgba(83,75,61,.35);stroke-width:4;stroke-linecap:round}
+  .example-map .route-line{fill:none;stroke:var(--route);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+  .example-map .dot{fill:var(--route);stroke:var(--route-dark);stroke-width:1.5}
+  .example-map text{
+    fill:#5b513d;
+    font-family:"Public Sans",sans-serif;
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:.04em;
+  }
+  .example-type{
+    display:block;
+    color:var(--blue-ink);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .example-card h3{
+    color:var(--ink);
+    font-family:"Archivo",sans-serif;
+    font-size:28px;
+    line-height:.98;
+    letter-spacing:-.035em;
+    margin-bottom:12px;
+  }
+  .example-card p{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.48;
+  }
+  .example-card ul{
+    display:grid;
+    gap:6px;
+    margin-top:14px;
+    list-style:none;
+  }
+  .example-card li{
+    color:#5f543f;
+    font-size:13px;
+    line-height:1.35;
+  }
+  .example-card li::before{
+    content:"";
+    display:inline-block;
+    width:6px;
+    height:6px;
+    margin-right:8px;
+    border-radius:50%;
+    background:var(--route);
+    vertical-align:1px;
+  }
   footer{
     padding:28px 24px;
     text-align:center;
@@ -436,6 +545,8 @@
     .copy-panel{max-width:680px}
     .city-item.is-active{transform:none}
     .use-grid{grid-template-columns:1fr;gap:26px}
+    .example-head{grid-template-columns:1fr;gap:18px}
+    .example-grid{grid-template-columns:1fr}
   }
 
   @media(max-width:560px){
@@ -470,6 +581,18 @@
       line-height:1;
       letter-spacing:-.034em;
     }
+    .example-bank{padding:0 16px 112px}
+    .example-card{
+      grid-template-columns:1fr;
+      min-height:auto;
+      transform:none!important;
+    }
+    .example-head h2{
+      font-size:clamp(34px,11vw,46px);
+      line-height:.96;
+      letter-spacing:-.036em;
+    }
+    .example-map{height:108px}
   }
 
   @media(prefers-reduced-motion:reduce){
@@ -621,6 +744,98 @@
       <p>Use this for shops where place matters: auto glass, HVAC, handyman, courier, event crews, and field service. The section names the towns, shows the route, and keeps each stop tied to real work.</p>
       <div class="caption">Works best when the town list comes from the client's actual service area.</div>
     </div>
+  </div>
+</section>
+
+<section class="example-bank" aria-label="Service route animation examples">
+  <div class="example-head">
+    <h2>Same motion, different route story.</h2>
+    <p>The effect works when a visitor needs to understand coverage by place. Swap the towns, stops, and work notes to match the business.</p>
+  </div>
+  <div class="example-grid">
+    <article class="example-card">
+      <svg class="example-map" viewBox="0 0 174 122" aria-hidden="true">
+        <rect class="sheet" x="6" y="8" width="162" height="106" rx="5"/>
+        <path class="street" d="M24 39 C62 34 106 36 151 28"/>
+        <path class="street" d="M22 82 C58 65 103 77 150 61"/>
+        <path class="route-line" d="M32 71 C51 32 103 25 126 50 C151 77 111 96 78 78 C58 66 83 43 145 84"/>
+        <circle class="dot" cx="32" cy="71" r="6"/><circle class="dot" cx="91" cy="35" r="6"/><circle class="dot" cx="126" cy="50" r="6"/><circle class="dot" cx="78" cy="78" r="6"/>
+        <text x="22" y="27">WHEAT RIDGE</text><text x="104" y="24">COMMERCE CITY</text><text x="119" y="103">AURORA</text>
+      </svg>
+      <div>
+        <span class="example-type">Auto glass</span>
+        <h3>Show where the van already works.</h3>
+        <p>Use the route to connect the shop base to towns people recognize.</p>
+        <ul>
+          <li>Fleet glass near Commerce City</li>
+          <li>Calibration work in Aurora</li>
+          <li>Chip repair through Lakewood</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="example-card">
+      <svg class="example-map" viewBox="0 0 174 122" aria-hidden="true">
+        <rect class="sheet" x="6" y="8" width="162" height="106" rx="5"/>
+        <path class="street" d="M26 34 C63 52 96 38 148 47"/>
+        <path class="street" d="M40 100 C60 69 64 45 57 19"/>
+        <path class="route-line" d="M38 91 C50 56 82 30 113 38 C145 46 145 73 117 86 C91 98 73 83 58 66"/>
+        <circle class="dot" cx="38" cy="91" r="6"/><circle class="dot" cx="83" cy="40" r="6"/><circle class="dot" cx="134" cy="61" r="6"/><circle class="dot" cx="58" cy="66" r="6"/>
+        <text x="25" y="108">LITTLETON</text><text x="88" y="28">ENGLEWOOD</text><text x="116" y="93">AURORA</text>
+      </svg>
+      <div>
+        <span class="example-type">HVAC service</span>
+        <h3>Make the service day legible.</h3>
+        <p>Each stop can carry a service type instead of a generic city claim.</p>
+        <ul>
+          <li>No-heat call in Littleton</li>
+          <li>Maintenance visit in Englewood</li>
+          <li>Install estimate near Aurora</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="example-card">
+      <svg class="example-map" viewBox="0 0 174 122" aria-hidden="true">
+        <rect class="sheet" x="6" y="8" width="162" height="106" rx="5"/>
+        <path class="street" d="M20 58 C58 40 103 45 154 30"/>
+        <path class="street" d="M47 18 C58 45 58 79 73 107"/>
+        <path class="route-line" d="M29 42 C57 22 96 27 118 49 C142 73 109 88 76 83 C51 79 42 69 31 92"/>
+        <circle class="dot" cx="29" cy="42" r="6"/><circle class="dot" cx="91" cy="31" r="6"/><circle class="dot" cx="118" cy="49" r="6"/><circle class="dot" cx="31" cy="92" r="6"/>
+        <text x="22" y="33">ARVADA</text><text x="95" y="25">GOLDEN</text><text x="20" y="108">LAKEWOOD</text>
+      </svg>
+      <div>
+        <span class="example-type">Fence and handyman</span>
+        <h3>Group scattered jobs into a route.</h3>
+        <p>Good for businesses with many small jobs across nearby suburbs.</p>
+        <ul>
+          <li>Gate repair in Arvada</li>
+          <li>Fence panel work near Golden</li>
+          <li>Rental turnover in Lakewood</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="example-card">
+      <svg class="example-map" viewBox="0 0 174 122" aria-hidden="true">
+        <rect class="sheet" x="6" y="8" width="162" height="106" rx="5"/>
+        <path class="street" d="M19 40 C50 35 83 51 150 36"/>
+        <path class="street" d="M24 86 C72 74 103 94 153 76"/>
+        <path class="route-line" d="M30 79 C49 47 74 37 96 45 C124 55 117 77 91 83 C71 88 67 66 142 55"/>
+        <circle class="dot" cx="30" cy="79" r="6"/><circle class="dot" cx="73" cy="39" r="6"/><circle class="dot" cx="96" cy="45" r="6"/><circle class="dot" cx="142" cy="55" r="6"/>
+        <text x="24" y="98">WAREHOUSE</text><text x="63" y="31">LODO</text><text x="126" y="48">DTC</text>
+      </svg>
+      <div>
+        <span class="example-type">Courier or event crew</span>
+        <h3>Turn stops into proof of reach.</h3>
+        <p>The route can show deliveries, pickups, venue coverage, or recap paths.</p>
+        <ul>
+          <li>Warehouse to LoDo drops</li>
+          <li>Venue route through RiNo</li>
+          <li>Final handoff near DTC</li>
+        </ul>
+      </div>
+    </article>
   </div>
 </section>
 

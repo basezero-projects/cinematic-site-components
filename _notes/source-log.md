@@ -38,7 +38,7 @@ Motion risk: Scroll-linked map movement can become hard to read if too many regi
 Reduced motion fallback: Show full route, final pin position, all step cards, and full progress meter
 Dependencies: GSAP and ScrollTrigger CDN, matching existing repo pattern
 License/attribution: Original local implementation inspired by public pattern research; no source code copied
-Why it belongs here: It is cinematic and useful. The built module now uses a practical shop-base route sheet so service coverage becomes local proof instead of fake telemetry or decoration.
+Why it belongs here: It is cinematic and useful. The built module now uses a practical shop-base route sheet so service coverage becomes local proof instead of fake telemetry or decoration. The page also includes variant examples for auto glass, HVAC, fence/handyman, and courier/event routes so future agents understand how to adapt the effect.
 
 ### 2026-06-09 - SVG mask chapter transitions
 

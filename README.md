@@ -35,7 +35,7 @@ Then open `index.html` in your browser, or open any module file directly.
 | 07 | Curtain Reveal | Hero splits open like curtains |
 | 08 | Split Screen Scroll | Two halves scroll opposite directions |
 | 09 | Scroll Color Shift | Background changes per section |
-| 31 | Service Area Map | Paper route sheet draws across real service towns as plain work notes update |
+| 31 | Service Area Map | Paper route sheet draws across real service towns with example variants for trades, service, and delivery routes |
 
 ### Cursor & Hover (8)
 | # | Module | What It Does |
