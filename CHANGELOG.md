@@ -1,5 +1,11 @@
 # Cinematic Site Components Changelog
 
+## [0.4.2] - 2026-06-09
+
+### Fixed
+
+- **Full animation QA pass fixes**: Audited all 35 standalone modules in Chromium on desktop and mobile, then fixed the broken or weak examples found in the pass. `kinetic-marquee.html` no longer creates horizontal page overflow and now keeps repeated marquee text visible inside clipped tracks on narrow screens. `horizontal-scroll.html` keeps the cinematic horizontal scroll on desktop but switches to a vertical card stack on mobile so phone users do not land on an empty pinned frame. `image-trail.html` now uses actual image cards instead of plain colour blocks and adds touch/autoplay trail behavior so the module demonstrates itself on phones. `magnetic-grid.html` now supports touch movement and an automatic coarse-pointer force point so the grid visibly repels on mobile. `dynamic-island.html` now previews its expanded state briefly on load so the morphing behavior is obvious without guessing where to tap.
+
 ## [0.4.1] - 2026-06-09
 
 ### Added

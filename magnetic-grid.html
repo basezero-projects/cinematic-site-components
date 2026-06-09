@@ -16,6 +16,7 @@
   .repel-grid{display:grid;grid-template-columns:repeat(12,36px);grid-template-rows:repeat(8,36px);gap:8px}
   .repel-dot{width:36px;height:36px;border-radius:8px;background:#151518;border:1px solid var(--border);transition:transform .4s cubic-bezier(.16,1,.3,1),background .3s,border-color .3s;will-change:transform;cursor:default}
   .repel-dot:hover{background:var(--accent);border-color:var(--accent)}
+  .repel-dot.is-hot{background:rgba(232,93,58,.35);border-color:rgba(232,93,58,.65)}
   .explain{padding:120px 24px;text-align:center;max-width:680px;margin:0 auto;border-top:1px solid #1a1a1d}
   .explain .tag{display:inline-block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(232,93,58,.2);padding:4px 12px;border-radius:100px;margin-bottom:20px}
   .explain h2{font-size:clamp(24px,4vw,40px);font-weight:600;letter-spacing:-.02em;margin-bottom:16px}
@@ -50,8 +51,20 @@
     grid.appendChild(d);dots.push(d);
   }
   var mx=-9999,my=-9999;
-  document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY});
+  var hasPointer=false;
+  var coarse=window.matchMedia('(pointer: coarse)').matches;
+  document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;hasPointer=true});
+  document.addEventListener('touchmove',function(e){
+    var touch=e.touches[0];
+    if(touch){mx=touch.clientX;my=touch.clientY;hasPointer=true;}
+  },{passive:true});
   function update(){
+    if(coarse && !hasPointer){
+      var box=grid.getBoundingClientRect();
+      var t=performance.now()/900;
+      mx=box.left+box.width/2+Math.cos(t)*box.width*.32;
+      my=box.top+box.height/2+Math.sin(t*1.2)*box.height*.32;
+    }
     dots.forEach(function(d){
       var r=d.getBoundingClientRect();
       var cx=r.left+r.width/2;
@@ -64,8 +77,10 @@
         var force=(1-dist/maxDist)*18;
         var angle=Math.atan2(dy,dx);
         d.style.transform='translate('+Math.cos(angle)*force+'px,'+Math.sin(angle)*force+'px)';
+        d.classList.add('is-hot');
       }else{
         d.style.transform='translate(0,0)';
+        d.classList.remove('is-hot');
       }
     });
     requestAnimationFrame(update);

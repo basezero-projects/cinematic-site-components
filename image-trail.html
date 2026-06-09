@@ -15,7 +15,14 @@
   .hero p{margin-top:16px;font-size:18px;color:var(--muted);max-width:50ch;line-height:1.5}
   .trail-section{position:relative;min-height:80vh;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:none}
   .trail-section h2{font-size:clamp(48px,10vw,140px);font-weight:700;letter-spacing:-.04em;text-align:center;position:relative;z-index:2;pointer-events:none;line-height:.95}
-  .trail-img{position:fixed;width:160px;height:200px;border-radius:10px;pointer-events:none;z-index:1;opacity:0;will-change:transform,opacity;object-fit:cover}
+  .trail-img{position:fixed;width:160px;height:200px;border-radius:10px;pointer-events:none;z-index:1;opacity:0;will-change:transform,opacity;background-size:cover;background-position:center;box-shadow:0 22px 70px rgba(0,0,0,.42)}
+  .touch-trail{display:none;position:absolute;inset:0;z-index:1;pointer-events:none}
+  .touch-trail span{position:absolute;width:112px;height:146px;border-radius:10px;background-size:cover;background-position:center;box-shadow:0 18px 60px rgba(0,0,0,.38);opacity:.82;animation:touchTrailFloat 4.8s ease-in-out infinite}
+  .touch-trail span:nth-child(1){left:12%;top:18%;background-image:url('https://picsum.photos/seed/trail-editorial-01/360/460')}
+  .touch-trail span:nth-child(2){right:14%;top:26%;background-image:url('https://picsum.photos/seed/trail-editorial-02/360/460');animation-delay:.7s}
+  .touch-trail span:nth-child(3){left:28%;bottom:13%;background-image:url('https://picsum.photos/seed/trail-editorial-03/360/460');animation-delay:1.4s}
+  .touch-trail span:nth-child(4){right:28%;bottom:18%;background-image:url('https://picsum.photos/seed/trail-editorial-04/360/460');animation-delay:2.1s}
+  @keyframes touchTrailFloat{0%,100%{transform:translate3d(0,0,0) rotate(-4deg)}50%{transform:translate3d(16px,-18px,0) rotate(5deg)}}
   .trail-section-2{position:relative;min-height:60vh;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:none;border-top:1px solid var(--border)}
   .trail-section-2 .trail-link{font-size:clamp(28px,5vw,56px);font-weight:600;letter-spacing:-.02em;color:var(--text);text-decoration:none;padding:20px 0;display:block;position:relative;z-index:2;transition:color .2s}
   .trail-section-2 .trail-link:hover{color:var(--accent)}
@@ -25,6 +32,11 @@
   .explain h2{font-size:clamp(24px,4vw,40px);font-weight:600;letter-spacing:-.02em;margin-bottom:16px}
   .explain p{font-size:17px;color:var(--muted);line-height:1.6}
   footer{border-top:1px solid #1a1a1d;padding:24px;text-align:center;font-size:12px;color:var(--muted)}
+  @media (pointer: coarse) {
+    .trail-section,.trail-section-2{cursor:auto}
+    .touch-trail{display:block}
+    .trail-section h2{font-size:clamp(44px,17vw,86px)}
+  }
 </style>
 </head>
 <body>
@@ -34,7 +46,8 @@
   <p>Move your mouse and images pop up along the path, then fade away. Used by fashion, photography, and creative agency sites.</p>
 </section>
 <section class="trail-section" id="trailArea">
-  <h2>MOVE<br>YOUR<br>MOUSE</h2>
+  <div class="touch-trail" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <h2 id="trailHeadline">MOVE<br>YOUR<br>MOUSE</h2>
 </section>
 <section class="trail-section-2" id="trailArea2">
   <div class="trail-list">
@@ -52,12 +65,23 @@
 <footer>Cinematic Module — Hover Image Trail</footer>
 <script>
 (function(){
-  var colors=['#a8748e','#748ea8','#8ea874','#a8a074','#74a8a0','#a07448','#7448a0','#48a074'];
+  var images=[
+    'https://picsum.photos/seed/trail-branding-01/360/460',
+    'https://picsum.photos/seed/trail-branding-02/360/460',
+    'https://picsum.photos/seed/trail-branding-03/360/460',
+    'https://picsum.photos/seed/trail-branding-04/360/460',
+    'https://picsum.photos/seed/trail-branding-05/360/460',
+    'https://picsum.photos/seed/trail-branding-06/360/460',
+    'https://picsum.photos/seed/trail-branding-07/360/460',
+    'https://picsum.photos/seed/trail-branding-08/360/460'
+  ];
   var pool=[];var poolSize=20;var lastX=0,lastY=0;var threshold=60;
+  var touchMode=window.matchMedia('(pointer: coarse)').matches;
+  if(touchMode){document.getElementById('trailHeadline').innerHTML='SWIPE<br>THE<br>FIELD'}
   for(var i=0;i<poolSize;i++){
     var el=document.createElement('div');
     el.className='trail-img';
-    el.style.background=colors[i%colors.length];
+    el.style.backgroundImage='url('+images[i%images.length]+')';
     document.body.appendChild(el);
     pool.push({el:el,active:false});
   }
@@ -89,6 +113,20 @@
       spawnTrail(e.clientX,e.clientY);
     }
   });
+  ['trailArea','trailArea2'].forEach(function(id){
+    document.getElementById(id).addEventListener('touchmove',function(e){
+      var touch=e.touches[0];
+      if(touch) spawnTrail(touch.clientX,touch.clientY);
+    },{passive:true});
+  });
+  if(touchMode){
+    var points=[[.28,.34],[.68,.3],[.45,.58],[.74,.64]];
+    var n=0;
+    setInterval(function(){
+      var point=points[n++%points.length];
+      spawnTrail(window.innerWidth*point[0], window.innerHeight*point[1]);
+    },900);
+  }
 })();
 </script>
 <div style="position:fixed;bottom:0;left:0;right:0;padding:8px 16px;font-size:11px;color:#5a5a5e;text-align:center;z-index:99;background:rgba(9,9,11,.85);backdrop-filter:blur(8px);border-top:1px solid #1e1e22;font-family:Outfit,sans-serif">&copy; Created by Jay from <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboLabs</a>. Learn more at <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboNuggets</a></div>
