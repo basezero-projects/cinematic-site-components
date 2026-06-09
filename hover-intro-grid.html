@@ -8,8 +8,8 @@
 <style>
   :root{--bg:#0f1110;--ink:#f3ead8;--muted:#988f80;--line:#282b28;--orange:#df6b2d;--green:#6f8f63;--blue:#698da8}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{min-height:100dvh;background:var(--bg);color:var(--ink);font-family:"Public Sans",sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-  .stage{min-height:100dvh;display:grid;grid-template-columns:minmax(360px,.82fr) minmax(0,1.18fr);gap:32px;padding:34px;align-items:stretch}
+  body{min-height:clamp(420px,58dvh,620px);background:var(--bg);color:var(--ink);font-family:"Public Sans",sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  .stage{min-height:clamp(420px,58dvh,620px);display:grid;grid-template-columns:minmax(360px,.82fr) minmax(0,1.18fr);gap:32px;padding:34px;align-items:stretch}
   .intro{position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:28px;border:1px solid var(--line);border-radius:10px;background:#141713}
   .kicker,.project-count,.tile-label,.action-row button,.panel-kicker{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
   .kicker{color:var(--orange)}

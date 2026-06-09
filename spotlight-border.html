@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spotlight Border Cards — Cinematic Module</title>
+<title>Spotlight Border Cards - Cinematic Module</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#0a0a0b;--text:#eae7e2;--muted:#5a5a5e;--border:#1e1e22}
   *{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  .hero{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 24px}
+  .hero{min-height:clamp(420px,58dvh,620px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 24px}
   .hero-label{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
   .hero h1{font-size:clamp(32px,6vw,64px);font-weight:600;line-height:1.15;max-width:700px;letter-spacing:-.025em}
   .hero p{margin-top:16px;font-size:18px;color:var(--muted);max-width:50ch;line-height:1.5}
@@ -30,7 +30,7 @@
 </head>
 <body>
 <section class="hero">
-  <div class="hero-label">Module 16 — Spotlight Border Cards</div>
+  <div class="hero-label">Module 16 - Spotlight Border Cards</div>
   <h1>Borders illuminate under your cursor</h1>
   <p>A shared grid where the border between cards lights up wherever the mouse is. Unified grid, not isolated cards. Move your cursor across the grid below.</p>
 </section>
@@ -50,7 +50,7 @@
   <h2>Grid feels alive</h2>
   <p>The spotlight tracks your cursor across the entire grid, illuminating borders as you move. It unifies separate cards into a single interactive surface. Vercel, Linear, and Supabase all use variants of this pattern for their feature grids. The subtle glow signals interactivity without screaming for attention.</p>
 </section>
-<footer>Cinematic Module — Spotlight Border Cards</footer>
+<footer>Cinematic Module - Spotlight Border Cards</footer>
 <script>
 (function(){
   var grid=document.getElementById('spotGrid');

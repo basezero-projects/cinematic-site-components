@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Glitch Effect — Cinematic Module</title>
+<title>Glitch Effect - Cinematic Module</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#0a0a0b;--text:#eae7e2;--muted:#5a5a5e;--accent:#ff3b3b;--cyan:#00f0ff;--border:#1e1e22}
   *{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  .hero{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 24px}
+  .hero{min-height:clamp(420px,58dvh,620px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 24px}
   .hero-label{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
   .hero h1{font-size:clamp(32px,6vw,64px);font-weight:600;line-height:1.15;max-width:700px;letter-spacing:-.025em}
   .glitch-section{display:flex;align-items:center;justify-content:center;min-height:60vh;padding:40px 24px}
@@ -39,7 +39,7 @@
 </head>
 <body>
 <section class="hero">
-  <div class="hero-label">Module 28 — Glitch Effect</div>
+  <div class="hero-label">Module 28 - Glitch Effect</div>
   <h1>RGB channel split on hover. Digital distortion.</h1>
 </section>
 <section class="glitch-section">
@@ -47,16 +47,16 @@
 </section>
 <div class="glitch-cards">
   <div class="g-card"><h3>Cyberpunk aesthetic</h3><p>RGB channel splitting with clip-path creates a digital distortion effect. Pure CSS, no canvas needed.</p></div>
-  <div class="g-card"><h3>Hover-triggered</h3><p>The glitch fires only on hover. Constant glitching is distracting — controlled bursts create drama.</p></div>
+  <div class="g-card"><h3>Hover-triggered</h3><p>The glitch fires only on hover. Constant glitching is distracting - controlled bursts create drama.</p></div>
   <div class="g-card"><h3>Scanline overlay</h3><p>CRT-style scanlines on the cards add to the digital aesthetic. A 4px repeating gradient at low opacity.</p></div>
   <div class="g-card"><h3>Zero JavaScript</h3><p>The entire effect is CSS keyframes with clip-path and translate. GPU-accelerated, no layout thrashing.</p></div>
 </div>
 <section class="explain">
   <div class="tag">Why it works</div>
   <h2>Controlled chaos</h2>
-  <p>The glitch effect signals edge, disruption, and technical confidence. Gaming, music, cybersecurity, and tech-forward brands use it to stand out from clean corporate sites. The key is restraint — a brief hover burst, not constant noise.</p>
+  <p>The glitch effect signals edge, disruption, and technical confidence. Gaming, music, cybersecurity, and tech-forward brands use it to stand out from clean corporate sites. The key is restraint - a brief hover burst, not constant noise.</p>
 </section>
-<footer>Cinematic Module — Glitch Effect</footer>
+<footer>Cinematic Module - Glitch Effect</footer>
 <div style="position:fixed;bottom:0;left:0;right:0;padding:8px 16px;font-size:11px;color:#5a5a5e;text-align:center;z-index:99;background:rgba(9,9,11,.85);backdrop-filter:blur(8px);border-top:1px solid #1e1e22;font-family:Outfit,sans-serif">&copy; Created by Jay from <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboLabs</a>. Learn more at <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboNuggets</a></div>
 </body>
 </html>

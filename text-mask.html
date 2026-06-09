@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Text Mask Reveal — Cinematic Module</title>
+<title>Text Mask Reveal - Cinematic Module</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -25,7 +25,7 @@
 
   /* ─── Hero ─── */
   .hero {
-    min-height: 100dvh;
+    min-height:clamp(420px,58dvh,620px);
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     text-align: center; padding: 40px 24px;
@@ -78,7 +78,7 @@
     line-height: 0.9;
     text-align: center;
     text-transform: uppercase;
-    /* This is the magic — text punches a hole through the overlay */
+    /* This is the magic - text punches a hole through the overlay */
     background: var(--bg);
     color: transparent;
     -webkit-text-stroke: 2px rgba(240, 237, 232, 0.15);
@@ -87,7 +87,7 @@
     z-index: 2;
   }
 
-  /* The reveal layer — fills the text with the video */
+  /* The reveal layer - fills the text with the video */
   .mask-reveal {
     position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
@@ -175,7 +175,7 @@
 <body>
 
 <section class="hero">
-  <div class="hero-label">Module 01 — Text Mask Reveal</div>
+  <div class="hero-label">Module 01 - Text Mask Reveal</div>
   <h1>Scroll to <strong>reveal</strong> the headline through a cinematic text mask</h1>
   <div class="scroll-hint">Scroll down</div>
 </section>
@@ -190,13 +190,13 @@
       <div class="mask-text">BUILT<br>DIFFERENT</div>
     </div>
 
-    <!-- Reveal layer — clips in on scroll -->
+    <!-- Reveal layer - clips in on scroll -->
     <div class="mask-reveal">
       <div class="mask-text-filled">BUILT<br>DIFFERENT</div>
     </div>
 
     <div class="mask-subtext">
-      <p>The text fills with colour as you scroll — forcing visitors to engage with your headline before they see anything else.</p>
+      <p>The text fills with colour as you scroll - forcing visitors to engage with your headline before they see anything else.</p>
       <a href="#">See the code</a>
     </div>
   </div>
@@ -218,7 +218,7 @@
   </div>
 </section>
 
-<footer>Cinematic Module — Text Mask Reveal</footer>
+<footer>Cinematic Module - Text Mask Reveal</footer>
 
 <script>
 (function() {

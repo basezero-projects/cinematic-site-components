@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>macOS Dock Navigation — Cinematic Module</title>
+<title>macOS Dock Navigation - Cinematic Module</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#0a0a0b;--text:#eae7e2;--muted:#5a5a5e;--accent:#4f46e5;--border:#1e1e22}
-  *{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100dvh;display:flex;flex-direction:column}
+  *{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:clamp(420px,58dvh,620px);display:flex;flex-direction:column}
   .hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 24px 120px}
   .hero-label{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
   .hero h1{font-size:clamp(32px,6vw,64px);font-weight:600;line-height:1.15;max-width:700px;letter-spacing:-.025em}
@@ -26,14 +26,14 @@
 </head>
 <body>
 <section class="hero">
-  <div class="hero-label">Module 23 — macOS Dock Navigation</div>
+  <div class="hero-label">Module 23 - macOS Dock Navigation</div>
   <h1>Icons <span>magnify</span> as you hover across</h1>
   <p>A navigation dock at the bottom of the screen where icons scale up as the cursor approaches. Hover across the dock below.</p>
 </section>
 <section class="content">
   <h2>Why it works</h2>
   <p>The dock magnification gives the active item visual priority while keeping all options visible. It's playful, space-efficient, and immediately familiar to anyone who's used a Mac. Works for app navigation, tool palettes, and quick-action bars.</p>
-  <p>The scaling is distance-based — items closest to the cursor grow most, creating a smooth wave effect across the dock. Pure JavaScript, no library needed.</p>
+  <p>The scaling is distance-based - items closest to the cursor grow most, creating a smooth wave effect across the dock. Pure JavaScript, no library needed.</p>
 </section>
 <div class="dock-container">
   <div class="dock" id="dock">

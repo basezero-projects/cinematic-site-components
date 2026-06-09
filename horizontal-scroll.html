@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Horizontal Scroll Hijack — Cinematic Module</title>
+<title>Horizontal Scroll Hijack - Cinematic Module</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -13,7 +13,7 @@
   body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
   .hero {
-    min-height: 100dvh; display: flex; flex-direction: column;
+    min-height:clamp(420px,58dvh,620px); display: flex; flex-direction: column;
     align-items: center; justify-content: center; text-align: center; padding: 40px 24px;
   }
   .hero-label { font-size: 12px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
@@ -24,7 +24,7 @@
   @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
 
   /* ─── Horizontal Section ─── */
-  .h-scroll-section { overflow: hidden; }
+  .h-scroll-section { overflow: visible; }
   .h-scroll-sticky { position: sticky; top: 0; height: 100dvh; display: flex; align-items: center; overflow: hidden; }
   .h-scroll-track {
     display: flex; gap: 32px;
@@ -88,7 +88,7 @@
 <body>
 
 <section class="hero">
-  <div class="hero-label">Module 04 — Horizontal Scroll Hijack</div>
+  <div class="hero-label">Module 04 - Horizontal Scroll Hijack</div>
   <h1>Scroll down, move <span>sideways</span></h1>
   <p>Vertical scroll translates into a horizontal gallery. The visitor's natural scroll gesture drives a cinematic horizontal pan through your content.</p>
   <div class="scroll-hint">Scroll down</div>
@@ -101,7 +101,7 @@
         <div class="h-card-bg" style="background: linear-gradient(135deg, #1a2a2e, #0d1a1c);"></div>
         <div class="h-card-overlay"></div>
         <div class="h-card-content">
-          <div class="h-card-num">01 / Strategy</div>
+          <div class="h-card-num">Market read</div>
           <h3>Research the market</h3>
           <p>Competitive analysis, user interviews, and positioning workshops. Find the gap before you build.</p>
         </div>
@@ -110,7 +110,7 @@
         <div class="h-card-bg" style="background: linear-gradient(135deg, #2a1a2e, #1c0d1a);"></div>
         <div class="h-card-overlay"></div>
         <div class="h-card-content">
-          <div class="h-card-num">02 / Design</div>
+          <div class="h-card-num">Experience frame</div>
           <h3>Define the experience</h3>
           <p>Wireframes, prototypes, and a design system that scales. Every pixel has a purpose.</p>
         </div>
@@ -119,7 +119,7 @@
         <div class="h-card-bg" style="background: linear-gradient(135deg, #2e2a1a, #1a1c0d);"></div>
         <div class="h-card-overlay"></div>
         <div class="h-card-content">
-          <div class="h-card-num">03 / Build</div>
+          <div class="h-card-num">Production path</div>
           <h3>Ship production code</h3>
           <p>TypeScript, edge functions, CI/CD pipelines. Production-grade from day one, not a prototype.</p>
         </div>
@@ -128,7 +128,7 @@
         <div class="h-card-bg" style="background: linear-gradient(135deg, #1a2e1f, #0d1c12);"></div>
         <div class="h-card-overlay"></div>
         <div class="h-card-content">
-          <div class="h-card-num">04 / Launch</div>
+          <div class="h-card-num">Launch lane</div>
           <h3>Go to market</h3>
           <p>Landing pages, waitlists, Product Hunt prep, and launch day orchestration. We handle the rollout.</p>
         </div>
@@ -137,7 +137,7 @@
         <div class="h-card-bg" style="background: linear-gradient(135deg, #2e1a1a, #1c0d0d);"></div>
         <div class="h-card-overlay"></div>
         <div class="h-card-content">
-          <div class="h-card-num">05 / Scale</div>
+          <div class="h-card-num">Growth loop</div>
           <h3>Grow and iterate</h3>
           <p>Analytics, A/B tests, performance optimisation. Turn launch into traction. Data drives every decision.</p>
         </div>
@@ -146,7 +146,7 @@
         <div class="h-card-bg" style="background: linear-gradient(135deg, #1a1e2e, #0d1018);"></div>
         <div class="h-card-overlay"></div>
         <div class="h-card-content">
-          <div class="h-card-num">06 / Support</div>
+          <div class="h-card-num">Support track</div>
           <h3>Retain and expand</h3>
           <p>Ongoing maintenance, feature sprints, and a retainer that keeps your product ahead of the market.</p>
         </div>
@@ -157,16 +157,16 @@
 
 <div class="h-progress" id="hProgress">
   <div class="h-progress-bar"><div class="h-progress-fill" id="hFill"></div></div>
-  <div class="h-progress-label" id="hLabel">1 / 6</div>
+  <div class="h-progress-label" id="hLabel">1 of 6</div>
 </div>
 
 <section class="explain">
   <div class="tag">Why it works</div>
   <h2>Gallery without a carousel</h2>
-  <p>Carousels have terrible engagement. Horizontal scroll hijack solves the same problem — showing many items in sequence — but uses the visitor's natural scroll gesture instead of tiny arrow buttons. Agencies, portfolios, and process timelines all convert better with this pattern.</p>
+  <p>Carousels have terrible engagement. Horizontal scroll hijack solves the same problem - showing many items in sequence - but uses the visitor's natural scroll gesture instead of tiny arrow buttons. Agencies, portfolios, and process timelines all convert better with this pattern.</p>
 </section>
 
-<footer>Cinematic Module — Horizontal Scroll Hijack</footer>
+<footer>Cinematic Module - Horizontal Scroll Hijack</footer>
 
 <script>
 (function() {
@@ -184,35 +184,38 @@
     return;
   }
 
-  // Calculate how far to scroll horizontally
-  function getScrollDistance() {
-    return track.scrollWidth - window.innerWidth;
+  var totalCards = cards.length;
+  var maxX = 0;
+  var maxY = 1;
+  var ticking = false;
+
+  function measure() {
+    maxX = Math.max(0, track.scrollWidth - window.innerWidth);
+    maxY = Math.max(window.innerHeight, maxX + window.innerHeight * 1.25);
+    section.style.height = Math.ceil(maxY + window.innerHeight) + 'px';
+    update();
   }
 
-  // Set section height to accommodate horizontal scroll
-  var totalCards = cards.length;
-  section.style.height = (totalCards * 100) + 'vh';
+  function update() {
+    ticking = false;
+    var rect = section.getBoundingClientRect();
+    var p = Math.min(Math.max(-rect.top / maxY, 0), 1);
+    track.style.transform = 'translate3d(' + (-maxX * p) + 'px,0,0)';
+    fill.style.width = (p * 100) + '%';
+    label.textContent = (Math.min(totalCards, Math.floor(p * totalCards) + 1)) + ' of ' + totalCards;
+    if (rect.top <= 0 && rect.bottom >= window.innerHeight) progress.classList.add('visible');
+    else progress.classList.remove('visible');
+  }
 
-  gsap.to(track, {
-    x: function() { return -getScrollDistance(); },
-    ease: 'none',
-    scrollTrigger: {
-      trigger: section,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.5,
-      invalidateOnRefresh: true,
-      onUpdate: function(self) {
-        var p = self.progress;
-        fill.style.width = (p * 100) + '%';
-        label.textContent = Math.min(Math.ceil(p * totalCards + 0.5), totalCards) + ' / ' + totalCards;
-      },
-      onEnter: function() { progress.classList.add('visible'); },
-      onLeave: function() { progress.classList.remove('visible'); },
-      onEnterBack: function() { progress.classList.add('visible'); },
-      onLeaveBack: function() { progress.classList.remove('visible'); }
-    }
-  });
+  function requestUpdate() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }
+
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', measure);
+  measure();
 })();
 </script>
 <div style="position:fixed;bottom:0;left:0;right:0;padding:8px 16px;font-size:11px;color:#5a5a5e;text-align:center;z-index:99;background:rgba(9,9,11,.85);backdrop-filter:blur(8px);border-top:1px solid #1e1e22;font-family:Outfit,sans-serif">&copy; Created by Jay from <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboLabs</a>. Learn more at <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboNuggets</a></div>

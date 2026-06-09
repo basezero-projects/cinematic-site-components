@@ -1,5 +1,11 @@
 # Cinematic Site Components Changelog
 
+## [0.4.3] - 2026-06-09
+
+### Fixed
+
+- **Frame-by-frame SYVR taste pass**: Reworked the older standalone animation modules so the first viewport shows the actual specimen instead of only a title card. Compact intro heights now reveal the effect area on desktop and phone for cursor, card, scroll, text, counter, button, dock, glitch, gradient, mesh, marquee, and transition examples. `horizontal-scroll.html` no longer drops into empty pinned frames on desktop; its horizontal track is driven by the section's real scroll position and keeps visible cards through every sampled frame while mobile stays stacked. `image-trail.html` now shows real preview images immediately and auto-seeds trail pops on desktop and touch. `curtain-reveal.html` now shows the split curtain and reveal state in the sampled frames. `svg-draw.html` now includes a faint guide path so the scroll-drawn route reads before progress begins, and `circular-text.html` raises the spinning badge into the first viewport. Removed SYVR hard-gate copy tells from the touched examples, including slash-numbered section labels, `Step 01` labels, and em-dash copy.
+
 ## [0.4.2] - 2026-06-09
 
 ### Fixed
