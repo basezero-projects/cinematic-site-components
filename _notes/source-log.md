@@ -23,6 +23,125 @@ Why it belongs here:
 
 ## Entries
 
+### 2026-06-09 - 3D camera tour
+
+Date: 2026-06-09
+Source: Codrops
+URL: https://tympanus.net/codrops/2025/11/19/how-to-build-cinematic-3d-scroll-experiences-with-gsap/
+Scrape method: Firecrawl
+Candidate pattern: Scroll acts like a camera director through a staged 3D product or venue scene
+Score: 8/10
+Decision: Build
+Good for: Product construction, venue walkthroughs, architecture, hardware, gallery installations, immersive case-study artifacts
+Avoid for: Pages with no inspectable subject, generic floating objects, low-performance landing pages, or cases where a still image explains the subject better
+Motion risk: Camera movement can become spectacle if the object and copy are not linked to specific inspection beats
+Reduced motion fallback: Static product/venue chapter board with the important angles summarized as readable cards
+Dependencies: Three.js CDN, vanilla scroll mapping, procedural geometry
+License/attribution: Original local implementation inspired by public pattern research; no source code copied
+Why it belongs here: Built as `scroll-camera-tour.html`, it gives future sites a concrete 3D camera-path pattern without needing model assets or a framework.
+
+### 2026-06-09 - Spatial product hotspots
+
+Date: 2026-06-09
+Source: Codrops
+URL: https://tympanus.net/codrops/2024/03/06/on-scroll-3d-stack-motion-effect/ and https://tympanus.net/codrops/2025/05/07/on-scroll-3d-carousel/
+Scrape method: Firecrawl
+Candidate pattern: A lightweight CSS 3D object tilts and expands through tap/click hotspots
+Score: 8/10
+Decision: Build
+Good for: Product detail sections, installation artifacts, device features, package callouts, service objects, evidence cards
+Avoid for: Decorative dots, vague feature labels, too many callouts, hover-only critical content, or products with no real parts to explain
+Motion risk: Hotspots become gimmicks if they do not point to visible product details
+Reduced motion fallback: Static layered product with tap/keyboard buttons and all copy reachable
+Dependencies: CSS 3D transforms and vanilla JavaScript
+License/attribution: Original local implementation inspired by public pattern research; no source code copied
+Why it belongs here: Built as `spatial-product-hotspots.html`, it covers a practical 3D product-disclosure job without the cost of WebGL.
+
+### 2026-06-09 - Reactive 3D image tube
+
+Date: 2026-06-09
+Source: Codrops
+URL: https://tympanus.net/codrops/2026/02/17/reactive-depth-building-a-scroll-driven-3d-image-tube-with-react-three-fiber/
+Scrape method: Firecrawl
+Candidate pattern: Scroll-driven cylindrical image field for travelling through a collection
+Score: 7/10
+Decision: Backlog
+Good for: Visual archives, lookbooks, portfolio collections, campaign galleries, media-heavy venue pages
+Avoid for: Low-asset pages, card lists where every item has equal importance, and sites already using coverflow or rotating gallery modules
+Motion risk: Image tubes can become novelty loops and hide collection hierarchy
+Reduced motion fallback: Static image grid or ordered collection list
+Dependencies: Source used React Three Fiber; future local build would need CSS 3D or Three.js
+License/attribution: Source noted for pattern research only
+Why it belongs here: Strong 3D reference, but it overlaps existing gallery modules until a sharper collection story is needed.
+
+### 2026-06-09 - 3D infinite carousel with reactive gradients
+
+Date: 2026-06-09
+Source: Codrops
+URL: https://tympanus.net/codrops/2025/11/11/building-a-3d-infinite-carousel-with-reactive-background-gradients/
+Scrape method: Firecrawl
+Candidate pattern: 3D card carousel where the background colour field responds to the active item
+Score: 6/10
+Decision: Backlog
+Good for: Featured products, music or event cards, campaign cards, premium testimonials, media covers
+Avoid for: Generic carousels, infinite loops with unclear position, and pages where `coverflow.html` already fits
+Motion risk: Reactive gradients can turn into decoration if they do not improve active-card focus
+Reduced motion fallback: Static featured-card row or selected-card detail panel
+Dependencies: Source uses modern animation stack; local implementation could be CSS 3D plus vanilla JS
+License/attribution: Source noted for pattern research only
+Why it belongs here: Useful active-item staging reference, but not distinct enough for a new module yet.
+
+### 2026-06-09 - Responsive WebGL text
+
+Date: 2026-06-09
+Source: Codrops
+URL: https://tympanus.net/codrops/2025/06/05/how-to-create-responsive-and-seo-friendly-webgl-text/
+Scrape method: Firecrawl
+Candidate pattern: DOM text remains accessible while WebGL mirrors or enhances it with shader treatment
+Score: 7/10
+Decision: Backlog
+Good for: Editorial heroes, music/event pages, product campaigns, identity sections where text is the main visual asset
+Avoid for: Normal headings, long copy, and cases where CSS text effects are enough
+Motion risk: Canvas text can break accessibility and mobile line wrapping if the DOM and WebGL layers diverge
+Reduced motion fallback: Real DOM text remains visible with shader layer disabled
+Dependencies: WebGL or Three.js, font loading, DOM-to-canvas synchronization
+License/attribution: Source noted for pattern research only
+Why it belongs here: Valuable technical reference for future shader text, but not built until there is a specific text treatment worth the cost.
+
+### 2026-06-09 - Dreamy GPGPU particles
+
+Date: 2026-06-09
+Source: Codrops
+URL: https://tympanus.net/codrops/2024/12/19/crafting-a-dreamy-particle-effect-with-three-js-and-gpgpu/
+Scrape method: Firecrawl
+Candidate pattern: GPU particle field for soft atmospheric motion
+Score: 5/10 as a module, useful as reference
+Decision: Reject as a standalone module
+Good for: Rare music, event, art, or product atmosphere when particles reveal or support a real subject
+Avoid for: Background filler, trust-heavy pages, and any page where the particle field is the whole idea
+Motion risk: Particle spam is a common junk-animation failure mode
+Reduced motion fallback: Static image or no particle layer
+Dependencies: Three.js, GPGPU simulation, shader materials
+License/attribution: Source noted for technical reference only
+Why it belongs here: Good performance reference, but not a module unless it gets tied to an actual reveal or product artifact.
+
+### 2026-06-09 - Staggered 3D grid animations
+
+Date: 2026-06-09
+Source: Codrops
+URL: https://tympanus.net/codrops/2024/10/16/staggered-3d-grid-animations-with-scroll-triggered-effects/
+Scrape method: Firecrawl
+Candidate pattern: Scroll-triggered grid items enter with 3D stagger and perspective
+Score: 5/10 as a standalone module
+Decision: Reject for now
+Good for: Portfolio indexes, product grids, and image collections when the cards themselves are strong
+Avoid for: Another generic card-grid entrance module, text-heavy grids, or pages with weak assets
+Motion risk: Too many elements moving at once hurts scanability
+Reduced motion fallback: Static grid with no 3D entrance
+Dependencies: CSS/GSAP-style stagger concepts
+License/attribution: Source noted for craft reference only
+Why it belongs here: Useful for future polish, but too close to generic entrance animation to add as a standalone example.
+
 ### 2026-06-09 - Responsive curved path motion
 
 Date: 2026-06-09
@@ -56,23 +175,6 @@ Reduced motion fallback: Display the words as readable static chips with the seq
 Dependencies: CSS 3D transforms and vanilla JavaScript in the local module
 License/attribution: Original local implementation inspired by public pattern research; no source code copied
 Why it belongs here: Built as `scroll-3d-text.html`, it turns a small vocabulary set into a sequenced section with a real explanation for each active word.
-
-### 2026-06-09 - Cinematic 3D scroll scenes
-
-Date: 2026-06-09
-Source: Codrops
-URL: https://tympanus.net/codrops/2025/11/19/how-to-build-cinematic-3d-scroll-experiences-with-gsap/
-Scrape method: Firecrawl
-Candidate pattern: Scroll-controlled 3D scene direction with camera paths, image cylinders, particles, shader depth, and timed copy
-Score: 7/10
-Decision: Backlog
-Good for: Premium product storytelling, venue walkthroughs, architecture, art, editorial campaigns, immersive launches
-Avoid for: Local service pages, low-asset pages, conversion pages where performance and clarity matter more than immersion
-Motion risk: Heavy WebGL/3D complexity can create a spectacle without a page job and needs deeper mobile/canvas verification
-Reduced motion fallback: Static scene stills or a non-3D chapter stack
-Dependencies: OGL/Three-like renderer, GSAP, ScrollTrigger, shader or particle logic
-License/attribution: Source noted for pattern research only
-Why it belongs here: It is worth keeping as a future high-end reference, but not worth building until there is a sharper local module concept than "cinematic 3D scene."
 
 ### 2026-06-09 - WebGL shader ripples, reveals, and blur
 

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Camera Tour - Cinematic Module</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080807;
+    --ink:#f1eadc;
+    --muted:#8b8273;
+    --line:#27231f;
+    --panel:#11100e;
+    --panel-2:#191612;
+    --gold:#d7ae62;
+    --rust:#c45f33;
+    --green:#718f76;
+    --blue:#789eaf;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    min-height:100%;
+    overflow-x:hidden;
+    background:
+      radial-gradient(circle at 12% 12%,rgba(113,143,118,.2),transparent 28%),
+      radial-gradient(circle at 78% 86%,rgba(196,95,51,.14),transparent 33%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Public Sans",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    opacity:.1;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+    mix-blend-mode:screen;
+  }
+  .eyebrow,.chapter-label,.meta-label,.fallback-label{
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+  }
+  .hero{
+    position:relative;
+    z-index:2;
+    min-height:88dvh;
+    display:grid;
+    place-items:end center;
+    padding:92px 24px 54px;
+  }
+  .hero-inner{
+    width:min(1180px,100%);
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(300px,390px);
+    gap:44px;
+    align-items:end;
+  }
+  .eyebrow{color:var(--rust);margin-bottom:18px}
+  h1{
+    max-width:900px;
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(48px,8.5vw,124px);
+    line-height:.84;
+    letter-spacing:-.06em;
+    font-weight:900;
+  }
+  h1 span{color:var(--gold)}
+  .hero-copy{
+    max-width:61ch;
+    margin-top:26px;
+    color:var(--muted);
+    font-size:18px;
+    line-height:1.62;
+  }
+  .use-card{
+    min-height:260px;
+    display:grid;
+    align-content:end;
+    gap:18px;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;
+    background:
+      linear-gradient(145deg,rgba(255,255,255,.07),transparent 36%),
+      var(--panel);
+    box-shadow:0 34px 100px rgba(0,0,0,.28);
+    padding:24px;
+  }
+  .use-card strong{
+    font-family:"Archivo",sans-serif;
+    font-size:36px;
+    line-height:.96;
+    letter-spacing:-.04em;
+  }
+  .use-card p{
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.56;
+  }
+  .tour{display:none;position:relative;z-index:2;min-height:470vh;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07)}
+  .has-webgl .tour{display:block}
+  .stage{
+    position:sticky;
+    top:0;
+    min-height:100dvh;
+    overflow:hidden;
+    background:#060606;
+  }
+  canvas{
+    display:block;
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    background:radial-gradient(circle at 50% 38%,#1a1814,#060606 64%);
+  }
+  .stage::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(90deg,rgba(6,6,6,.82),transparent 38%,rgba(6,6,6,.34)),
+      linear-gradient(180deg,rgba(6,6,6,.68),transparent 28%,rgba(6,6,6,.76));
+  }
+  .tour-ui{
+    position:relative;
+    z-index:3;
+    min-height:100dvh;
+    width:min(1180px,100%);
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:minmax(280px,410px) minmax(0,1fr);
+    gap:32px;
+    align-items:end;
+    padding:48px 24px 58px;
+    pointer-events:none;
+  }
+  .chapter-card{
+    pointer-events:auto;
+    width:min(410px,100%);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;
+    background:rgba(13,12,10,.8);
+    backdrop-filter:blur(18px);
+    box-shadow:0 28px 90px rgba(0,0,0,.36);
+    padding:22px;
+  }
+  .chapter-label{color:var(--gold);margin-bottom:16px}
+  .chapter-card h2{
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(32px,4.6vw,60px);
+    line-height:.92;
+    letter-spacing:-.055em;
+    margin-bottom:18px;
+  }
+  .chapter-card p{
+    color:rgba(241,234,220,.72);
+    font-size:15px;
+    line-height:1.62;
+  }
+  .progress-shell{
+    height:5px;
+    border-radius:999px;
+    background:rgba(255,255,255,.1);
+    overflow:hidden;
+    margin-top:22px;
+  }
+  .progress-fill{
+    width:0%;
+    height:100%;
+    border-radius:inherit;
+    background:linear-gradient(90deg,var(--green),var(--gold),var(--rust));
+  }
+  .tour-meta{
+    align-self:start;
+    justify-self:end;
+    width:min(360px,100%);
+    display:grid;
+    gap:12px;
+    padding-top:12px;
+  }
+  .meta-row{
+    display:grid;
+    grid-template-columns:92px 1fr;
+    gap:16px;
+    border-top:1px solid rgba(255,255,255,.12);
+    padding-top:12px;
+  }
+  .meta-label{color:rgba(241,234,220,.44)}
+  .meta-row span:last-child{
+    color:rgba(241,234,220,.76);
+    font-size:14px;
+    line-height:1.45;
+  }
+  .static-fallback{
+    position:relative;
+    z-index:2;
+    display:block;
+    max-width:1120px;
+    margin:0 auto;
+    padding:96px 24px 118px;
+  }
+  .has-webgl .static-fallback{display:none}
+  .fallback-label{color:var(--rust);margin-bottom:18px}
+  .fallback-grid{
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    gap:18px;
+    align-items:stretch;
+  }
+  .fallback-visual{
+    min-height:420px;
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;
+    background:
+      radial-gradient(circle at 50% 38%,rgba(215,174,98,.26),transparent 30%),
+      linear-gradient(145deg,#171510,#0c0b09);
+  }
+  .fallback-visual::before{
+    content:"";
+    position:absolute;
+    left:18%;
+    right:18%;
+    top:34%;
+    height:32%;
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:18px;
+    background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+    box-shadow:0 36px 90px rgba(0,0,0,.34);
+  }
+  .fallback-visual::after{
+    content:"";
+    position:absolute;
+    left:33%;
+    right:33%;
+    top:26%;
+    height:44%;
+    border-radius:50%;
+    border:16px solid rgba(215,174,98,.66);
+    box-shadow:0 0 80px rgba(215,174,98,.2);
+  }
+  .fallback-copy{
+    display:grid;
+    gap:12px;
+  }
+  .fallback-step{
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:8px;
+    background:rgba(17,16,14,.82);
+    padding:18px;
+  }
+  .fallback-step b{
+    display:block;
+    margin-bottom:7px;
+    color:var(--gold);
+    font-size:13px;
+  }
+  .fallback-step span{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.5;
+  }
+  .why{
+    position:relative;
+    z-index:2;
+    max-width:1040px;
+    margin:0 auto;
+    padding:112px 24px 132px;
+    display:grid;
+    grid-template-columns:.8fr 1.2fr;
+    gap:44px;
+  }
+  .why h2{
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(34px,5vw,62px);
+    line-height:.95;
+    letter-spacing:-.05em;
+  }
+  .why p{
+    color:var(--muted);
+    font-size:17px;
+    line-height:1.7;
+  }
+  footer{
+    position:relative;
+    z-index:2;
+    border-top:1px solid rgba(255,255,255,.08);
+    color:var(--muted);
+    text-align:center;
+    padding:24px;
+    font-size:12px;
+  }
+  .credit{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:30;
+    padding:8px 16px;
+    color:rgba(241,234,220,.38);
+    background:rgba(8,8,7,.84);
+    border-top:1px solid rgba(255,255,255,.08);
+    text-align:center;
+    font-size:11px;
+    backdrop-filter:blur(8px);
+  }
+  .credit a{color:var(--gold);text-decoration:none}
+  @media(max-width:860px){
+    .hero-inner,.tour-ui,.fallback-grid,.why{grid-template-columns:1fr}
+    .hero{padding:76px 18px 38px}
+    .use-card{min-height:220px}
+    .tour-ui{align-items:end;padding:24px 16px 58px}
+    .tour-meta{display:none}
+    .chapter-card{width:100%;padding:18px}
+    .chapter-card h2{font-size:clamp(30px,9vw,44px)}
+    .stage::after{background:linear-gradient(180deg,rgba(6,6,6,.26),transparent 34%,rgba(6,6,6,.86))}
+    .fallback-visual{min-height:340px}
+  }
+  @media(max-width:560px){
+    h1{font-size:clamp(42px,15vw,70px)}
+    .hero-copy{font-size:16px}
+    .tour{min-height:410vh}
+    .chapter-card p{font-size:14px}
+    .fallback-step{padding:16px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    .tour{display:none!important}
+    .static-fallback{display:block!important}
+  }
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Module 38 - 3D Camera Tour</div>
+      <h1>Direct the camera through the <span>thing that matters.</span></h1>
+      <p class="hero-copy">Use this when depth is part of the proof: product construction, venue walkthroughs, architecture, hardware, gallery installations, or a case-study object that deserves more than a flat hero image.</p>
+    </div>
+    <aside class="use-card">
+      <strong>A scroll scene should make inspection easier.</strong>
+      <p>The camera moves with a purpose: wide read, material pass, detail pass, proof angle, then a resolved offer frame.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="tour" id="tour">
+  <div class="stage">
+    <canvas id="sceneCanvas" aria-label="Scroll-driven 3D product camera tour"></canvas>
+    <div class="tour-ui">
+      <article class="chapter-card" aria-live="polite">
+        <div class="chapter-label" id="chapterLabel">Opening read</div>
+        <h2 id="chapterTitle">Start wide enough to understand the object.</h2>
+        <p id="chapterCopy">The first camera position should give the visitor the object, the surface, and the mood before asking them to inspect detail.</p>
+        <div class="progress-shell" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+      </article>
+      <div class="tour-meta" aria-hidden="true">
+        <div class="meta-row"><span class="meta-label">Input</span><span>Procedural Three.js product scene with no image dependency.</span></div>
+        <div class="meta-row"><span class="meta-label">Motion</span><span>Scroll controls camera position, object rotation, exploded layers, and light energy.</span></div>
+        <div class="meta-row"><span class="meta-label">Fallback</span><span>Reduced motion or missing WebGL switches to a static chapter board.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="static-fallback" id="fallback">
+  <div class="fallback-label">Static 3D tour fallback</div>
+  <div class="fallback-grid">
+    <div class="fallback-visual" aria-hidden="true"></div>
+    <div class="fallback-copy">
+      <div class="fallback-step"><b>Opening read</b><span>Show the product and its setting before asking for detail attention.</span></div>
+      <div class="fallback-step"><b>Material pass</b><span>Move close enough for finish, shape, and build quality to carry the claim.</span></div>
+      <div class="fallback-step"><b>Interface detail</b><span>Use the camera to point at the controls, ports, lens, or key working surface.</span></div>
+      <div class="fallback-step"><b>Resolved frame</b><span>End where the CTA, offer, or next step can attach without fighting the scene.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <h2>Why this belongs in the library.</h2>
+  <p>Most 3D scroll demos move because they can. This module treats the camera like an editor. It is strongest when a visitor needs to understand an object, place, or build process through a few planned angles. If the page has no meaningful thing to inspect, use a lighter module instead.</p>
+</section>
+
+<footer>Cinematic Module - 3D Camera Tour</footer>
+<div class="credit">&copy; Created by Jay from <a href="https://robonuggets.com">RoboLabs</a>. Learn more at <a href="https://robonuggets.com">RoboNuggets</a></div>
+
+<script type="module">
+import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+
+(function(){
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const tour = document.getElementById("tour");
+  const canvas = document.getElementById("sceneCanvas");
+  const progressFill = document.getElementById("progressFill");
+  const chapterLabel = document.getElementById("chapterLabel");
+  const chapterTitle = document.getElementById("chapterTitle");
+  const chapterCopy = document.getElementById("chapterCopy");
+  if (reduce) return;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false, powerPreference:"high-performance", preserveDrawingBuffer:true });
+  renderer.setPixelRatio(Math.min(1.7, window.devicePixelRatio || 1));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x070706);
+  scene.fog = new THREE.Fog(0x070706, 8, 17);
+
+  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 60);
+  const target = new THREE.Vector3();
+
+  const root = new THREE.Group();
+  scene.add(root);
+
+  const materials = {
+    body: new THREE.MeshPhysicalMaterial({ color:0x171817, roughness:.62, metalness:.55, clearcoat:.32, clearcoatRoughness:.4 }),
+    edge: new THREE.MeshStandardMaterial({ color:0xd7ae62, roughness:.32, metalness:.75 }),
+    glass: new THREE.MeshPhysicalMaterial({ color:0x6f9faf, roughness:.08, metalness:.08, transmission:.1, transparent:true, opacity:.42, clearcoat:1 }),
+    rubber: new THREE.MeshStandardMaterial({ color:0x0b0c0c, roughness:.76, metalness:.18 }),
+    light: new THREE.MeshStandardMaterial({ color:0xf4c36a, emissive:0xd88937, emissiveIntensity:.8, roughness:.38 }),
+    panel: new THREE.MeshBasicMaterial({ color:0x6f9faf, transparent:true, opacity:.16, depthWrite:false })
+  };
+
+  function mesh(geometry, material, position, rotation, scale){
+    const m = new THREE.Mesh(geometry, material);
+    m.position.set(position[0], position[1], position[2]);
+    m.rotation.set(rotation[0], rotation[1], rotation[2]);
+    m.scale.set(scale[0], scale[1], scale[2]);
+    root.add(m);
+    return m;
+  }
+
+  const pedestal = mesh(new THREE.CylinderGeometry(2.3, 2.05, .18, 84), materials.rubber, [0,-.38,0], [0,0,0], [1,1,1]);
+  const body = mesh(new THREE.BoxGeometry(2.62,.34,1.42), materials.body, [0,0,0], [0,0,0], [1,1,1]);
+  const face = mesh(new THREE.BoxGeometry(2.74,.08,1.5), materials.edge, [0,.22,0], [0,0,0], [1,1,1]);
+  const glass = mesh(new THREE.BoxGeometry(1.55,.06,.9), materials.glass, [-.32,.29,.02], [0,0,0], [1,1,1]);
+  const rail = mesh(new THREE.BoxGeometry(2.88,.06,.08), materials.edge, [0,.33,-.72], [0,0,0], [1,1,1]);
+  const frontRing = mesh(new THREE.TorusGeometry(.36,.045,16,70), materials.edge, [.72,.04,.74], [0,0,0], [1,1,1]);
+  const frontLens = mesh(new THREE.CylinderGeometry(.27,.27,.05,48), materials.glass, [.72,.04,.77], [Math.PI/2,0,0], [1,1,1]);
+  const knob = mesh(new THREE.CylinderGeometry(.18,.18,.16,40), materials.rubber, [-.95,.27,.34], [0,0,0], [1,1,1]);
+  const meter = mesh(new THREE.BoxGeometry(.46,.045,.18), materials.light, [.16,.34,.32], [0,0,0], [1,1,1]);
+  const slider = mesh(new THREE.BoxGeometry(.76,.05,.08), materials.edge, [-.16,.35,-.32], [0,0,0], [1,1,1]);
+
+  const exploded = new THREE.Group();
+  root.add(exploded);
+  const floatingPanel = new THREE.Mesh(new THREE.BoxGeometry(2.2,.035,1.15), materials.panel);
+  floatingPanel.position.set(.08,.9,-.08);
+  exploded.add(floatingPanel);
+  const floatingFrame = new THREE.Mesh(new THREE.TorusGeometry(.74,.012,8,4), materials.panel);
+  floatingFrame.position.set(.72,.96,.08);
+  floatingFrame.rotation.z = Math.PI / 4;
+  exploded.add(floatingFrame);
+
+  const floor = new THREE.GridHelper(18, 36, 0x5d4c35, 0x22201b);
+  floor.position.y = -.5;
+  scene.add(floor);
+
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(2.72,.012,8,160), new THREE.MeshBasicMaterial({color:0xd7ae62, transparent:true, opacity:.34}));
+  ring.rotation.x = Math.PI / 2;
+  ring.position.y = -.36;
+  scene.add(ring);
+
+  const points = new THREE.BufferGeometry();
+  const pointArray = [];
+  for (let i = 0; i < 160; i += 1) {
+    const radius = 2.8 + Math.random() * 4.2;
+    const angle = Math.random() * Math.PI * 2;
+    pointArray.push(Math.cos(angle) * radius, Math.random() * 2.8 - .3, Math.sin(angle) * radius);
+  }
+  points.setAttribute("position", new THREE.Float32BufferAttribute(pointArray, 3));
+  const particleField = new THREE.Points(points, new THREE.PointsMaterial({ color:0xd7ae62, size:.025, transparent:true, opacity:.42 }));
+  scene.add(particleField);
+
+  scene.add(new THREE.HemisphereLight(0xf4ead8, 0x090907, 1.15));
+  const key = new THREE.DirectionalLight(0xffead0, 2.2);
+  key.position.set(3, 4.5, 4);
+  scene.add(key);
+  const rim = new THREE.PointLight(0x6faabd, 18, 8, 2);
+  rim.position.set(-3.4,1.8,-2.5);
+  scene.add(rim);
+  const warm = new THREE.PointLight(0xd48937, 11, 7, 2);
+  warm.position.set(2.2,.8,1.8);
+  scene.add(warm);
+
+  const chapters = [
+    ["Opening read","Start wide enough to understand the object.","The first camera position should give the visitor the object, the surface, and the mood before asking them to inspect detail."],
+    ["Material pass","Let finish and shape carry the first claim.","A good product tour uses the near pass for material truth: bevels, glass, controls, lenses, seams, and texture."],
+    ["Interface detail","Move the eye to the working surface.","The camera should point at the part the copy is discussing. This avoids the generic floating-object problem."],
+    ["Spatial proof","Use depth to connect pieces, not decorate them.","Exploded layers, guides, or nearby components should explain assembly, function, scale, or workflow."],
+    ["Resolved frame","End where the action belongs.","The final angle should leave space for pricing, booking, a case-study link, or the next product step."]
+  ];
+  const keyframes = [
+    { p:0, pos:new THREE.Vector3(.2,2.15,5.8), look:new THREE.Vector3(0,.12,0), rot:-.12 },
+    { p:.25, pos:new THREE.Vector3(2.85,1.45,3.55), look:new THREE.Vector3(.14,.18,.02), rot:.45 },
+    { p:.5, pos:new THREE.Vector3(-2.85,1.05,2.48), look:new THREE.Vector3(.38,.15,.43), rot:1.0 },
+    { p:.75, pos:new THREE.Vector3(.15,3.22,2.3), look:new THREE.Vector3(0,.42,-.05), rot:1.45 },
+    { p:1, pos:new THREE.Vector3(.05,1.48,5.1), look:new THREE.Vector3(0,.18,0), rot:2.04 }
+  ];
+
+  function clamp(value, min, max){ return Math.max(min, Math.min(max, value)); }
+  function smooth(value){ return value * value * (3 - 2 * value); }
+  function progress(){
+    const rect = tour.getBoundingClientRect();
+    const travel = Math.max(1, rect.height - window.innerHeight * 1.05);
+    return clamp(-rect.top / travel, 0, 1);
+  }
+  function sampleFrame(p){
+    let a = keyframes[0];
+    let b = keyframes[keyframes.length - 1];
+    for (let i = 0; i < keyframes.length - 1; i += 1) {
+      if (p >= keyframes[i].p && p <= keyframes[i + 1].p) {
+        a = keyframes[i];
+        b = keyframes[i + 1];
+        break;
+      }
+    }
+    const local = smooth((p - a.p) / Math.max(.001, b.p - a.p));
+    return { a, b, local };
+  }
+  function updateCopy(p){
+    const index = Math.min(chapters.length - 1, Math.round(p * (chapters.length - 1)));
+    chapterLabel.textContent = chapters[index][0];
+    chapterTitle.textContent = chapters[index][1];
+    chapterCopy.textContent = chapters[index][2];
+    progressFill.style.width = (p * 100).toFixed(1) + "%";
+  }
+  function resize(){
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    renderer.setSize(width, height, false);
+    camera.aspect = width / height;
+    camera.fov = width < 760 ? 48 : 42;
+    camera.updateProjectionMatrix();
+    root.scale.setScalar(width < 760 ? .78 : 1);
+  }
+
+  document.body.classList.add("has-webgl");
+  resize();
+  window.addEventListener("resize", resize, { passive:true });
+
+  let eased = 0;
+  function render(){
+    const p = progress();
+    eased += (p - eased) * .075;
+    const frame = sampleFrame(eased);
+    camera.position.copy(frame.a.pos).lerp(frame.b.pos, frame.local);
+    target.copy(frame.a.look).lerp(frame.b.look, frame.local);
+    camera.lookAt(target);
+
+    root.rotation.y = THREE.MathUtils.lerp(frame.a.rot, frame.b.rot, frame.local);
+    root.position.y = Math.sin(performance.now() * .0008) * .035;
+    exploded.position.y = THREE.MathUtils.lerp(0, .46, smooth(clamp((eased - .52) / .22, 0, 1)));
+    floatingPanel.material.opacity = .1 + .16 * smooth(clamp((eased - .52) / .22, 0, 1));
+    ring.rotation.z += .0018;
+    particleField.rotation.y += .0008;
+    meter.material.emissiveIntensity = .62 + Math.sin(performance.now() * .003) * .18 + eased * .32;
+    rim.intensity = 13 + eased * 10;
+    warm.intensity = 9 + Math.sin(eased * Math.PI) * 6;
+
+    updateCopy(eased);
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+  }
+  render();
+})();
+</script>
+</body>
+</html>

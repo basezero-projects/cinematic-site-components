@@ -20,11 +20,11 @@ This file mirrors `CLAUDE.md` so Codex follows the same project rules as Claude 
 
 # Cinematic Site Modules
 
-A library of 37 cinematic website modules. Each is a standalone single-file HTML demo. No build step, no frameworks.
+A library of 39 cinematic website modules. Each is a standalone single-file HTML demo. No build step, no frameworks.
 
 ## What's Here
 
-- `*.html` — 37 standalone cinematic module demos (just open in browser)
+- `*.html` — 39 standalone cinematic module demos (just open in browser)
 - `index.html` — Visual hub page with animated mini-demos for each module
 - `QUALITY-GATE.md` — Required scoring gate for any new module candidate
 - `INTAKE-WORKFLOW.md` — Firecrawl-first source intake workflow with FlareSolverr as fallback only
@@ -37,9 +37,9 @@ Do not add modules because they are trendy or easy to scrape. New candidates mus
 
 ## Module Categories
 
-- **Scroll-Driven** (15) — Text mask, sticky stack, zoom parallax, horizontal scroll, sticky cards, SVG draw, curtain reveal, split screen, color shift, service area map, SVG mask chapters, scroll filter distortion, WebGL rotating gallery, curved path motion, 3D scroll text
+- **Scroll-Driven** (16) — Text mask, sticky stack, zoom parallax, horizontal scroll, sticky cards, SVG draw, curtain reveal, split screen, color shift, service area map, SVG mask chapters, scroll filter distortion, WebGL rotating gallery, curved path motion, 3D scroll text, 3D camera tour
 - **Cursor & Hover** (9) — Cursor-reactive, hover intro grid, accordion, cursor reveal, image trail, flip cards, magnetic grid, spotlight borders, drag-to-pan
-- **Click & Tap** (6) — View transitions, particle button, odometer, coverflow, dynamic island, dock nav
+- **Click & Tap** (7) — View transitions, particle button, odometer, coverflow, dynamic island, dock nav, spatial product hotspots
 - **Ambient & Auto** (7) — Text scramble, marquee, mesh gradient, circular text, glitch, typewriter, gradient stroke
 
 ## Requirements

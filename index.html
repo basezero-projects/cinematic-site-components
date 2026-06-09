@@ -126,6 +126,15 @@
   .mini-text-wheel span:nth-child(5){transform:translate(-50%,-50%) rotateX(240deg) translateZ(48px);color:#e8793a}
   .mini-text-wheel span:nth-child(6){transform:translate(-50%,-50%) rotateX(300deg) translateZ(48px);color:#8aa6b8}
   @keyframes miniTextSpin{0%,10%{transform:rotateX(0deg)}22%,28%{transform:rotateX(-60deg)}40%,46%{transform:rotateX(-120deg)}58%,64%{transform:rotateX(-180deg)}76%,82%{transform:rotateX(-240deg)}94%,100%{transform:rotateX(-300deg)}}
+  .mini-camera-tour{position:relative;width:138px;height:94px;perspective:270px}
+  .mini-camera-floor{position:absolute;left:4px;right:4px;bottom:8px;height:46px;border-radius:50%;border:1px solid rgba(200,169,126,.24);transform:rotateX(68deg)}
+  .mini-camera-object{position:absolute;left:48px;top:26px;width:48px;height:36px;border-radius:8px;background:linear-gradient(145deg,#22231f,#0d0d0b);box-shadow:0 18px 26px rgba(0,0,0,.34);transform-style:preserve-3d;animation:miniCameraObject 4.8s cubic-bezier(.37,0,.18,1) infinite}
+  .mini-camera-object::before{content:"";position:absolute;left:8px;top:8px;width:20px;height:14px;border-radius:4px;background:#6f9faf;box-shadow:0 0 18px rgba(111,159,175,.34)}
+  .mini-camera-object::after{content:"";position:absolute;right:7px;top:10px;width:14px;height:14px;border-radius:50%;border:3px solid #c8a97e}
+  .mini-camera-path{position:absolute;left:13px;top:13px;width:112px;height:64px;border:1px dashed rgba(232,121,58,.36);border-radius:50%;transform:rotate(-14deg)}
+  .mini-camera-dot{position:absolute;width:8px;height:8px;border-radius:50%;background:#f3efe3;box-shadow:0 0 16px rgba(232,121,58,.6);offset-path:path("M18,66 C18,12 106,8 118,50 C103,80 38,88 18,66");animation:miniCameraDot 4.8s cubic-bezier(.37,0,.18,1) infinite}
+  @keyframes miniCameraDot{0%{offset-distance:0%}55%,72%{offset-distance:78%}100%{offset-distance:100%}}
+  @keyframes miniCameraObject{0%,100%{transform:rotateX(12deg) rotateY(-22deg)}45%,65%{transform:rotateX(18deg) rotateY(28deg)}}
 
   /* Curtain */
   .mini-curtain{display:flex;width:100%;height:100%;position:absolute;inset:0}
@@ -265,6 +274,16 @@
   .mini-island-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:breathe 2s ease infinite}
   @keyframes breathe{0%,100%{opacity:.5}50%{opacity:1}}
   @keyframes islandMorph{0%,30%{padding:6px 16px;border-radius:100px}50%,70%{padding:12px 20px;border-radius:14px}100%{padding:6px 16px;border-radius:100px}}
+  .mini-hotspot-scene{position:relative;width:122px;height:92px;perspective:260px}
+  .mini-hotspot-product{position:absolute;left:22px;top:24px;width:78px;height:48px;border-radius:10px;background:linear-gradient(145deg,#24231d,#0d0d0a);transform-style:preserve-3d;animation:miniHotspotTilt 4.4s cubic-bezier(.37,0,.18,1) infinite;box-shadow:0 18px 34px rgba(0,0,0,.28)}
+  .mini-hotspot-product::before{content:"";position:absolute;left:10px;top:9px;width:38px;height:22px;border-radius:6px;background:#557f91;transform:translateZ(16px);opacity:.72}
+  .mini-hotspot-product::after{content:"";position:absolute;right:10px;top:12px;width:18px;height:18px;border-radius:50%;border:4px solid #c99a45;transform:translateZ(24px)}
+  .mini-hotspot-dot{position:absolute;width:8px;height:8px;border-radius:50%;background:#e8793a;box-shadow:0 0 0 5px rgba(232,121,58,.16);animation:miniHotspotPulse 2.2s ease infinite}
+  .mini-hotspot-dot:nth-child(2){left:28px;top:38px}
+  .mini-hotspot-dot:nth-child(3){right:28px;top:34px;animation-delay:.4s}
+  .mini-hotspot-dot:nth-child(4){left:48px;bottom:20px;animation-delay:.8s}
+  @keyframes miniHotspotTilt{0%,100%{transform:rotateX(14deg) rotateY(-24deg)}50%{transform:rotateX(9deg) rotateY(24deg)}}
+  @keyframes miniHotspotPulse{0%,100%{transform:scale(.82);opacity:.68}50%{transform:scale(1.2);opacity:1}}
 
   /* Dock */
   .mini-dock{display:flex;align-items:flex-end;gap:3px;padding:4px 8px;background:rgba(26,26,31,.6);border-radius:10px}
@@ -302,7 +321,7 @@
 
 <div class="header">
   <div class="label">Cinematic Site Modules</div>
-  <h1>37 <span>cinematic modules</span> for websites that move</h1>
+  <h1>39 <span>cinematic modules</span> for websites that move</h1>
   <p>Each module is a standalone HTML file. No frameworks, no build step. Click any card to see it live.</p>
   <div style="margin-top:20px;font-size:12px;color:var(--muted)">&copy; Created by Jay from <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboLabs</a>. Learn more at <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboNuggets</a></div>
 </div>
@@ -312,7 +331,7 @@
   <div class="section-head">
     <div class="section-dot" style="background:#e8793a"></div>
     <div class="section-title">Scroll-Driven</div>
-    <div class="section-count">15 modules</div>
+    <div class="section-count">16 modules</div>
   </div>
   <div class="bento bento-scroll">
     <a href="text-mask.html" class="card span-2c"><div class="card-demo"><div class="mini-mask">REVEAL</div><div class="mini-mask-fill">REVEAL</div></div><div class="card-info"><span class="card-num">01</span><span class="card-name">Text Mask Reveal</span><span class="card-arrow">&rarr;</span></div></a>
@@ -327,6 +346,7 @@
     <a href="webgl-rotating-gallery.html" class="card"><div class="card-demo"><div class="mini-webgl-ring"><div class="mini-webgl-plane"></div><div class="mini-webgl-plane"></div><div class="mini-webgl-plane"></div><div class="mini-webgl-plane"></div></div></div><div class="card-info"><span class="card-num">35</span><span class="card-name">WebGL Rotating Gallery</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="curved-path-motion.html" class="card"><div class="card-demo"><svg class="mini-curve-svg" viewBox="0 0 160 100" aria-hidden="true"><defs><linearGradient id="miniCurveGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e8793a"/><stop offset="52%" stop-color="#c8a97e"/><stop offset="100%" stop-color="#5eadb5"/></linearGradient></defs><path class="mini-curve-guide" d="M18,70 C42,12 88,24 96,48 C106,82 56,76 66,52 C78,24 118,26 142,44"/><path class="mini-curve-draw" d="M18,70 C42,12 88,24 96,48 C106,82 56,76 66,52 C78,24 118,26 142,44"/><circle class="mini-curve-dot" r="5"><animateMotion dur="4.2s" repeatCount="indefinite" path="M18,70 C42,12 88,24 96,48 C106,82 56,76 66,52 C78,24 118,26 142,44"/></circle></svg></div><div class="card-info"><span class="card-num">36</span><span class="card-name">Curved Path Motion</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="scroll-3d-text.html" class="card"><div class="card-demo"><div class="mini-text-wheel"><div class="mini-text-wheel-inner"><span>Proof</span><span>Speed</span><span>Care</span><span>Build</span><span>Launch</span><span>Trust</span></div></div></div><div class="card-info"><span class="card-num">37</span><span class="card-name">3D Scroll Text</span><span class="card-arrow">&rarr;</span></div></a>
+    <a href="scroll-camera-tour.html" class="card span-2c"><div class="card-demo"><div class="mini-camera-tour"><div class="mini-camera-floor"></div><div class="mini-camera-path"></div><div class="mini-camera-dot"></div><div class="mini-camera-object"></div></div></div><div class="card-info"><span class="card-num">38</span><span class="card-name">3D Camera Tour</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="curtain-reveal.html" class="card span-2c"><div class="card-demo"><div class="mini-curtain"><div class="mini-curtain-bg">Reveal</div><div class="mini-curtain-l">DIS</div><div class="mini-curtain-r">COVER</div></div></div><div class="card-info"><span class="card-num">07</span><span class="card-name">Curtain Reveal</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="split-scroll.html" class="card"><div class="card-demo"><div class="mini-split"><div class="mini-split-col"><div class="mini-split-item" style="background:#1a1a2e"></div><div class="mini-split-item" style="background:#2d4a3e"></div><div class="mini-split-item" style="background:#4a3a2d"></div><div class="mini-split-item" style="background:#1a1a2e"></div></div><div class="mini-split-col"><div class="mini-split-item" style="background:#2e1a1a"></div><div class="mini-split-item" style="background:#1a2e2a"></div><div class="mini-split-item" style="background:#2e2a1a"></div><div class="mini-split-item" style="background:#2e1a1a"></div></div></div></div><div class="card-info"><span class="card-num">08</span><span class="card-name">Split Screen</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="color-shift.html" class="card"><div class="card-demo"><div class="mini-colorshift"></div></div><div class="card-info"><span class="card-num">09</span><span class="card-name">Color Shift</span><span class="card-arrow">&rarr;</span></div></a>
@@ -358,13 +378,14 @@
   <div class="section-head">
     <div class="section-dot" style="background:#d4622a"></div>
     <div class="section-title">Click & Tap</div>
-    <div class="section-count">6 modules</div>
+    <div class="section-count">7 modules</div>
   </div>
   <div class="bento bento-click">
     <a href="view-transitions.html" class="card span-2c"><div class="card-demo"><div class="mini-morph"></div></div><div class="card-info"><span class="card-num">18</span><span class="card-name">View Transition Morphing</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="particle-button.html" class="card"><div class="card-demo"><div class="mini-btn">Click<div class="mini-particle" style="--dx:-20px;--dy:-25px"></div><div class="mini-particle" style="--dx:18px;--dy:-22px"></div><div class="mini-particle" style="--dx:-5px;--dy:-30px"></div></div></div><div class="card-info"><span class="card-num">19</span><span class="card-name">Particle Button</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="odometer.html" class="card"><div class="card-demo"><div class="mini-odo"><span class="mini-odo-digit">2</span><span class="mini-odo-digit" style="animation-delay:.1s">8</span><span class="mini-odo-digit" style="animation-delay:.2s">4</span><span class="mini-odo-digit" style="animation-delay:.3s">7</span></div></div><div class="card-info"><span class="card-num">20</span><span class="card-name">Odometer Counter</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="coverflow.html" class="card span-2c"><div class="card-demo"><div class="mini-cover"><div class="mini-cover-item"></div><div class="mini-cover-item"></div><div class="mini-cover-item"></div><div class="mini-cover-item"></div><div class="mini-cover-item"></div></div></div><div class="card-info"><span class="card-num">21</span><span class="card-name">3D Coverflow Carousel</span><span class="card-arrow">&rarr;</span></div></a>
+    <a href="spatial-product-hotspots.html" class="card span-2c"><div class="card-demo"><div class="mini-hotspot-scene"><div class="mini-hotspot-product"></div><div class="mini-hotspot-dot"></div><div class="mini-hotspot-dot"></div><div class="mini-hotspot-dot"></div></div></div><div class="card-info"><span class="card-num">39</span><span class="card-name">Spatial Product Hotspots</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="dynamic-island.html" class="card"><div class="card-demo"><div class="mini-island"><div class="mini-island-dot"></div>3 new</div></div><div class="card-info"><span class="card-num">22</span><span class="card-name">Dynamic Island</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="dock-nav.html" class="card"><div class="card-demo"><div class="mini-dock"><div class="mini-dock-item" style="background:#e85d3a"></div><div class="mini-dock-item" style="background:#22c55e"></div><div class="mini-dock-item" style="background:#4f46e5"></div><div class="mini-dock-item" style="background:#c8a97e"></div><div class="mini-dock-item" style="background:#5eadb5"></div></div></div><div class="card-info"><span class="card-num">23</span><span class="card-name">macOS Dock</span><span class="card-arrow">&rarr;</span></div></a>
   </div>
@@ -388,7 +409,7 @@
   </div>
 </section>
 
-<div class="footer-note">37 cinematic modules. No frameworks, no build step.</div>
+<div class="footer-note">39 cinematic modules. No frameworks, no build step.</div>
 <footer>Cinematic Site Modules</footer>
 
 </body>

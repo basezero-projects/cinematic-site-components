@@ -36,6 +36,26 @@ Why built: It turns brand pillars or product attributes into a sequenced argumen
 Best fit: Brand pillars, product attributes, capability spectra, short editorial chapters.
 Risk: Long word lists, fast rotation, or weak vocabulary make the effect feel gimmicky.
 
+### 3D camera tour
+
+Pattern: Scroll-controlled camera path through a staged 3D product, venue, or artifact
+Source: https://tympanus.net/codrops/2025/11/19/how-to-build-cinematic-3d-scroll-experiences-with-gsap/
+Score: 8/10
+Status: Built as `scroll-camera-tour.html`
+Why built: The broad cinematic 3D source was narrowed into a practical camera-direction module with a procedural object, synced copy beats, mobile framing, and a static fallback.
+Best fit: Product construction, venue walkthroughs, architecture, hardware, gallery installations, immersive case-study artifacts.
+Risk: Without a real subject to inspect, camera movement becomes spectacle.
+
+### Spatial product hotspots
+
+Pattern: A lightweight CSS 3D object tilts and reveals concrete part explanations through hotspots
+Source: https://tympanus.net/codrops/2024/03/06/on-scroll-3d-stack-motion-effect/ and https://tympanus.net/codrops/2025/05/07/on-scroll-3d-carousel/
+Score: 8/10
+Status: Built as `spatial-product-hotspots.html`
+Why built: It adds a useful 3D product-disclosure pattern without model loading or WebGL cost.
+Best fit: Product detail sections, installation artifacts, device features, package callouts, service objects.
+Risk: Hotspots feel fake if they do not point to visible product details.
+
 ### SVG mask chapter transitions
 
 Pattern: Fullscreen image chapter reveals through SVG masks
@@ -78,16 +98,6 @@ Risk: WebGL performance, asset loading, and accessibility fallback.
 
 ## Backlog
 
-### Cinematic 3D scroll scenes
-
-Pattern: Scroll-controlled 3D stage with camera movement, image cylinders, particles, depth, and timed copy.
-Source: https://tympanus.net/codrops/2025/11/19/how-to-build-cinematic-3d-scroll-experiences-with-gsap/
-Score: 7/10
-Why not built yet: Too broad and too heavy without a specific local module story.
-What would make it worth building: A concrete product, venue, or case-study camera path with real reduced-motion stills and canvas verification.
-Best fit: Premium product storytelling, architecture, venues, art, immersive campaign pages.
-Risk: Can become spectacle with no conversion job.
-
 ### WebGL shader ripples, reveals, and blur
 
 Pattern: Shader uniforms driven by click, scroll, or drag for ripples, dynamic blur, texture blends, and reveals.
@@ -108,6 +118,36 @@ What would make it worth building: A distinct image-grid-to-product-arrival modu
 Best fit: Campaign intros, editorial imagery, portfolio launches.
 Risk: Weak images or mobile cropping make it look like a generic zoom demo.
 
+### Reactive 3D image tube
+
+Pattern: Scroll-driven cylindrical image field for travelling through a collection.
+Source: https://tympanus.net/codrops/2026/02/17/reactive-depth-building-a-scroll-driven-3d-image-tube-with-react-three-fiber/
+Score: 7/10
+Why not built yet: It overlaps the current WebGL rotating gallery, coverflow, and horizontal gallery modules.
+What would make it worth building: A stronger collection-specific story where the visitor needs to travel through a visual archive.
+Best fit: Lookbooks, portfolio archives, campaign galleries, venue/media pages.
+Risk: Can become a novelty loop with weak hierarchy.
+
+### Responsive WebGL text
+
+Pattern: DOM text stays accessible while WebGL mirrors or enhances it with shader effects.
+Source: https://tympanus.net/codrops/2025/06/05/how-to-create-responsive-and-seo-friendly-webgl-text/
+Score: 7/10
+Why not built yet: It needs a specific text treatment worth the DOM/WebGL synchronization cost.
+What would make it worth building: A shader-text module where real DOM text remains visible and the WebGL layer adds a meaningful material or distortion cue.
+Best fit: Editorial heroes, music/event pages, product campaigns, identity sections.
+Risk: Canvas-only text breaks accessibility and mobile wrapping.
+
+### 3D infinite carousel with reactive gradients
+
+Pattern: 3D card carousel where the background colour field reacts to the active item.
+Source: https://tympanus.net/codrops/2025/11/11/building-a-3d-infinite-carousel-with-reactive-background-gradients/
+Score: 6/10
+Why not built yet: It is useful but not distinct enough from the existing coverflow module.
+What would make it worth building: A featured-item module where the reactive background clearly helps active-card focus.
+Best fit: Featured products, campaign cards, music/event cards, premium testimonials.
+Risk: Reactive gradients can become decoration.
+
 ## Rejected As Module
 
 ### GSAP animation tips
@@ -118,3 +158,21 @@ Score: 5/10 as a module
 Why rejected: Useful craft reference, but not one focused cinematic pattern.
 Best fit: Reference material for text masking and timeline cleanup.
 Risk: A tips sampler would add noise to the module library.
+
+### Dreamy GPGPU particles
+
+Pattern: GPU particle field for atmospheric motion.
+Source: https://tympanus.net/codrops/2024/12/19/crafting-a-dreamy-particle-effect-with-three-js-and-gpgpu/
+Score: 5/10 as a module
+Why rejected: Particles without a subject are one of the easiest ways to collect junk animation.
+Best fit: Technical reference for rare art, music, event, or product-atmosphere work.
+Risk: Decorative haze and heavy shader complexity.
+
+### Staggered 3D grid animations
+
+Pattern: Scroll-triggered grid items enter with 3D stagger and perspective.
+Source: https://tympanus.net/codrops/2024/10/16/staggered-3d-grid-animations-with-scroll-triggered-effects/
+Score: 5/10 as a module
+Why rejected: Too close to generic card-grid entrance animation for this library.
+Best fit: Reference for future grid polish.
+Risk: Too many cards moving at once hurts scanability.

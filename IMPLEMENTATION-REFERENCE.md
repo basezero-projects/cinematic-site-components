@@ -4,7 +4,7 @@ Use this file when an LLM is asked to add animation from this folder to a real s
 
 ## Current Status
 
-- **Module count:** 37 standalone examples.
+- **Module count:** 39 standalone examples.
 - **Last verification pass:** 2026-06-09.
 - **Preview URL pattern:** run `serve-over-tailscale.ps1`, then open the printed Tailscale URL.
 - **Cache behavior:** the Tailscale helper now serves no-cache headers. If Chrome or a phone shows an old effect, restart the helper and reload with a cache-busting query string.
@@ -35,6 +35,7 @@ If the target page is a SYVR/client marketing page, also point it at the relevan
 8. **Account for real DOM structure.** If a stack uses `nth-child`, remember labels or helper elements count as children. Prefer classes or CSS variables when porting.
 9. **Mobile cannot be an afterthought.** Hover-only effects need tap/focus/autoplay behavior. Wide scroll scenes need a stacked fallback or safe viewport mapping.
 10. **Reduced motion must still explain the content.** Disable motion, not meaning.
+11. **3D needs an inspectable subject.** Camera moves, depth stacks, and hotspots should reveal product structure, venue scale, spatial relationships, or real proof. If there is no object, place, or artifact worth inspecting, use a simpler motion pattern.
 
 ## Known Failure Patterns To Avoid
 
@@ -69,6 +70,7 @@ If the target page is a SYVR/client marketing page, also point it at the relevan
 | `webgl-rotating-gallery.html` | Lookbooks, art, architecture, premium visual galleries. | WebGL fallback and readable mobile composition. | Low-asset service pages or performance-sensitive landing pages. |
 | `curved-path-motion.html` | Product flows, quote funnels, service journeys, case-study timelines, fulfillment routes, or any page where scattered proof needs one clear route. | The moving object must mean something, the active cards should sync with path position, and the final stop needs a concrete action. | Decorative route lines, pages with no real sequence, or dense content where the moving object competes with reading. |
 | `scroll-3d-text.html` | Brand pillars, product attributes, capability spectra, and short editorial chapter vocabularies. | Keep the word set tight, sync the active word to explanatory copy, and verify mobile/reduced-motion fallbacks. | Buzzword clouds, long lists, body-copy replacement, or fast spinning text that users have to read. |
+| `scroll-camera-tour.html` | Product construction, venue walkthroughs, architecture, hardware, gallery installations, or case-study artifacts where planned camera angles make the subject easier to understand. | Preserve the full camera story: wide read, material pass, detail pass, spatial proof, and resolved action frame. Verify nonblank canvas, mobile framing, and static fallback. | Generic floating objects, pages with no inspectable subject, heavy model loads without fallback, or camera movement that competes with the CTA. |
 
 ### Cursor & Hover
 
@@ -94,6 +96,7 @@ If the target page is a SYVR/client marketing page, also point it at the relevan
 | `coverflow.html` | Featured products, testimonials, venue photos, or media covers. | Center item is clearly dominant; edge items do not steal focus. | Large content cards with long text. |
 | `dynamic-island.html` | Compact status, nav, notification, or mode switcher demos. | Expanded/collapsed states both work on click/tap. | Marketing pages that need obvious controls more than hidden chrome. |
 | `dock-nav.html` | Small toolbars, icon launchers, or playful nav on creative pages. | Hit targets stay stable despite magnification. | Main nav for service pages or text-heavy menus. |
+| `spatial-product-hotspots.html` | Product detail sections, installation artifacts, device features, package callouts, or service objects with a few concrete parts to inspect. | Keep the object readable before interaction, keep hotspot count low, support tap and keyboard buttons, and connect each hotspot to the visible part. | Decorative dots, vague feature labels, too many callouts, or hiding critical information behind hover-only states. |
 
 ### Ambient & Auto
 

@@ -1,10 +1,10 @@
 # Cinematic Site Modules
 
-37 cinematic website modules. Each one is a single HTML file. No frameworks. No build step. No npm. Just open it.
+39 cinematic website modules. Each one is a single HTML file. No frameworks. No build step. No npm. Just open it.
 
 ## Preview
 
-Open `index.html` to browse all 37 modules with animated mini-demos, or open any individual module file directly in a browser.
+Open `index.html` to browse all 39 modules with animated mini-demos, or open any individual module file directly in a browser.
 
 ## Curation Rules
 
@@ -43,9 +43,9 @@ http://100.x.x.x:8035/index.html
 
 Open that URL on the phone while Tailscale is connected. Keep the Windows machine awake. If the phone cannot connect, run the script once from an elevated PowerShell with `-OpenFirewall`, or manually allow inbound TCP port `8035`.
 
-## The 37 Modules
+## The 39 Modules
 
-### Scroll-Driven (15)
+### Scroll-Driven (16)
 | # | Module | What It Does |
 |---|---|---|
 | 01 | Text Mask Reveal | Headline fills with colour as you scroll |
@@ -63,6 +63,7 @@ Open that URL on the phone while Tailscale is connected. Keep the Windows machin
 | 35 | WebGL Rotating Gallery | WebGL image planes rotate through a spatial gallery as the page moves |
 | 36 | Curved Path Motion | A meaningful object travels along a responsive SVG path through proof points |
 | 37 | 3D Scroll Text | Short brand or product vocabulary rotates through a CSS 3D scroll cylinder |
+| 38 | 3D Camera Tour | A Three.js camera path inspects a product-like object through planned scroll chapters |
 
 ### Cursor & Hover (9)
 | # | Module | What It Does |
@@ -77,7 +78,7 @@ Open that URL on the phone while Tailscale is connected. Keep the Windows machin
 | 16 | Spotlight Border Cards | Borders illuminate under cursor |
 | 17 | Drag-to-Pan Grid | Infinite draggable canvas |
 
-### Click & Tap (6)
+### Click & Tap (7)
 | # | Module | What It Does |
 |---|---|---|
 | 18 | View Transition Morphing | Elements shape-shift between states |
@@ -86,6 +87,7 @@ Open that URL on the phone while Tailscale is connected. Keep the Windows machin
 | 21 | 3D Coverflow Carousel | Center focused, edges angled |
 | 22 | Dynamic Island Nav | Pill morphs for notifications |
 | 23 | macOS Dock Nav | Icons magnify on hover |
+| 39 | Spatial Product Hotspots | A lightweight CSS 3D object tilts and reveals concrete product detail hotspots |
 
 ### Ambient & Auto (7)
 | # | Module | What It Does |
@@ -102,6 +104,7 @@ Open that URL on the phone while Tailscale is connected. Keep the Windows machin
 
 - HTML + CSS + vanilla JS
 - GSAP + ScrollTrigger (CDN)
+- Three.js (CDN) for selected WebGL/3D modules
 - Google Fonts (CDN)
 - That's it.
 

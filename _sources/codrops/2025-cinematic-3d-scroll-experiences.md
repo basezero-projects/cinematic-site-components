@@ -22,8 +22,8 @@ Scroll acts like a camera director for a 3D scene: image cylinders, particles, l
 
 ## Quality Gate
 
-Score: 7/10
+Score: 8/10
 
-Decision: Backlog.
+Decision: Built as `scroll-camera-tour.html` after narrowing the broad source idea into a concrete product/venue camera-path module.
 
-Build only if the local module has a concrete content job such as product assembly, venue walkthrough, or case-study camera path. Do not add a generic immersive 3D scene.
+The built module intentionally avoids a generic immersive scene. It uses a procedural object, planned camera positions, synced chapter copy, mobile framing, and a static fallback so the pattern can be adapted to product assembly, venue walkthrough, architecture, hardware, or case-study artifacts.

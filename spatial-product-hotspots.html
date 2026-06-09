@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spatial Product Hotspots - Cinematic Module</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b09;
+    --paper:#f0eadc;
+    --ink:#171511;
+    --muted:#746d62;
+    --line:#d5cab8;
+    --panel:#fcf8ef;
+    --green:#536f5e;
+    --rust:#b85d32;
+    --gold:#c99a45;
+    --blue:#557f91;
+    --rx:10deg;
+    --ry:-18deg;
+    --explode:0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    min-height:100dvh;
+    overflow-x:hidden;
+    background:
+      radial-gradient(circle at 14% 18%,rgba(83,111,94,.18),transparent 29%),
+      radial-gradient(circle at 88% 78%,rgba(184,93,50,.14),transparent 31%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Public Sans",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .eyebrow,.label,.hotspot small,.spec-label{
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+  }
+  .wrap{
+    min-height:100dvh;
+    display:grid;
+    grid-template-columns:minmax(420px,1.05fr) minmax(320px,.95fr);
+    gap:44px;
+    align-items:center;
+    width:min(1220px,100%);
+    margin:0 auto;
+    padding:72px 24px 92px;
+  }
+  .stage-panel{
+    position:relative;
+    min-height:700px;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    border:1px solid rgba(23,21,17,.12);
+    border-radius:12px;
+    background:
+      linear-gradient(135deg,rgba(255,255,255,.58),rgba(255,255,255,.1)),
+      #e8dfcf;
+    box-shadow:0 34px 110px rgba(44,36,24,.18);
+    cursor:grab;
+    touch-action:pan-y;
+  }
+  .stage-panel::before{
+    content:"";
+    position:absolute;
+    inset:58px;
+    border:1px solid rgba(23,21,17,.08);
+    border-radius:50%;
+  }
+  .stage-panel::after{
+    content:"";
+    position:absolute;
+    left:12%;
+    right:12%;
+    bottom:15%;
+    height:24px;
+    border-radius:50%;
+    background:rgba(44,36,24,.22);
+    filter:blur(22px);
+  }
+  .object-scene{
+    position:relative;
+    z-index:1;
+    width:min(560px,90%);
+    aspect-ratio:1.1;
+    perspective:1050px;
+    display:grid;
+    place-items:center;
+  }
+  .product{
+    position:relative;
+    width:min(420px,84vw);
+    height:280px;
+    transform-style:preserve-3d;
+    transform:rotateX(var(--rx)) rotateY(var(--ry));
+    transition:transform .55s cubic-bezier(.2,.8,.2,1);
+  }
+  .part{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform-style:preserve-3d;
+    border-radius:22px;
+    transition:transform .62s cubic-bezier(.2,.8,.2,1), opacity .35s, box-shadow .35s;
+  }
+  .part::before,.part::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+  .base{
+    width:380px;
+    height:210px;
+    margin:-105px 0 0 -190px;
+    background:linear-gradient(135deg,#151611,#292820 55%,#0d0d0a);
+    box-shadow:0 38px 80px rgba(23,21,17,.34);
+    transform:translateZ(0);
+  }
+  .base::before{border:1px solid rgba(255,255,255,.08)}
+  .shell{
+    width:396px;
+    height:224px;
+    margin:-112px 0 0 -198px;
+    background:linear-gradient(145deg,rgba(240,234,220,.18),rgba(240,234,220,.03));
+    border:1px solid rgba(240,234,220,.18);
+    transform:translateZ(calc(26px + var(--explode) * 34px));
+  }
+  .glass{
+    width:248px;
+    height:132px;
+    margin:-66px 0 0 -150px;
+    background:
+      linear-gradient(135deg,rgba(121,158,175,.74),rgba(83,111,94,.28)),
+      linear-gradient(90deg,transparent 12%,rgba(255,255,255,.22) 13%,transparent 14% 58%,rgba(255,255,255,.16) 59%,transparent 60%);
+    border:1px solid rgba(255,255,255,.34);
+    transform:translateZ(calc(54px + var(--explode) * 58px)) translateX(calc(var(--explode) * -18px));
+    box-shadow:0 0 44px rgba(85,127,145,.22);
+  }
+  .sensor{
+    width:92px;
+    height:92px;
+    margin:-46px 0 0 76px;
+    border-radius:50%;
+    background:radial-gradient(circle at 45% 40%,#f6d887 0 11%,#775032 12% 24%,#111 25% 47%,#c99a45 48% 54%,#111 55%);
+    transform:translateZ(calc(78px + var(--explode) * 80px));
+    box-shadow:0 0 46px rgba(201,154,69,.26);
+  }
+  .interface{
+    width:210px;
+    height:54px;
+    margin:54px 0 0 -122px;
+    border-radius:999px;
+    background:
+      linear-gradient(90deg,var(--rust) 0 22%,transparent 22% 28%,var(--green) 28% 51%,transparent 51% 58%,var(--blue) 58% 80%,transparent 80%),
+      #211d18;
+    border:1px solid rgba(255,255,255,.1);
+    transform:translateZ(calc(92px + var(--explode) * 42px)) translateY(calc(var(--explode) * 16px));
+  }
+  .proof{
+    width:142px;
+    height:188px;
+    margin:-166px 0 0 118px;
+    background:linear-gradient(180deg,rgba(252,248,239,.9),rgba(240,234,220,.58));
+    border:1px solid rgba(23,21,17,.14);
+    box-shadow:0 22px 50px rgba(44,36,24,.16);
+    transform:translateZ(calc(36px + var(--explode) * 72px)) translateX(calc(var(--explode) * 34px)) rotateY(-8deg);
+  }
+  .proof::before{
+    inset:18px;
+    border-top:12px solid var(--green);
+    border-bottom:1px solid rgba(23,21,17,.18);
+    border-radius:0;
+  }
+  .focus-shell .shell,.focus-shell .base{box-shadow:0 0 70px rgba(83,111,94,.28)}
+  .focus-sensor .sensor{box-shadow:0 0 72px rgba(201,154,69,.46)}
+  .focus-interface .interface{box-shadow:0 0 54px rgba(184,93,50,.34)}
+  .focus-proof .proof{box-shadow:0 30px 80px rgba(44,36,24,.28)}
+  .hotspot-dot{
+    position:absolute;
+    z-index:5;
+    width:18px;
+    height:18px;
+    border:0;
+    border-radius:50%;
+    background:var(--rust);
+    box-shadow:0 0 0 8px rgba(184,93,50,.16),0 10px 22px rgba(44,36,24,.26);
+    cursor:pointer;
+    transition:transform .2s, background .2s;
+  }
+  .hotspot-dot::after{
+    content:"";
+    position:absolute;
+    inset:-9px;
+    border:1px solid rgba(184,93,50,.4);
+    border-radius:50%;
+    animation:pulse 2.3s ease infinite;
+  }
+  .hotspot-dot.is-active{background:var(--gold);transform:scale(1.16)}
+  .hotspot-dot:nth-of-type(1){left:20%;top:49%}
+  .hotspot-dot:nth-of-type(2){right:24%;top:42%}
+  .hotspot-dot:nth-of-type(3){left:34%;bottom:26%}
+  .hotspot-dot:nth-of-type(4){right:21%;top:24%}
+  @keyframes pulse{0%,100%{transform:scale(.78);opacity:.24}50%{transform:scale(1.22);opacity:.58}}
+  .copy-panel{
+    display:grid;
+    align-content:center;
+    gap:24px;
+  }
+  .eyebrow{color:var(--rust)}
+  h1{
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(46px,6.8vw,94px);
+    line-height:.86;
+    letter-spacing:-.06em;
+    font-weight:900;
+    max-width:780px;
+  }
+  h1 span{color:var(--green)}
+  .lead{
+    max-width:58ch;
+    color:var(--muted);
+    font-size:18px;
+    line-height:1.62;
+  }
+  .active-card{
+    min-height:210px;
+    border:1px solid rgba(23,21,17,.13);
+    border-radius:10px;
+    background:rgba(252,248,239,.74);
+    box-shadow:0 24px 80px rgba(44,36,24,.12);
+    padding:22px;
+  }
+  .label{color:var(--green);margin-bottom:14px}
+  .active-card h2{
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(30px,4vw,46px);
+    line-height:.98;
+    letter-spacing:-.045em;
+    margin-bottom:14px;
+  }
+  .active-card p{
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.62;
+  }
+  .hotspot-list{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .hotspot{
+    min-height:86px;
+    text-align:left;
+    color:var(--ink);
+    border:1px solid rgba(23,21,17,.12);
+    border-radius:8px;
+    background:rgba(252,248,239,.58);
+    padding:14px;
+    cursor:pointer;
+    transition:background .24s,border-color .24s,transform .24s;
+  }
+  .hotspot:hover,.hotspot:focus-visible,.hotspot.is-active{
+    background:#fffdf6;
+    border-color:rgba(184,93,50,.42);
+    transform:translateY(-2px);
+  }
+  .hotspot small{display:block;color:var(--rust);margin-bottom:8px}
+  .hotspot b{
+    display:block;
+    font-size:14px;
+    line-height:1.2;
+  }
+  .spec-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
+  .spec{
+    border-top:1px solid var(--line);
+    padding-top:12px;
+  }
+  .spec-label{color:var(--muted);margin-bottom:6px}
+  .spec span{font-size:14px;color:var(--ink)}
+  .note{
+    max-width:1050px;
+    margin:0 auto;
+    padding:0 24px 110px;
+    color:var(--muted);
+    font-size:16px;
+    line-height:1.7;
+  }
+  footer{
+    border-top:1px solid rgba(23,21,17,.12);
+    color:var(--muted);
+    text-align:center;
+    padding:24px;
+    font-size:12px;
+  }
+  .credit{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:30;
+    padding:8px 16px;
+    color:rgba(23,21,17,.48);
+    background:rgba(240,234,220,.82);
+    border-top:1px solid rgba(23,21,17,.12);
+    text-align:center;
+    font-size:11px;
+    backdrop-filter:blur(8px);
+  }
+  .credit a{color:var(--rust);text-decoration:none}
+  @media(max-width:980px){
+    .wrap{grid-template-columns:1fr;padding:54px 16px 82px}
+    .stage-panel{min-height:520px;order:1}
+    .copy-panel{order:2}
+  }
+  @media(max-width:600px){
+    :root{--rx:7deg;--ry:-13deg}
+    h1{font-size:clamp(42px,15vw,66px)}
+    .lead{font-size:16px}
+    .stage-panel{min-height:430px}
+    .product{width:310px;height:230px}
+    .base{width:292px;height:164px;margin:-82px 0 0 -146px}
+    .shell{width:306px;height:178px;margin:-89px 0 0 -153px}
+    .glass{width:190px;height:100px;margin:-50px 0 0 -112px}
+    .sensor{width:72px;height:72px;margin:-36px 0 0 54px}
+    .interface{width:164px;height:46px;margin:42px 0 0 -94px}
+    .proof{width:108px;height:142px;margin:-128px 0 0 86px}
+    .hotspot-list,.spec-grid{grid-template-columns:1fr}
+    .active-card{min-height:auto}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    .stage-panel{cursor:auto}
+    .product{transform:rotateX(8deg) rotateY(-16deg)!important}
+    .hotspot:hover,.hotspot:focus-visible,.hotspot.is-active{transform:none}
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="stage-panel" id="stage" aria-label="Interactive CSS 3D product model">
+    <div class="object-scene">
+      <div class="product focus-shell" id="product">
+        <div class="part base"></div>
+        <div class="part shell"></div>
+        <div class="part glass"></div>
+        <div class="part sensor"></div>
+        <div class="part interface"></div>
+        <div class="part proof"></div>
+      </div>
+      <button class="hotspot-dot is-active" type="button" data-target="shell" aria-label="Show shell and structure"></button>
+      <button class="hotspot-dot" type="button" data-target="sensor" aria-label="Show optical sensor"></button>
+      <button class="hotspot-dot" type="button" data-target="interface" aria-label="Show interface controls"></button>
+      <button class="hotspot-dot" type="button" data-target="proof" aria-label="Show proof card"></button>
+    </div>
+  </section>
+
+  <section class="copy-panel">
+    <div class="eyebrow">Module 39 - Spatial Product Hotspots</div>
+    <h1>Let the object <span>disclose itself.</span></h1>
+    <p class="lead">Use this when a product, installation, device, package, or service artifact has specific parts worth inspecting. The 3D tilt creates depth, while each hotspot opens one concrete explanation.</p>
+
+    <article class="active-card" aria-live="polite">
+      <div class="label" id="activeLabel">Shell</div>
+      <h2 id="activeTitle">Start with the structure.</h2>
+      <p id="activeCopy">Use the first hotspot for the thing a buyer can see immediately: body shape, material, weathering, craft, or the main object promise.</p>
+    </article>
+
+    <div class="hotspot-list" aria-label="Product hotspots">
+      <button class="hotspot is-active" type="button" data-target="shell"><small>Layer</small><b>Shell and structure</b></button>
+      <button class="hotspot" type="button" data-target="sensor"><small>Detail</small><b>Optical or hero component</b></button>
+      <button class="hotspot" type="button" data-target="interface"><small>Use</small><b>Controls and working surface</b></button>
+      <button class="hotspot" type="button" data-target="proof"><small>Proof</small><b>Spec sheet or evidence card</b></button>
+    </div>
+
+    <div class="spec-grid" aria-label="Module guidance">
+      <div class="spec"><div class="spec-label">Best for</div><span>Product inspection</span></div>
+      <div class="spec"><div class="spec-label">Motion</div><span>Pointer tilt + tap state</span></div>
+      <div class="spec"><div class="spec-label">Fallback</div><span>Static layered object</span></div>
+    </div>
+  </section>
+</main>
+
+<p class="note">This module is intentionally lighter than a WebGL scene. It is useful when a site needs a spatial product moment but does not need model loading, camera controls, or shader complexity. Keep the hotspot count low and connect every point to a real product detail.</p>
+
+<footer>Cinematic Module - Spatial Product Hotspots</footer>
+<div class="credit">&copy; Created by Jay from <a href="https://robonuggets.com">RoboLabs</a>. Learn more at <a href="https://robonuggets.com">RoboNuggets</a></div>
+
+<script>
+(function(){
+  const stage = document.getElementById("stage");
+  const product = document.getElementById("product");
+  const dots = Array.from(document.querySelectorAll(".hotspot-dot"));
+  const buttons = Array.from(document.querySelectorAll(".hotspot"));
+  const label = document.getElementById("activeLabel");
+  const title = document.getElementById("activeTitle");
+  const copy = document.getElementById("activeCopy");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let userInteracted = false;
+  let active = "shell";
+  const content = {
+    shell:["Shell","Start with the structure.","Use the first hotspot for the thing a buyer can see immediately: body shape, material, weathering, craft, or the main object promise."],
+    sensor:["Sensor","Move into the hero detail.","The second state should explain the feature that makes the product different. Keep the copy specific to the visible part."],
+    interface:["Interface","Show how someone uses it.","Controls, ports, handles, hinges, openings, fasteners, or service access points work well because the motion clarifies function."],
+    proof:["Proof","Attach evidence to the object.","Use the final hotspot for certifications, measurements, install notes, test results, reviews, or a short case-study artifact."]
+  };
+  function setActive(next){
+    active = next;
+    userInteracted = true;
+    product.className = "product focus-" + next;
+    document.documentElement.style.setProperty("--explode", next === "shell" ? ".18" : "1");
+    dots.forEach(dot => dot.classList.toggle("is-active", dot.dataset.target === next));
+    buttons.forEach(button => button.classList.toggle("is-active", button.dataset.target === next));
+    label.textContent = content[next][0];
+    title.textContent = content[next][1];
+    copy.textContent = content[next][2];
+  }
+  function handlePointer(event){
+    if (reduce) return;
+    const rect = stage.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - .5;
+    const y = (event.clientY - rect.top) / rect.height - .5;
+    document.documentElement.style.setProperty("--ry", (x * 28).toFixed(2) + "deg");
+    document.documentElement.style.setProperty("--rx", (-y * 18 + 8).toFixed(2) + "deg");
+  }
+  stage.addEventListener("pointermove", handlePointer, { passive:true });
+  stage.addEventListener("pointerleave", function(){
+    document.documentElement.style.setProperty("--rx", "10deg");
+    document.documentElement.style.setProperty("--ry", "-18deg");
+  });
+  dots.forEach(dot => dot.addEventListener("click", () => setActive(dot.dataset.target)));
+  buttons.forEach(button => button.addEventListener("click", () => setActive(button.dataset.target)));
+  setInterval(function(){
+    if (userInteracted || reduce) return;
+    const order = ["shell","sensor","interface","proof"];
+    const index = order.indexOf(active);
+    setActive(order[(index + 1) % order.length]);
+    userInteracted = false;
+  }, 3600);
+})();
+</script>
+</body>
+</html>

@@ -1,5 +1,12 @@
 # Cinematic Site Components Changelog
 
+## [0.6.0] - 2026-06-09
+
+### Added
+
+- **3D-focused module expansion**: Added module 38, `scroll-camera-tour.html`, a Three.js scroll section where the camera moves through a procedural product-like object in five readable beats: wide read, material pass, interface detail, spatial proof, and resolved action frame. It is meant for product construction, venue walkthroughs, architecture, hardware, gallery installations, and immersive case-study artifacts, with a static chapter-board fallback when WebGL or motion is unavailable. Added module 39, `spatial-product-hotspots.html`, a lighter CSS 3D product inspection example where a tilted layered object reveals shell, sensor, interface, and proof hotspots through click/tap controls. `index.html`, `README.md`, `IMPLEMENTATION-REFERENCE.md`, `CLAUDE.md`, and generated `AGENTS.md` now list 39 modules, including 16 scroll-driven examples and 7 click/tap examples.
+- **Third source-intake batch focused on 3D**: Added distilled Firecrawl source notes for Codrops 3D camera scenes, reactive image tubes, 3D infinite carousels, responsive WebGL text, GPGPU particles, on-scroll 3D carousel/stack motion, and staggered 3D grids. `_notes/source-log.md` and `_notes/pattern-backlog.md` now promote the camera-tour and product-hotspot patterns, backlog the image tube, responsive WebGL text, and reactive carousel ideas, and reject particle/grid effects as standalone modules unless they gain a sharper content job.
+
 ## [0.5.0] - 2026-06-09
 
 ### Added
