@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kinetic Marquee - Cinematic Module</title>
+<link rel="icon" href="data:,">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -191,7 +192,7 @@
 <!-- Giant filled text -->
 <section class="marquee-section">
   <div class="marquee-label">Giant display - scroll to accelerate</div>
-  <div class="marquee-row marquee-giant" data-speed="1" data-direction="left">
+  <div class="marquee-row marquee-giant" data-speed="0.55" data-direction="left">
     <div class="marquee-content">
       <span class="marquee-item">DESIGN<span class="dot"></span></span>
       <span class="marquee-item">BUILD<span class="dot"></span></span>
@@ -199,7 +200,7 @@
       <span class="marquee-item">SCALE<span class="dot"></span></span>
     </div>
   </div>
-  <div class="marquee-row marquee-outline" data-speed="0.7" data-direction="right">
+  <div class="marquee-row marquee-outline" data-speed="0.38" data-direction="right">
     <div class="marquee-content">
       <span class="marquee-item">DESIGN<span class="dot"></span></span>
       <span class="marquee-item">BUILD<span class="dot"></span></span>
@@ -212,7 +213,7 @@
 <!-- Tag pills -->
 <section class="marquee-section">
   <div class="marquee-label">Tag pills - opposite directions</div>
-  <div class="marquee-row marquee-tags" data-speed="0.5" data-direction="left">
+  <div class="marquee-row marquee-tags" data-speed="0.32" data-direction="left">
     <div class="marquee-content">
       <span class="marquee-item">React</span>
       <span class="marquee-item">TypeScript</span>
@@ -224,7 +225,7 @@
       <span class="marquee-item">Supabase</span>
     </div>
   </div>
-  <div class="marquee-row marquee-tags-outline" data-speed="0.4" data-direction="right">
+  <div class="marquee-row marquee-tags-outline" data-speed="0.28" data-direction="right">
     <div class="marquee-content">
       <span class="marquee-item">Figma</span>
       <span class="marquee-item">Webflow</span>
@@ -240,7 +241,7 @@
 
 <!-- Dark band -->
 <div class="marquee-dark">
-  <div class="marquee-row" data-speed="0.8" data-direction="left">
+  <div class="marquee-row" data-speed="0.42" data-direction="left">
     <div class="marquee-content">
       <span class="marquee-item">WEBSITES<span class="sep"></span></span>
       <span class="marquee-item">APPS<span class="sep"></span></span>
@@ -281,14 +282,14 @@
   // Marquee animation with scroll-reactive speed
   gsap.registerPlugin(ScrollTrigger);
   var rows = document.querySelectorAll('.marquee-row');
-  var baseSpeed = 80; // px per second
+  var baseSpeed = 36; // px per second
   var scrollVelocity = 0;
   var speedFill = document.getElementById('speedFill');
 
   // Track scroll velocity
   ScrollTrigger.create({
     onUpdate: function(self) {
-      scrollVelocity = Math.abs(self.getVelocity());
+      scrollVelocity += (Math.abs(self.getVelocity()) - scrollVelocity) * 0.12;
     }
   });
 
@@ -302,7 +303,8 @@
     var x = direction === -1 ? 0 : -contentWidth;
 
     function animate() {
-      var speed = (baseSpeed + scrollVelocity * 0.15) * speedMult;
+      var cappedVelocity = Math.min(scrollVelocity, 900);
+      var speed = (baseSpeed + cappedVelocity * 0.035) * speedMult;
       x += direction * -1 * speed / 60; // 60fps
 
       if (direction === -1 && x <= -contentWidth) x += contentWidth;
@@ -311,8 +313,9 @@
       inner.style.transform = 'translateX(' + x + 'px)';
 
       // Update speed indicator
-      var fillW = Math.min(20 + scrollVelocity * 0.02, 100);
+      var fillW = Math.min(18 + cappedVelocity * 0.04, 72);
       speedFill.style.width = fillW + '%';
+      scrollVelocity *= 0.94;
 
       requestAnimationFrame(animate);
     }

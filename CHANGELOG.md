@@ -1,5 +1,11 @@
 # Cinematic Site Components Changelog
 
+## [0.4.4] - 2026-06-09
+
+### Fixed
+
+- **Targeted broken-animation fixes**: `view-transitions.html` now uses the browser View Transitions API for a real shared-element morph from the clicked product swatch into the detail image, with a 680ms geometry transition instead of an instant overlay pop. `kinetic-marquee.html` now runs its marquee rows at roughly half the previous pace and dampens scroll acceleration so the text bands feel ambient instead of frantic. `cursor-reveal.html` now uses an actual grayscale-to-lit image reveal with a visible circular lens, default motion, mouse, wheel, and touch handling instead of only exposing a flat green circle. `svg-mask-chapters.html` keeps the chapter tabs inside the right-hand panel below the progress bar, so the "Ceramic body / Light study / Room context" controls no longer scroll across the pinned image and copy.
+
 ## [0.4.3] - 2026-06-09
 
 ### Fixed

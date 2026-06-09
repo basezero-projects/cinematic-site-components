@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cursor Image Reveal - Cinematic Module</title>
+<link rel="icon" href="data:,">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root { --bg: #0a0a0b; --surface: #111114; --text: #eae7e2; --muted: #5a5a5e; --accent: #c8a97e; --border: #1e1e22; }
@@ -104,24 +105,70 @@
     border: 1px solid var(--border);
     margin-top: 60px;
   }
-  .spotlight-base { position: absolute; inset: 0; z-index: 1; }
+  .spotlight-base,
+  .spotlight-reveal {
+    background-position: center;
+    background-size: cover;
+  }
+  .spotlight-base {
+    position: absolute; inset: 0; z-index: 1;
+    filter: grayscale(1) brightness(0.48) contrast(0.92);
+  }
+  .spotlight-base::after {
+    content: "Unlit source";
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    padding: 7px 12px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 999px;
+    background: rgba(0,0,0,0.38);
+    color: rgba(255,255,255,0.78);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
   .spotlight-reveal {
     position: absolute; inset: 0; z-index: 2;
-    clip-path: circle(0px at 50% 50%);
+    clip-path: circle(112px at 50% 50%);
+    filter: saturate(1.08) contrast(1.04);
+    transition: clip-path 180ms linear;
+  }
+  .spotlight-reveal::after {
+    content: "Lit finish";
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    padding: 7px 12px;
+    border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 999px;
+    background: rgba(0,0,0,0.34);
+    color: rgba(255,255,255,0.9);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
   .spotlight-cursor {
     position: absolute; z-index: 3;
-    width: 120px; height: 120px;
+    left: 50%; top: 50%;
+    width: 224px; height: 224px;
     border: 2px solid rgba(255,255,255,0.5);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.24), 0 20px 70px rgba(255,255,255,0.16);
     border-radius: 50%;
     pointer-events: none;
     transform: translate(-50%, -50%);
-    transition: width 0.2s, height 0.2s;
-    display: none;
+    transition: width 0.2s, height 0.2s, left 0.18s linear, top 0.18s linear;
+    display: block;
   }
   .spotlight-hint {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    z-index: 4; font-size: 14px; color: rgba(255,255,255,0.8);
+    position: absolute; left: 18px; top: 18px;
+    z-index: 4; font-size: 12px; color: rgba(255,255,255,0.82);
+    background: rgba(0,0,0,0.32);
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 999px;
+    padding: 7px 12px;
     pointer-events: none;
     transition: opacity 0.3s;
   }
@@ -233,10 +280,10 @@
 <section class="reveal-section">
   <div class="reveal-label">Circular spotlight - move mouse to reveal</div>
   <div class="spotlight-container" id="spotContainer">
-    <div class="spotlight-base" style="background: linear-gradient(135deg, #2a1a10, #1a0d08);"></div>
-    <div class="spotlight-reveal" id="spotReveal" style="background: linear-gradient(135deg, #1a2a1e, #0d1a10);"></div>
+    <div class="spotlight-base" style="background-image: linear-gradient(135deg, rgba(20,16,13,0.62), rgba(6,7,8,0.52)), url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&h=700&fit=crop');"></div>
+    <div class="spotlight-reveal" id="spotReveal" style="background-image: url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&h=700&fit=crop');"></div>
     <div class="spotlight-cursor" id="spotCursor"></div>
-    <div class="spotlight-hint" id="spotHint">Move your mouse here</div>
+    <div class="spotlight-hint" id="spotHint">Move to inspect the finished surface</div>
   </div>
 </section>
 
@@ -325,32 +372,81 @@
   var spotReveal = document.getElementById('spotReveal');
   var spotCursor = document.getElementById('spotCursor');
   var spotHint = document.getElementById('spotHint');
-  var radius = 80;
+  var radius = 112;
+  var lastSpot = { x: 0.5, y: 0.5 };
+  var autoSpot = true;
+  var autoPoints = [
+    [0.42, 0.42],
+    [0.63, 0.36],
+    [0.72, 0.62],
+    [0.48, 0.68]
+  ];
+  var autoIndex = 0;
+
+  function updateSpot(x, y) {
+    var rect = spotContainer.getBoundingClientRect();
+    var clampedX = Math.max(0, Math.min(rect.width, x));
+    var clampedY = Math.max(0, Math.min(rect.height, y));
+    lastSpot = { x: clampedX / rect.width, y: clampedY / rect.height };
+    spotReveal.style.clipPath = 'circle(' + radius + 'px at ' + clampedX + 'px ' + clampedY + 'px)';
+    spotCursor.style.left = clampedX + 'px';
+    spotCursor.style.top = clampedY + 'px';
+    spotCursor.style.width = (radius * 2) + 'px';
+    spotCursor.style.height = (radius * 2) + 'px';
+  }
+
+  function updateSpotFromClient(clientX, clientY) {
+    var rect = spotContainer.getBoundingClientRect();
+    updateSpot(clientX - rect.left, clientY - rect.top);
+  }
+
+  function stopAutoSpot() {
+    autoSpot = false;
+    spotHint.style.opacity = '0';
+  }
+
+  function tickAutoSpot() {
+    if (!autoSpot) return;
+    var rect = spotContainer.getBoundingClientRect();
+    var point = autoPoints[autoIndex % autoPoints.length];
+    autoIndex += 1;
+    updateSpot(rect.width * point[0], rect.height * point[1]);
+  }
 
   spotContainer.addEventListener('mouseenter', function() {
     spotCursor.style.display = 'block';
-    spotHint.style.opacity = '0';
   });
   spotContainer.addEventListener('mouseleave', function() {
-    spotCursor.style.display = 'none';
-    spotReveal.style.clipPath = 'circle(0px at 50% 50%)';
-    spotHint.style.opacity = '1';
+    if (!autoSpot) {
+      var rect = spotContainer.getBoundingClientRect();
+      updateSpot(rect.width * lastSpot.x, rect.height * lastSpot.y);
+    }
   });
   spotContainer.addEventListener('mousemove', function(e) {
-    var rect = spotContainer.getBoundingClientRect();
-    var x = e.clientX - rect.left;
-    var y = e.clientY - rect.top;
-    spotReveal.style.clipPath = 'circle(' + radius + 'px at ' + x + 'px ' + y + 'px)';
-    spotCursor.style.left = x + 'px';
-    spotCursor.style.top = y + 'px';
-    spotCursor.style.width = (radius * 2) + 'px';
-    spotCursor.style.height = (radius * 2) + 'px';
+    stopAutoSpot();
+    updateSpotFromClient(e.clientX, e.clientY);
   });
+  spotContainer.addEventListener('touchstart', function(e) {
+    stopAutoSpot();
+    updateSpotFromClient(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  spotContainer.addEventListener('touchmove', function(e) {
+    updateSpotFromClient(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+
+  requestAnimationFrame(function() {
+    var rect = spotContainer.getBoundingClientRect();
+    updateSpot(rect.width * 0.5, rect.height * 0.5);
+  });
+  setInterval(tickAutoSpot, 1150);
 
   // Scroll to change radius
   spotContainer.addEventListener('wheel', function(e) {
     e.preventDefault();
-    radius = Math.max(30, Math.min(200, radius - e.deltaY * 0.3));
+    stopAutoSpot();
+    radius = Math.max(60, Math.min(190, radius - e.deltaY * 0.22));
+    var rect = spotContainer.getBoundingClientRect();
+    updateSpot(rect.width * lastSpot.x, rect.height * lastSpot.y);
   }, { passive: false });
 
   // ─── 3. Vertical Split ───

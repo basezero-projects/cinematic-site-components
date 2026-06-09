@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>View Transition Morphing - Cinematic Module</title>
+<link rel="icon" href="data:,">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -81,7 +82,7 @@
     width: 100%; aspect-ratio: 1;
     border-radius: 12px;
     margin-bottom: 16px;
-    view-transition-name: var(--vt-name);
+    view-transition-name: none;
   }
   .product-card h3 {
     font-size: 16px; font-weight: 600; margin-bottom: 4px;
@@ -129,7 +130,7 @@
   }
   .detail-image {
     width: 100%; aspect-ratio: 16/10;
-    view-transition-name: detail-image;
+    view-transition-name: none;
   }
   .detail-body {
     padding: 32px;
@@ -172,6 +173,26 @@
   }
   .btn-ghost:hover { background: var(--bg); }
 
+  ::view-transition-group(product-morph) {
+    z-index: 200;
+    animation-duration: 680ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  ::view-transition-old(product-morph),
+  ::view-transition-new(product-morph) {
+    animation-duration: 680ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    height: 100%;
+    overflow: clip;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 220ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   /* ─── Morph Nav Demo ─── */
   .morph-section {
     padding: 80px 24px 120px;
@@ -194,7 +215,7 @@
     border-radius: 100px;
     font-size: 14px; font-weight: 500;
     cursor: pointer;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1), padding 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     overflow: hidden;
     max-width: 180px;
     white-space: nowrap;
@@ -258,6 +279,16 @@
 
   @media (max-width: 768px) {
     .products-grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(product-morph),
+    ::view-transition-old(product-morph),
+    ::view-transition-new(product-morph),
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 1ms;
+    }
   }
 </style>
 </head>
@@ -339,19 +370,57 @@ var products = {
 };
 
 var overlay = document.getElementById('overlay');
+var detailImage = document.getElementById('detailImage');
+var detailName = document.getElementById('detailName');
+var detailPrice = document.getElementById('detailPrice');
+var detailDesc = document.getElementById('detailDesc');
+var activeSwatch = null;
+
+function setProductDetail(product) {
+  detailImage.style.background = product.bg;
+  detailName.textContent = product.name;
+  detailPrice.textContent = product.price;
+  detailDesc.textContent = product.desc;
+}
+
+function showOverlay() {
+  overlay.classList.add('open');
+  overlay.offsetHeight;
+  overlay.classList.add('visible');
+}
 
 function openProduct(card) {
   var id = card.dataset.product;
   var p = products[id];
-  document.getElementById('detailImage').style.background = p.bg;
-  document.getElementById('detailName').textContent = p.name;
-  document.getElementById('detailPrice').textContent = p.price;
-  document.getElementById('detailDesc').textContent = p.desc;
+  var swatch = card.querySelector('.product-swatch');
 
-  overlay.classList.add('open');
-  // Force reflow then animate
-  overlay.offsetHeight;
-  overlay.classList.add('visible');
+  if (!p) return;
+
+  if (!swatch || !document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    setProductDetail(p);
+    showOverlay();
+    return;
+  }
+
+  if (activeSwatch) {
+    activeSwatch.style.viewTransitionName = '';
+  }
+
+  detailImage.style.viewTransitionName = 'none';
+  swatch.style.viewTransitionName = 'product-morph';
+
+  var transition = document.startViewTransition(function () {
+    activeSwatch = swatch;
+    swatch.style.viewTransitionName = 'none';
+    detailImage.style.viewTransitionName = 'product-morph';
+    setProductDetail(p);
+    overlay.classList.add('open', 'visible');
+  });
+
+  transition.finished.finally(function () {
+    swatch.style.viewTransitionName = '';
+    detailImage.style.viewTransitionName = 'none';
+  });
 }
 
 function closeProduct(e, force) {
