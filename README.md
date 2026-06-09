@@ -6,6 +6,12 @@
 
 Open `index.html` to browse all 30 modules with animated mini-demos, or open any individual module file directly in a browser.
 
+## Curation Rules
+
+This repo is not a dump of every animation that can be scraped. New modules must pass `QUALITY-GATE.md` before they are built. Use `INTAKE-WORKFLOW.md` when researching sources with Firecrawl or FlareSolverr, then log accepted, backlogged, or rejected candidates in `_notes/source-log.md`.
+
+Build only animations that improve storytelling, hierarchy, spatial clarity, product feel, or proof. Reject effects that are just loud, trendy, hard to reuse, heavy, inaccessible, or unclear on licensing.
+
 ## Get Started
 
 ```bash

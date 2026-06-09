@@ -1,3 +1,20 @@
+<!--
+GENERATED FROM CLAUDE.md. Do not edit AGENTS.md directly.
+Edit CLAUDE.md, then run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/sync-agent-instructions.ps1
+-->
+
+# Codex Adapter Notes
+
+This file mirrors `CLAUDE.md` so Codex follows the same project rules as Claude Code.
+
+- Treat the instructions below as canonical for this folder.
+- When a rule names a Claude-specific tool, use the closest Codex tool available in the current session.
+- When a rule says to use Claude subagents, use Codex multi-agent/subagent tooling when available; otherwise do the work inline and keep context small.
+- When a rule names `TodoWrite`, use Codex plan/checklist tooling.
+- Do not edit this generated file by hand.
+
+---
+
 @../../../CLAUDE.md
 @../../CLAUDE.md
 
