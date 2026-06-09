@@ -76,4 +76,18 @@ Before a new `.html` file lands:
 - It avoids layout animation inside scroll handlers.
 - It uses GSAP/ScrollTrigger only when CSS or small vanilla JS is not enough.
 - It is documented in `README.md`.
+- It is documented in `IMPLEMENTATION-REFERENCE.md` with best use, preserve, and avoid notes.
 - It is linked from `index.html`.
+
+## Adaptation checklist
+
+Before using an existing module on a real site:
+
+- Read `IMPLEMENTATION-REFERENCE.md` for the module's behavior contract.
+- Replace demo copy, placeholder blocks, and weak imagery with real site content.
+- Verify the animation at desktop and mobile widths.
+- Verify first, middle, and final states, not only the load state.
+- Verify close/reverse paths for click and modal effects.
+- Verify touch or no-hover behavior for cursor and hover effects.
+- Verify reduced-motion behavior still communicates the content.
+- Check for known traps: GSAP immediate rendering, sticky containers broken by ancestor overflow, stale cached previews, off-by-one `nth-child` selectors, transparent card stacks, and labels floating across pinned content.

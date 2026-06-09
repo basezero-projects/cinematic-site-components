@@ -1,5 +1,11 @@
 # Cinematic Site Components Changelog
 
+## [0.4.7] - 2026-06-09
+
+### Added
+
+- **Implementation reference for future animation use**: Added `IMPLEMENTATION-REFERENCE.md` as the canonical guide for using the 35 verified cinematic modules in real sites. The guide tells future agents which module fits each content job, what behavior must be preserved, what situations to avoid, and which failure patterns were already fixed, including one-way morphs, sticky-card stacking, stale cached previews, early GSAP reveals, runaway marquees, and pinned labels floating over content. `README.md`, `QUALITY-GATE.md`, and `INTAKE-WORKFLOW.md` now point future module additions and site adaptations through that reference before shipping. All standalone HTML modules and the gallery index also now use the same `data:,` favicon line, removing stray `/favicon.ico` 404s from browser QA runs.
+
 ## [0.4.6] - 2026-06-09
 
 ### Fixed

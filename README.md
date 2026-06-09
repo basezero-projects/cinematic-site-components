@@ -12,6 +12,12 @@ This repo is not a dump of every animation that can be scraped. New modules must
 
 Build only animations that improve storytelling, hierarchy, spatial clarity, product feel, or proof. Reject effects that are just loud, trendy, hard to reuse, heavy, inaccessible, or unclear on licensing.
 
+## Using These Modules In Real Sites
+
+Before asking an LLM to implement one of these effects, point it at `IMPLEMENTATION-REFERENCE.md`. That file is the canonical adaptation guide: it maps each module to its best use case, notes what must be preserved, and records the failure patterns already fixed during QA.
+
+Do not copy an effect just because it looks cinematic in isolation. Match the effect to the page's content job, then verify the full interaction path after adaptation: first frame, middle state, final state, mobile, and reduced motion.
+
 ## Get Started
 
 ```bash

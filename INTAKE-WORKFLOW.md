@@ -106,6 +106,8 @@ When a module is built:
 
 1. Create a standalone `.html` demo.
 2. Add it to the right category in `README.md`.
-3. Add a card or preview to `index.html`.
-4. Add a source-log entry.
-5. Verify in browser at desktop and mobile widths.
+3. Add behavior notes to `IMPLEMENTATION-REFERENCE.md`.
+4. Add a card or preview to `index.html`.
+5. Add a source-log entry.
+6. Verify in browser at desktop and mobile widths.
+7. Verify the first, middle, and final animation states. For click/tap effects, verify the reverse or close path. For scroll effects, verify the full scroll range. For cursor/hover effects, verify touch or no-hover behavior.
