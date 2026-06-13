@@ -17,7 +17,8 @@
     --rust:#c46938;
     --green:#6f8768;
     --cyan:#78a5ad;
-    --open:.02;
+    --open:0;
+    --payload:0;
     --progress:0;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -136,91 +137,153 @@
   }
   .package{
     position:relative;
-    width:min(430px,70vw);
-    height:min(300px,50vw);
+    width:min(540px,74vw);
+    height:min(380px,52vw);
     transform-style:preserve-3d;
     transform:
-      rotateX(calc(-20deg + var(--open) * 16deg))
-      rotateY(calc(-36deg + var(--open) * 62deg))
-      translateY(calc(var(--open) * -38px));
+      rotateX(calc(-14deg + var(--open) * 5deg))
+      rotateY(calc(-31deg + var(--open) * 24deg))
+      translateY(calc(var(--payload) * -34px));
     transition:transform .08s linear;
   }
-  .face,.flap,.product-card{
+  .box-shell{
+    position:absolute;
+    left:50%;
+    top:52%;
+    width:420px;
+    height:260px;
+    transform:translate(-50%,-50%);
+    transform-style:preserve-3d;
+  }
+  .face,.box-lid,.top-flap,.product-card{
     position:absolute;
     transform-style:preserve-3d;
-    backface-visibility:hidden;
     border:1px solid rgba(255,255,255,.16);
   }
-  .face,.flap{
+  .face,.box-lid,.top-flap{
+    backface-visibility:hidden;
     background:
-      repeating-linear-gradient(12deg,rgba(255,255,255,.07) 0 1px,transparent 1px 18px),
+      repeating-linear-gradient(12deg,rgba(255,255,255,.075) 0 1px,transparent 1px 18px),
       linear-gradient(145deg,#7b5133,#3d281a);
     box-shadow:inset 0 0 42px rgba(0,0,0,.16);
   }
-  .base{
-    width:100%;
-    height:100%;
-    transform:translateZ(-78px);
+  .box-back{
+    inset:0;
+    border-radius:13px;
+    background:
+      radial-gradient(circle at 58% 38%,rgba(120,165,173,.15),transparent 34%),
+      repeating-linear-gradient(12deg,rgba(255,255,255,.055) 0 1px,transparent 1px 18px),
+      linear-gradient(145deg,#5f3c24,#2b1c12);
+    transform:translateZ(-58px);
+    opacity:calc(.42 + var(--open) * .58);
+  }
+  .box-back::after{
+    content:"";
+    position:absolute;
+    inset:18px;
+    border:1px dashed rgba(244,236,220,.18);
     border-radius:10px;
   }
-  .front,.back{
-    width:100%;
-    height:156px;
-    left:0;
+  .box-front{
+    inset:0;
     transform-origin:50% 100%;
-    border-radius:10px 10px 6px 6px;
+    border-radius:13px;
+    transform:translateZ(58px) rotateX(calc(var(--open) * -88deg));
+    box-shadow:0 24px 70px rgba(0,0,0,.28),inset 0 -26px 48px rgba(0,0,0,.12);
   }
-  .front{
-    bottom:0;
-    transform:translateZ(0) rotateX(calc(var(--open) * -112deg));
+  .box-front::before{
+    content:"STARTER KIT";
+    position:absolute;
+    left:24px;
+    top:22px;
+    color:rgba(244,236,220,.62);
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:.16em;
   }
-  .back{
-    top:-156px;
-    transform-origin:50% 100%;
-    transform:translateZ(0) rotateX(calc(180deg - var(--open) * 112deg));
+  .box-front::after{
+    content:"";
+    position:absolute;
+    left:24px;
+    right:24px;
+    top:50%;
+    height:10px;
+    border-radius:999px;
+    background:linear-gradient(90deg,rgba(213,170,90,.9),rgba(120,165,173,.72));
+    opacity:calc(1 - var(--payload));
+    transform:translateY(-50%);
   }
-  .left,.right{
-    width:156px;
-    height:100%;
+  .box-left,.box-right{
     top:0;
+    width:116px;
+    height:100%;
+    border-radius:10px;
+  }
+  .box-left{
+    left:-58px;
     transform-origin:100% 50%;
-    border-radius:10px 6px 6px 10px;
+    transform:translateZ(0) rotateY(calc(-90deg - var(--open) * 28deg));
   }
-  .left{
-    left:-156px;
-    transform:translateZ(0) rotateY(calc(-180deg + var(--open) * 112deg));
-  }
-  .right{
-    right:-156px;
+  .box-right{
+    right:-58px;
     transform-origin:0 50%;
-    transform:translateZ(0) rotateY(calc(180deg - var(--open) * 112deg));
+    transform:translateZ(0) rotateY(calc(90deg + var(--open) * 28deg));
   }
-  .flap{
-    width:40%;
-    height:108px;
-    left:30%;
-    top:-108px;
+  .box-lid{
+    left:0;
+    top:-104px;
+    width:100%;
+    height:104px;
     transform-origin:50% 100%;
-    border-radius:8px 8px 5px 5px;
+    border-radius:12px 12px 7px 7px;
     background:
-      linear-gradient(145deg,rgba(255,255,255,.08),transparent 40%),
-      #624126;
-    transform:translateZ(4px) rotateX(calc(180deg - var(--open) * 156deg));
+      linear-gradient(145deg,rgba(255,255,255,.1),transparent 42%),
+      repeating-linear-gradient(12deg,rgba(255,255,255,.075) 0 1px,transparent 1px 18px),
+      #694327;
+    transform:translateZ(58px) rotateX(calc(86deg - var(--open) * 148deg));
+  }
+  .box-lid::after{
+    content:"";
+    position:absolute;
+    left:24px;
+    right:24px;
+    top:22px;
+    height:1px;
+    background:rgba(244,236,220,.16);
+  }
+  .top-flap{
+    top:-58px;
+    width:47%;
+    height:58px;
+    border-radius:9px 9px 5px 5px;
+    opacity:calc(var(--open) * .95);
+    transform-origin:50% 100%;
+    background:linear-gradient(145deg,#7b5133,#4a2f1c);
+  }
+  .top-flap.left-flap{
+    left:0;
+    transform:translateZ(62px) rotateX(calc(76deg - var(--open) * 126deg)) rotateZ(calc(var(--open) * -6deg));
+  }
+  .top-flap.right-flap{
+    right:0;
+    transform:translateZ(62px) rotateX(calc(76deg - var(--open) * 126deg)) rotateZ(calc(var(--open) * 6deg));
   }
   .product-card{
-    left:18%;
-    top:18%;
-    width:64%;
-    height:62%;
+    left:20%;
+    top:22%;
+    width:60%;
+    height:56%;
     border-radius:14px;
     background:
       radial-gradient(circle at 70% 30%,rgba(120,165,173,.34),transparent 34%),
       linear-gradient(145deg,#18201c,#090b0a);
     box-shadow:0 28px 80px rgba(0,0,0,.38);
+    opacity:var(--payload);
     transform:
-      translateZ(calc(6px + var(--open) * 62px))
-      translateY(calc(var(--open) * -24px))
-      rotateX(calc(var(--open) * -7deg));
+      translateZ(calc(-20px + var(--payload) * 86px))
+      translateY(calc(42px - var(--payload) * 66px))
+      rotateX(calc(var(--payload) * -5deg))
+      scale(calc(.92 + var(--payload) * .08));
     display:grid;
     align-content:end;
     padding:22px;
@@ -240,7 +303,7 @@
     letter-spacing:.11em;
     text-transform:uppercase;
   }
-  .shadow{
+  .parcel-shadow{
     position:absolute;
     left:50%;
     top:58%;
@@ -248,7 +311,8 @@
     height:180px;
     border-radius:50%;
     background:radial-gradient(ellipse,rgba(0,0,0,.46),transparent 66%);
-    transform:translate(-50%,-50%) rotateX(76deg) translateZ(-160px);
+    transform:translate(-50%,-50%) rotateX(76deg) translateZ(-160px) scale(calc(.82 + var(--payload) * .18));
+    opacity:calc(.62 + var(--payload) * .28);
   }
   .chapter-card{
     position:relative;
@@ -350,7 +414,7 @@
   @media(prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-    :root{--open:1;--progress:1}
+    :root{--open:1;--payload:1;--progress:1}
     .fold-section{min-height:auto}
     .stage{position:relative}
   }
@@ -376,14 +440,17 @@
     <div class="scene-wrap">
       <div class="package-area" aria-hidden="true">
         <div class="package" id="package">
-          <div class="shadow"></div>
-          <div class="face base"></div>
-          <div class="face front"></div>
-          <div class="face back"></div>
-          <div class="face left"></div>
-          <div class="face right"></div>
-          <div class="flap"></div>
-          <div class="product-card"><b>Core kit</b><span>sealed insert / fast start / proof inside</span></div>
+          <div class="parcel-shadow"></div>
+          <div class="box-shell">
+            <div class="face box-back"></div>
+            <div class="face box-left"></div>
+            <div class="face box-right"></div>
+            <div class="box-lid"></div>
+            <div class="top-flap left-flap"></div>
+            <div class="top-flap right-flap"></div>
+            <div class="product-card"><b>Core kit</b><span>sealed insert / fast start / proof inside</span></div>
+            <div class="face box-front"></div>
+          </div>
         </div>
       </div>
       <article class="chapter-card" aria-live="polite">
@@ -418,12 +485,18 @@
     ["Ready state","Resolve into the next action.","End with a stable product frame that can support pricing, booking, purchase, or case-study copy."]
   ];
   function clamp(value, min, max){ return Math.max(min, Math.min(max, value)); }
+  function smoothstep(edge0, edge1, value){
+    const t = clamp((value - edge0) / (edge1 - edge0), 0, 1);
+    return t * t * (3 - 2 * t);
+  }
   function update(){
     const rect = section.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight * 1.04);
     const p = reduce ? 1 : clamp(-rect.top / travel, 0, 1);
-    const eased = p * p * (3 - 2 * p);
-    document.documentElement.style.setProperty("--open", eased.toFixed(4));
+    const fold = reduce ? 1 : smoothstep(.1, .7, p);
+    const payload = reduce ? 1 : smoothstep(.46, .82, p);
+    document.documentElement.style.setProperty("--open", fold.toFixed(4));
+    document.documentElement.style.setProperty("--payload", payload.toFixed(4));
     document.documentElement.style.setProperty("--progress", p.toFixed(4));
     const index = Math.min(chapters.length - 1, Math.floor(p * chapters.length));
     label.textContent = chapters[index][0];

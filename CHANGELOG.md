@@ -1,5 +1,11 @@
 # Cinematic Site Components Changelog
 
+## [0.8.1] - 2026-06-12
+
+### Fixed
+
+- **Folding package scroll frame-by-frame correction**: Rebuilt `folding-package-scroll.html` so the first frames now show a sealed package instead of exposing the product immediately. The scroll sequence now holds closed, opens the lid and front flap first, then fades/lifts the `Core kit` payload only after the package has earned the reveal. The CSS 3D object now has a clearer back wall, side walls, lid, top flaps, front face, delayed payload state, and reduced-motion open state. Desktop, mobile, and reduced-motion browser checks passed with no console errors or horizontal overflow.
+
 ## [0.8.0] - 2026-06-12
 
 ### Added
