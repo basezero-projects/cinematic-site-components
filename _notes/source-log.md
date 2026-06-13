@@ -23,6 +23,23 @@ Why it belongs here:
 
 ## Entries
 
+### 2026-06-12 - WebGL material reveal
+
+Date: 2026-06-12
+Source: Codrops
+URL: https://tympanus.net/codrops/2025/10/08/how-to-animate-webgl-shaders-with-gsap-ripples-reveals-and-dynamic-blur-effects/
+Scrape method: Firecrawl
+Candidate pattern: Shader uniforms blend two material texture states while scroll and pointer position drive a controlled inspection reveal
+Score: 8/10
+Decision: Build
+Good for: Product materials, restoration proof, coating/finish claims, fabrication details, food or ingredient macro sections, premium before-and-after surfaces
+Avoid for: Flat colour layers, generic shader distortion, low-asset pages, trust-heavy pages where a still comparison is clearer, or any page without a real surface to inspect
+Motion risk: Shader work can become noise if the two layers do not contain visible detail or if distortion hides the final state
+Reduced motion fallback: Static split material comparison with the raw layer, reveal edge, finished surface, and proof frame copy all visible
+Dependencies: Three.js CDN, custom shader material, generated CanvasTexture layers, vanilla scroll and pointer mapping
+License/attribution: Original local implementation inspired by public pattern research; no source code copied
+Why it belongs here: Built as `webgl-material-reveal.html`, it gives future sites a concrete WebGL shader pattern that solves a product/material comparison job instead of adding another gallery or decorative distortion.
+
 ### 2026-06-09 - 3D camera tour
 
 Date: 2026-06-09

@@ -3,10 +3,11 @@
 Source: Codrops, "How to Animate WebGL Shaders with GSAP: Ripples, Reveals, and Dynamic Blur Effects"
 URL: https://tympanus.net/codrops/2025/10/08/how-to-animate-webgl-shaders-with-gsap-ripples-reveals-and-dynamic-blur-effects/
 Reviewed: 2026-06-09
+Promoted: 2026-06-12 as `webgl-material-reveal.html`
 
 ## Useful Pattern
 
-Shader uniforms are animated with GSAP to create click ripples, dynamic blur from scroll or drag velocity, texture blending, mask reveals, and animated carousel surfaces. The useful idea is GPU-powered image treatment that responds to a real interaction rather than a decorative loop.
+Shader uniforms are animated to create click ripples, dynamic blur from scroll or drag velocity, texture blending, mask reveals, and animated carousel surfaces. The useful idea is GPU-powered image treatment that responds to a real interaction rather than a decorative loop.
 
 ## Why It Is Good
 
@@ -22,8 +23,8 @@ Shader uniforms are animated with GSAP to create click ripples, dynamic blur fro
 
 ## Quality Gate
 
-Score: 6/10
+Score: 8/10 for the promoted material-reveal use case; 6/10 for the broader shader sampler.
 
-Decision: Backlog.
+Decision: Build.
 
-Do not build until there is a specific module need, such as a product material reveal, gallery blur tied to drag velocity, or a before/after shader wipe with real images.
+Built an original local module focused on product/material inspection rather than a shader sampler. Keep remaining ideas, such as drag-velocity gallery blur, backlogged until they gain an equally specific content job.

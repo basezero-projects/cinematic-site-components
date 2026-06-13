@@ -96,17 +96,17 @@ Why built: It uses raw WebGL with generated textures, scroll-controlled rotation
 Best fit: Lookbooks, art, architecture, premium portfolios.
 Risk: WebGL performance, asset loading, and accessibility fallback.
 
-## Backlog
+### WebGL material reveal
 
-### WebGL shader ripples, reveals, and blur
-
-Pattern: Shader uniforms driven by click, scroll, or drag for ripples, dynamic blur, texture blends, and reveals.
+Pattern: Shader uniforms blend raw and finished material textures while scroll and pointer position drive the reveal edge
 Source: https://tympanus.net/codrops/2025/10/08/how-to-animate-webgl-shaders-with-gsap-ripples-reveals-and-dynamic-blur-effects/
-Score: 6/10
-Why not built yet: Shader complexity is not worth adding until the visual treatment has a precise use case.
-What would make it worth building: A material reveal, drag-velocity gallery blur, or before/after shader wipe using real imagery.
-Best fit: Music, events, premium galleries, product material pages.
-Risk: Heavy, easy to overdo, and must have robust image/canvas fallbacks.
+Score: 8/10
+Status: Built as `webgl-material-reveal.html`
+Why built: It turns the broad shader source into a concrete inspection module for product materials, restoration, coatings, fabrication, and premium before/after surfaces.
+Best fit: Product detail sections, material pages, restoration proof, coating/finish claims, food or fabrication macro imagery.
+Risk: If the two layers are weak or flat, the shader becomes decorative noise.
+
+## Backlog
 
 ### Layered image grid zoom
 

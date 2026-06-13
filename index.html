@@ -111,6 +111,11 @@
   .mini-webgl-plane:nth-child(3){background:#8f5b45;animation-delay:1.4s}
   .mini-webgl-plane:nth-child(4){background:#7a8a68;animation-delay:2.1s}
   @keyframes miniWebglOrbit{0%{transform:rotateY(0deg) translateZ(48px);opacity:.35}50%{transform:rotateY(180deg) translateZ(48px);opacity:1}100%{transform:rotateY(360deg) translateZ(48px);opacity:.35}}
+  .mini-material{position:relative;width:128px;height:86px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#402b1d,#17120d 58%,#4d3928);box-shadow:0 18px 34px rgba(0,0,0,.34);transform:perspective(260px) rotateX(12deg) rotateY(-18deg)}
+  .mini-material::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 72% 34%,rgba(255,232,170,.34),transparent 30%),linear-gradient(135deg,#21474c,#c7a05b 52%,#111614);clip-path:inset(0 100% 0 0);animation:miniMaterialSweep 4.2s cubic-bezier(.37,0,.18,1) infinite}
+  .mini-material::after{content:"";position:absolute;width:42px;height:42px;border-radius:50%;left:47px;top:21px;border:1px solid rgba(234,231,226,.55);background:rgba(94,173,181,.15);box-shadow:0 0 28px rgba(94,173,181,.22);animation:miniMaterialLens 4.2s cubic-bezier(.37,0,.18,1) infinite}
+  @keyframes miniMaterialSweep{0%{clip-path:inset(0 100% 0 0)}58%,76%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 100% 0 0)}}
+  @keyframes miniMaterialLens{0%{transform:translate(-32px,10px);opacity:.45}45%,72%{transform:translate(28px,-8px);opacity:1}100%{transform:translate(-32px,10px);opacity:.45}}
   .mini-curve-svg{width:84%;height:70%;overflow:visible}
   .mini-curve-guide{fill:none;stroke:rgba(234,231,226,.16);stroke-width:5;stroke-linecap:round;stroke-dasharray:1 12}
   .mini-curve-draw{fill:none;stroke:url(#miniCurveGradient);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:235;stroke-dashoffset:235;animation:miniCurveDraw 4.2s cubic-bezier(.37,0,.18,1) infinite}
@@ -321,7 +326,7 @@
 
 <div class="header">
   <div class="label">Cinematic Site Modules</div>
-  <h1>39 <span>cinematic modules</span> for websites that move</h1>
+  <h1>40 <span>cinematic modules</span> for websites that move</h1>
   <p>Each module is a standalone HTML file. No frameworks, no build step. Click any card to see it live.</p>
   <div style="margin-top:20px;font-size:12px;color:var(--muted)">&copy; Created by Jay from <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboLabs</a>. Learn more at <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboNuggets</a></div>
 </div>
@@ -331,7 +336,7 @@
   <div class="section-head">
     <div class="section-dot" style="background:#e8793a"></div>
     <div class="section-title">Scroll-Driven</div>
-    <div class="section-count">16 modules</div>
+    <div class="section-count">17 modules</div>
   </div>
   <div class="bento bento-scroll">
     <a href="text-mask.html" class="card span-2c"><div class="card-demo"><div class="mini-mask">REVEAL</div><div class="mini-mask-fill">REVEAL</div></div><div class="card-info"><span class="card-num">01</span><span class="card-name">Text Mask Reveal</span><span class="card-arrow">&rarr;</span></div></a>
@@ -344,6 +349,7 @@
     <a href="svg-mask-chapters.html" class="card"><div class="card-demo"><div class="mini-mask-chapter"></div></div><div class="card-info"><span class="card-num">32</span><span class="card-name">SVG Mask Chapters</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="scroll-filter-distortion.html" class="card"><div class="card-demo"><svg width="0" height="0" aria-hidden="true"><filter id="miniDistort"><feTurbulence type="fractalNoise" baseFrequency=".025" numOctaves="2" result="miniNoise"/><feDisplacementMap in="SourceGraphic" in2="miniNoise" scale="18"/></filter></svg><div class="mini-filter-card"></div></div><div class="card-info"><span class="card-num">33</span><span class="card-name">Scroll Filter Distortion</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="webgl-rotating-gallery.html" class="card"><div class="card-demo"><div class="mini-webgl-ring"><div class="mini-webgl-plane"></div><div class="mini-webgl-plane"></div><div class="mini-webgl-plane"></div><div class="mini-webgl-plane"></div></div></div><div class="card-info"><span class="card-num">35</span><span class="card-name">WebGL Rotating Gallery</span><span class="card-arrow">&rarr;</span></div></a>
+    <a href="webgl-material-reveal.html" class="card"><div class="card-demo"><div class="mini-material"></div></div><div class="card-info"><span class="card-num">40</span><span class="card-name">WebGL Material Reveal</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="curved-path-motion.html" class="card"><div class="card-demo"><svg class="mini-curve-svg" viewBox="0 0 160 100" aria-hidden="true"><defs><linearGradient id="miniCurveGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e8793a"/><stop offset="52%" stop-color="#c8a97e"/><stop offset="100%" stop-color="#5eadb5"/></linearGradient></defs><path class="mini-curve-guide" d="M18,70 C42,12 88,24 96,48 C106,82 56,76 66,52 C78,24 118,26 142,44"/><path class="mini-curve-draw" d="M18,70 C42,12 88,24 96,48 C106,82 56,76 66,52 C78,24 118,26 142,44"/><circle class="mini-curve-dot" r="5"><animateMotion dur="4.2s" repeatCount="indefinite" path="M18,70 C42,12 88,24 96,48 C106,82 56,76 66,52 C78,24 118,26 142,44"/></circle></svg></div><div class="card-info"><span class="card-num">36</span><span class="card-name">Curved Path Motion</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="scroll-3d-text.html" class="card"><div class="card-demo"><div class="mini-text-wheel"><div class="mini-text-wheel-inner"><span>Proof</span><span>Speed</span><span>Care</span><span>Build</span><span>Launch</span><span>Trust</span></div></div></div><div class="card-info"><span class="card-num">37</span><span class="card-name">3D Scroll Text</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="scroll-camera-tour.html" class="card span-2c"><div class="card-demo"><div class="mini-camera-tour"><div class="mini-camera-floor"></div><div class="mini-camera-path"></div><div class="mini-camera-dot"></div><div class="mini-camera-object"></div></div></div><div class="card-info"><span class="card-num">38</span><span class="card-name">3D Camera Tour</span><span class="card-arrow">&rarr;</span></div></a>
@@ -409,7 +415,7 @@
   </div>
 </section>
 
-<div class="footer-note">39 cinematic modules. No frameworks, no build step.</div>
+<div class="footer-note">40 cinematic modules. No frameworks, no build step.</div>
 <footer>Cinematic Site Modules</footer>
 
 </body>

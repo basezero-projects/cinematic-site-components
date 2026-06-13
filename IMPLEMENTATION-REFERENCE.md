@@ -4,7 +4,7 @@ Use this file when an LLM is asked to add animation from this folder to a real s
 
 ## Current Status
 
-- **Module count:** 39 standalone examples.
+- **Module count:** 40 standalone examples.
 - **Last verification pass:** 2026-06-09.
 - **Preview URL pattern:** run `serve-over-tailscale.ps1`, then open the printed Tailscale URL.
 - **Cache behavior:** the Tailscale helper now serves no-cache headers. If Chrome or a phone shows an old effect, restart the helper and reload with a cache-busting query string.
@@ -44,6 +44,7 @@ If the target page is a SYVR/client marketing page, also point it at the relevan
 | View transition opened but snapped closed | Close handler only removed overlay classes | Store source element and animate back before clearing state |
 | Sticky final card went behind stack | `nth-child()` ignored a label element before cards | Target real card positions or use explicit classes/z-index values |
 | Spotlight showed flat colour fields | Demo depended on weak/generated layers and stale cache | Use real image layers and no-cache preview during QA |
+| Shader reveal looked like a filter over nothing | The reveal layer had no concrete material detail or fallback | Use two meaningful texture/image states, a visible comparison edge, and a static split fallback |
 | Zoom parallax final card appeared immediately | GSAP `fromTo()` immediate-rendered a visible start state | Keep CSS hidden state and use `autoAlpha`/`immediateRender: false` |
 | SVG mask chapter label floated across page | Chapter controls were positioned outside the content panel | Keep controls scoped to the section panel or pinned rail |
 | Marquee felt frantic | Timing was tuned for demo novelty, not site reading | Slow ambient loops and dampen scroll speed influence |
@@ -68,6 +69,7 @@ If the target page is a SYVR/client marketing page, also point it at the relevan
 | `svg-mask-chapters.html` | Product/editorial chapters with strong image changes. | Controls stay inside the chapter panel; mask change has narrative meaning. | Weak imagery or service pages where the reveal does not add meaning. |
 | `scroll-filter-distortion.html` | Music, event, experimental brand, or image-led editorial moments. | Distortion resolves back to clarity. | Trust-heavy pages where distortion makes the asset harder to inspect. |
 | `webgl-rotating-gallery.html` | Lookbooks, art, architecture, premium visual galleries. | WebGL fallback and readable mobile composition. | Low-asset service pages or performance-sensitive landing pages. |
+| `webgl-material-reveal.html` | Product materials, restorations, coatings, fabrication details, food/detail imagery, and premium before-and-after surfaces where the finish is the proof. | Preserve two meaningful texture or image layers, the visible comparison edge, pointer/scroll inspection, nonblank canvas checks, and the static split fallback. | Decorative shader noise, flat colour layers, canvas-only meaning, or pages where a normal before/after image is clearer. |
 | `curved-path-motion.html` | Product flows, quote funnels, service journeys, case-study timelines, fulfillment routes, or any page where scattered proof needs one clear route. | The moving object must mean something, the active cards should sync with path position, and the final stop needs a concrete action. | Decorative route lines, pages with no real sequence, or dense content where the moving object competes with reading. |
 | `scroll-3d-text.html` | Brand pillars, product attributes, capability spectra, and short editorial chapter vocabularies. | Keep the word set tight, sync the active word to explanatory copy, and verify mobile/reduced-motion fallbacks. | Buzzword clouds, long lists, body-copy replacement, or fast spinning text that users have to read. |
 | `scroll-camera-tour.html` | Product construction, venue walkthroughs, architecture, hardware, gallery installations, or case-study artifacts where planned camera angles make the subject easier to understand. | Preserve the full camera story: wide read, material pass, detail pass, spatial proof, and resolved action frame. Verify nonblank canvas, mobile framing, and static fallback. | Generic floating objects, pages with no inspectable subject, heavy model loads without fallback, or camera movement that competes with the CTA. |

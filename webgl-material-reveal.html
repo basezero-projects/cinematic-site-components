@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebGL Material Reveal - Cinematic Module</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#090907;
+    --ink:#f2eadc;
+    --muted:#9c9282;
+    --line:#29241d;
+    --panel:#12110f;
+    --panel-2:#1b1712;
+    --gold:#d6ad60;
+    --rust:#c8663a;
+    --cyan:#79aab7;
+    --green:#738b70;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    min-height:100%;
+    overflow-x:hidden;
+    background:
+      radial-gradient(circle at 16% 8%,rgba(121,170,183,.15),transparent 28%),
+      radial-gradient(circle at 78% 14%,rgba(200,102,58,.13),transparent 34%),
+      radial-gradient(circle at 50% 92%,rgba(214,173,96,.1),transparent 30%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Public Sans",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    opacity:.09;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.66' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+    mix-blend-mode:screen;
+  }
+  .eyebrow,.chapter-label,.spec-label,.fallback-label{
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+  }
+  .hero{
+    position:relative;
+    z-index:2;
+    min-height:88dvh;
+    display:grid;
+    place-items:end center;
+    padding:92px 24px 54px;
+  }
+  .hero-inner{
+    width:min(1180px,100%);
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(300px,390px);
+    gap:44px;
+    align-items:end;
+  }
+  .eyebrow{color:var(--cyan);margin-bottom:18px}
+  h1{
+    max-width:960px;
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(48px,8.2vw,122px);
+    line-height:.84;
+    letter-spacing:-.06em;
+    font-weight:900;
+  }
+  h1 span{color:var(--gold)}
+  .hero-copy{
+    max-width:64ch;
+    margin-top:26px;
+    color:var(--muted);
+    font-size:18px;
+    line-height:1.62;
+  }
+  .use-card{
+    min-height:260px;
+    display:grid;
+    align-content:end;
+    gap:18px;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;
+    background:
+      linear-gradient(145deg,rgba(255,255,255,.08),transparent 34%),
+      var(--panel);
+    box-shadow:0 34px 100px rgba(0,0,0,.28);
+    padding:24px;
+  }
+  .use-card strong{
+    font-family:"Archivo",sans-serif;
+    font-size:36px;
+    line-height:.96;
+    letter-spacing:-.045em;
+  }
+  .use-card p{
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.56;
+  }
+  .inspection{
+    display:none;
+    position:relative;
+    z-index:2;
+    min-height:330vh;
+    border-top:1px solid rgba(255,255,255,.07);
+    border-bottom:1px solid rgba(255,255,255,.07);
+  }
+  .has-webgl .inspection{display:block}
+  .stage{
+    position:sticky;
+    top:0;
+    min-height:100dvh;
+    overflow:hidden;
+    background:#060605;
+  }
+  .stage canvas{
+    position:absolute;
+    inset:0;
+    display:block;
+    width:100%;
+    height:100%;
+    background:
+      radial-gradient(circle at 58% 42%,#201b13,#060605 68%);
+  }
+  .stage::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(90deg,rgba(6,6,5,.82),rgba(6,6,5,.16) 42%,rgba(6,6,5,.72)),
+      linear-gradient(180deg,rgba(6,6,5,.66),transparent 28%,rgba(6,6,5,.86));
+  }
+  .inspection-ui{
+    position:relative;
+    z-index:3;
+    min-height:100dvh;
+    width:min(1180px,100%);
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:minmax(286px,420px) minmax(0,1fr);
+    gap:32px;
+    align-items:end;
+    padding:46px 24px 58px;
+    pointer-events:none;
+  }
+  .chapter-card{
+    pointer-events:auto;
+    width:min(420px,100%);
+    border:1px solid rgba(255,255,255,.11);
+    border-radius:10px;
+    background:rgba(13,12,10,.82);
+    backdrop-filter:blur(18px);
+    box-shadow:0 28px 90px rgba(0,0,0,.38);
+    padding:22px;
+  }
+  .chapter-label{color:var(--gold);margin-bottom:16px}
+  .chapter-card h2{
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(32px,4.7vw,58px);
+    line-height:.92;
+    letter-spacing:-.055em;
+    margin-bottom:18px;
+  }
+  .chapter-card p{
+    color:rgba(242,234,220,.73);
+    font-size:15px;
+    line-height:1.62;
+  }
+  .progress-shell{
+    height:5px;
+    border-radius:999px;
+    background:rgba(255,255,255,.1);
+    overflow:hidden;
+    margin-top:22px;
+  }
+  .progress-fill{
+    width:0%;
+    height:100%;
+    border-radius:inherit;
+    background:linear-gradient(90deg,var(--rust),var(--gold),var(--cyan));
+  }
+  .spec-panel{
+    align-self:start;
+    justify-self:end;
+    width:min(360px,100%);
+    display:grid;
+    gap:12px;
+    padding-top:12px;
+  }
+  .spec-row{
+    display:grid;
+    grid-template-columns:94px 1fr;
+    gap:16px;
+    border-top:1px solid rgba(255,255,255,.12);
+    padding-top:12px;
+  }
+  .spec-label{color:rgba(242,234,220,.44)}
+  .spec-row span:last-child{
+    color:rgba(242,234,220,.76);
+    font-size:14px;
+    line-height:1.45;
+  }
+  .static-fallback{
+    position:relative;
+    z-index:2;
+    display:block;
+    max-width:1120px;
+    margin:0 auto;
+    padding:96px 24px 118px;
+  }
+  .has-webgl .static-fallback{display:none}
+  .fallback-label{color:var(--cyan);margin-bottom:18px}
+  .fallback-grid{
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    gap:18px;
+    align-items:stretch;
+  }
+  .fallback-visual{
+    min-height:420px;
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;
+    background:
+      repeating-linear-gradient(12deg,rgba(255,255,255,.1) 0 1px,transparent 1px 18px),
+      linear-gradient(90deg,rgba(54,37,26,.98) 0 49.5%,rgba(211,167,94,.88) 49.5% 50.5%,rgba(36,65,68,.96) 50.5%);
+    box-shadow:0 34px 95px rgba(0,0,0,.3);
+  }
+  .fallback-visual::before{
+    content:"Raw substrate";
+    position:absolute;
+    left:28px;
+    bottom:28px;
+    width:220px;
+    color:#f2eadc;
+    font-family:"Archivo",sans-serif;
+    font-size:30px;
+    line-height:.94;
+    font-weight:900;
+    letter-spacing:-.04em;
+  }
+  .fallback-visual::after{
+    content:"Finished surface";
+    position:absolute;
+    right:28px;
+    bottom:28px;
+    width:220px;
+    color:#f7e4bc;
+    font-family:"Archivo",sans-serif;
+    font-size:30px;
+    line-height:.94;
+    text-align:right;
+    font-weight:900;
+    letter-spacing:-.04em;
+  }
+  .fallback-copy{
+    display:grid;
+    gap:12px;
+  }
+  .fallback-step{
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:8px;
+    background:rgba(18,17,15,.84);
+    padding:18px;
+  }
+  .fallback-step b{
+    display:block;
+    margin-bottom:7px;
+    color:var(--gold);
+    font-size:13px;
+  }
+  .fallback-step span{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.5;
+  }
+  .why{
+    position:relative;
+    z-index:2;
+    max-width:1040px;
+    margin:0 auto;
+    padding:112px 24px 132px;
+    display:grid;
+    grid-template-columns:.8fr 1.2fr;
+    gap:44px;
+  }
+  .why h2{
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(34px,5vw,62px);
+    line-height:.95;
+    letter-spacing:-.05em;
+  }
+  .why p{
+    color:var(--muted);
+    font-size:17px;
+    line-height:1.7;
+  }
+  footer{
+    position:relative;
+    z-index:2;
+    border-top:1px solid rgba(255,255,255,.08);
+    color:var(--muted);
+    text-align:center;
+    padding:24px;
+    font-size:12px;
+  }
+  .credit{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:30;
+    padding:8px 16px;
+    color:rgba(242,234,220,.38);
+    background:rgba(9,9,7,.84);
+    border-top:1px solid rgba(255,255,255,.08);
+    text-align:center;
+    font-size:11px;
+    backdrop-filter:blur(8px);
+  }
+  .credit a{color:var(--gold);text-decoration:none}
+  @media(max-width:860px){
+    .hero-inner,.inspection-ui,.fallback-grid,.why{grid-template-columns:1fr}
+    .hero{padding:76px 18px 38px}
+    .use-card{min-height:220px}
+    .inspection{min-height:280vh}
+    .inspection-ui{align-items:end;padding:24px 16px 58px}
+    .spec-panel{display:none}
+    .chapter-card{width:100%;padding:18px}
+    .chapter-card h2{font-size:clamp(30px,9vw,44px)}
+    .stage::after{background:linear-gradient(180deg,rgba(6,6,5,.22),transparent 34%,rgba(6,6,5,.88))}
+    .fallback-visual{min-height:340px}
+  }
+  @media(max-width:560px){
+    h1{font-size:clamp(42px,15vw,70px)}
+    .hero-copy{font-size:16px}
+    .chapter-card p{font-size:14px}
+    .fallback-step{padding:16px}
+    .fallback-visual::before,.fallback-visual::after{font-size:24px;width:140px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    .inspection{display:none!important}
+    .static-fallback{display:block!important}
+  }
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Module 40 - WebGL Material Reveal</div>
+      <h1>Reveal the finish, <span>not a filter.</span></h1>
+      <p class="hero-copy">Use this when the surface is the claim: coating, restoration, product finish, ingredient quality, material spec, or any before-and-after where a flat wipe would undersell the detail.</p>
+    </div>
+    <aside class="use-card">
+      <strong>The shader should make inspection easier.</strong>
+      <p>A useful reveal has two real layers, a controlled edge, and a final state that proves what changed.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="inspection" id="inspection">
+  <div class="stage">
+    <canvas id="materialCanvas" aria-label="WebGL material reveal showing raw and finished surface layers"></canvas>
+    <div class="inspection-ui">
+      <article class="chapter-card" aria-live="polite">
+        <div class="chapter-label" id="chapterLabel">Raw layer</div>
+        <h2 id="chapterTitle">Start with the untreated surface.</h2>
+        <p id="chapterCopy">The first frame should make the baseline visible: grain, scratches, dullness, oxidation, unfinished material, or the part before restoration.</p>
+        <div class="progress-shell" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+      </article>
+      <div class="spec-panel" aria-hidden="true">
+        <div class="spec-row"><span class="spec-label">Source</span><span>Two generated material textures are blended inside one WebGL shader.</span></div>
+        <div class="spec-row"><span class="spec-label">Motion</span><span>Scroll advances the finish pass; pointer position adds a local inspection lens.</span></div>
+        <div class="spec-row"><span class="spec-label">Fallback</span><span>Reduced motion or missing WebGL shows a static split surface and all copy.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="static-fallback" id="fallback">
+  <div class="fallback-label">Static material reveal fallback</div>
+  <div class="fallback-grid">
+    <div class="fallback-visual" aria-hidden="true"></div>
+    <div class="fallback-copy">
+      <div class="fallback-step"><b>Raw layer</b><span>Show the untreated or earlier state clearly enough that the improvement has context.</span></div>
+      <div class="fallback-step"><b>Controlled edge</b><span>Use a soft shader edge or clean split so the visitor can compare both states in the same frame.</span></div>
+      <div class="fallback-step"><b>Finished surface</b><span>The final layer needs visible detail: grain, gloss, texture, pattern, or restored clarity.</span></div>
+      <div class="fallback-step"><b>Proof frame</b><span>End with the product or material readable, not hidden behind distortion.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <h2>Why this belongs in the library.</h2>
+  <p>Shader reveals are easy to misuse as noise. This one is useful because it compares two surface states in one inspectable object. It fits product materials, restorations, coatings, food detail, fabrication, and editorial feature images where the transition itself explains the value.</p>
+</section>
+
+<footer>Cinematic Module - WebGL Material Reveal</footer>
+<div class="credit">&copy; Created by Jay from <a href="https://robonuggets.com">RoboLabs</a>. Learn more at <a href="https://robonuggets.com">RoboNuggets</a></div>
+
+<script type="module">
+import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+
+(function(){
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const inspection = document.getElementById("inspection");
+  const canvas = document.getElementById("materialCanvas");
+  const progressFill = document.getElementById("progressFill");
+  const chapterLabel = document.getElementById("chapterLabel");
+  const chapterTitle = document.getElementById("chapterTitle");
+  const chapterCopy = document.getElementById("chapterCopy");
+  if (reduce) return;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false, powerPreference:"high-performance", preserveDrawingBuffer:true });
+  renderer.setPixelRatio(Math.min(1.6, window.devicePixelRatio || 1));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x070706);
+  scene.fog = new THREE.Fog(0x070706, 7, 16);
+
+  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 60);
+  camera.position.set(0, 0.42, 5.7);
+
+  const rig = new THREE.Group();
+  rig.rotation.set(-0.26, -0.22, 0.04);
+  scene.add(rig);
+
+  function makeTexture(kind){
+    const c = document.createElement("canvas");
+    c.width = 1024;
+    c.height = 704;
+    const ctx = c.getContext("2d");
+    const base = ctx.createLinearGradient(0, 0, c.width, c.height);
+    if (kind === "raw") {
+      base.addColorStop(0, "#3a281c");
+      base.addColorStop(.42, "#1d1712");
+      base.addColorStop(1, "#4b3a2a");
+    } else {
+      base.addColorStop(0, "#22464a");
+      base.addColorStop(.42, "#947441");
+      base.addColorStop(1, "#151817");
+    }
+    ctx.fillStyle = base;
+    ctx.fillRect(0, 0, c.width, c.height);
+
+    for (let i = 0; i < 140; i += 1) {
+      const y = Math.random() * c.height;
+      const alpha = kind === "raw" ? .08 + Math.random() * .12 : .05 + Math.random() * .08;
+      ctx.strokeStyle = `rgba(255,235,190,${alpha})`;
+      ctx.lineWidth = kind === "raw" ? 1 + Math.random() * 2.4 : .6 + Math.random() * 1.4;
+      ctx.beginPath();
+      ctx.moveTo(-80, y);
+      ctx.bezierCurveTo(c.width * .22, y - 28 + Math.random() * 56, c.width * .7, y + 34 - Math.random() * 68, c.width + 90, y + Math.random() * 24);
+      ctx.stroke();
+    }
+
+    if (kind === "raw") {
+      for (let i = 0; i < 46; i += 1) {
+        const x = Math.random() * c.width;
+        const y = Math.random() * c.height;
+        ctx.strokeStyle = "rgba(16,12,9,.44)";
+        ctx.lineWidth = .8 + Math.random() * 1.6;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + 50 + Math.random() * 210, y - 18 + Math.random() * 36);
+        ctx.stroke();
+      }
+      ctx.fillStyle = "rgba(8,7,6,.42)";
+      ctx.fillRect(82, 78, 300, 96);
+      ctx.strokeStyle = "rgba(239,213,165,.22)";
+      ctx.strokeRect(82.5, 78.5, 300, 96);
+      ctx.fillStyle = "rgba(239,213,165,.72)";
+      ctx.font = "800 42px Arial";
+      ctx.fillText("RAW", 112, 134);
+      ctx.font = "700 18px Arial";
+      ctx.fillText("grain / oxidized / unsealed", 112, 160);
+    } else {
+      const shine = ctx.createRadialGradient(690, 250, 20, 690, 250, 470);
+      shine.addColorStop(0, "rgba(255,238,187,.42)");
+      shine.addColorStop(.38, "rgba(121,170,183,.24)");
+      shine.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = shine;
+      ctx.fillRect(0, 0, c.width, c.height);
+      for (let i = 0; i < 9; i += 1) {
+        ctx.strokeStyle = `rgba(246,218,158,${.1 + i * .018})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.ellipse(670, 352, 150 + i * 30, 52 + i * 11, -.18, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.fillStyle = "rgba(9,13,13,.56)";
+      ctx.fillRect(84, 78, 360, 104);
+      ctx.strokeStyle = "rgba(246,218,158,.36)";
+      ctx.strokeRect(84.5, 78.5, 360, 104);
+      ctx.fillStyle = "rgba(247,226,181,.9)";
+      ctx.font = "800 42px Arial";
+      ctx.fillText("FINISH", 114, 135);
+      ctx.font = "700 18px Arial";
+      ctx.fillText("sealed / polished / colour-true", 114, 162);
+    }
+
+    const imageData = ctx.getImageData(0, 0, c.width, c.height);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const n = Math.random() * 18 - 9;
+      data[i] = Math.max(0, Math.min(255, data[i] + n));
+      data[i + 1] = Math.max(0, Math.min(255, data[i + 1] + n));
+      data[i + 2] = Math.max(0, Math.min(255, data[i + 2] + n));
+    }
+    ctx.putImageData(imageData, 0, 0);
+    const texture = new THREE.CanvasTexture(c);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.anisotropy = 8;
+    texture.wrapS = THREE.ClampToEdgeWrapping;
+    texture.wrapT = THREE.ClampToEdgeWrapping;
+    return texture;
+  }
+
+  const rawTexture = makeTexture("raw");
+  const finishTexture = makeTexture("finish");
+
+  const uniforms = {
+    uRaw: { value: rawTexture },
+    uFinish: { value: finishTexture },
+    uReveal: { value: 0 },
+    uPointer: { value: new THREE.Vector2(.5, .5) },
+    uPointerStrength: { value: .35 },
+    uAspect: { value: 1.45 },
+    uTime: { value: 0 }
+  };
+
+  const material = new THREE.ShaderMaterial({
+    uniforms,
+    vertexShader: `
+      varying vec2 vUv;
+      varying float vWave;
+      uniform float uReveal;
+      uniform vec2 uPointer;
+      uniform float uPointerStrength;
+      uniform float uTime;
+      void main(){
+        vUv = uv;
+        vec3 pos = position;
+        float edge = uReveal * 1.28 - 0.14;
+        float scan = 1.0 - smoothstep(edge - 0.16, edge + 0.16, uv.x + sin(uv.y * 3.14159) * 0.045);
+        float d = distance(uv, uPointer);
+        float lens = 1.0 - smoothstep(0.0, 0.26, d);
+        float wave = sin((d * 28.0) - uTime * 2.8) * lens * uPointerStrength;
+        pos.z += (wave * 0.05) + (scan * 0.035);
+        vWave = wave;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+      varying float vWave;
+      uniform sampler2D uRaw;
+      uniform sampler2D uFinish;
+      uniform float uReveal;
+      uniform vec2 uPointer;
+      uniform float uPointerStrength;
+      uniform float uAspect;
+      uniform float uTime;
+      void main(){
+        vec2 uv = vUv;
+        vec2 rippleUv = uv + normalize(uv - uPointer) * vWave * 0.01;
+        vec3 raw = texture2D(uRaw, uv).rgb;
+        vec3 finish = texture2D(uFinish, rippleUv).rgb;
+        float scanEdge = uReveal * 1.28 - 0.14;
+        float scan = 1.0 - smoothstep(scanEdge - 0.18, scanEdge + 0.18, uv.x + sin(uv.y * 3.14159) * 0.052);
+        vec2 aspectUv = (uv - uPointer) * vec2(uAspect, 1.0);
+        float lens = 1.0 - smoothstep(0.0, 0.24, length(aspectUv));
+        float reveal = max(scan, lens * uPointerStrength);
+        float edge = smoothstep(0.018, 0.0, abs(scan - 0.5));
+        float lensEdge = smoothstep(0.03, 0.0, abs(lens - 0.52)) * uPointerStrength;
+        vec3 color = mix(raw, finish, reveal);
+        color += vec3(0.9, 0.62, 0.28) * edge * 0.28;
+        color += vec3(0.52, 0.83, 0.9) * lensEdge * 0.2;
+        color += vWave * vec3(0.16, 0.12, 0.06);
+        float vignette = smoothstep(1.05, 0.28, distance(uv, vec2(0.5)));
+        color *= mix(0.72, 1.08, vignette);
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `
+  });
+
+  const surface = new THREE.Mesh(new THREE.PlaneGeometry(4.6, 3.15, 120, 80), material);
+  rig.add(surface);
+
+  const backing = new THREE.Mesh(
+    new THREE.BoxGeometry(4.76, 3.32, .12),
+    new THREE.MeshPhysicalMaterial({ color:0x15120f, roughness:.58, metalness:.42, clearcoat:.16 })
+  );
+  backing.position.z = -.09;
+  rig.add(backing);
+
+  const edge = new THREE.Mesh(
+    new THREE.TorusGeometry(2.56, .018, 8, 140),
+    new THREE.MeshBasicMaterial({ color:0xd6ad60, transparent:true, opacity:.24 })
+  );
+  edge.scale.y = .68;
+  edge.position.z = .05;
+  rig.add(edge);
+
+  const floor = new THREE.GridHelper(18, 36, 0x493620, 0x1d1a15);
+  floor.position.y = -2.28;
+  floor.rotation.x = 0.02;
+  scene.add(floor);
+
+  const points = new THREE.BufferGeometry();
+  const pointArray = [];
+  for (let i = 0; i < 120; i += 1) {
+    const radius = 2.8 + Math.random() * 4.5;
+    const angle = Math.random() * Math.PI * 2;
+    pointArray.push(Math.cos(angle) * radius, Math.random() * 2.8 - 1.4, Math.sin(angle) * radius - 1);
+  }
+  points.setAttribute("position", new THREE.Float32BufferAttribute(pointArray, 3));
+  const particleField = new THREE.Points(points, new THREE.PointsMaterial({ color:0xd6ad60, size:.024, transparent:true, opacity:.36 }));
+  scene.add(particleField);
+
+  scene.add(new THREE.HemisphereLight(0xf4ead8, 0x090907, 1.1));
+  const key = new THREE.DirectionalLight(0xffe6c2, 2.35);
+  key.position.set(3, 4.2, 4.4);
+  scene.add(key);
+  const cool = new THREE.PointLight(0x79aab7, 14, 8, 2);
+  cool.position.set(-3, 1.4, 2.4);
+  scene.add(cool);
+  const warm = new THREE.PointLight(0xd38c45, 10, 7, 2);
+  warm.position.set(2.5, -.3, 2.2);
+  scene.add(warm);
+
+  const raycaster = new THREE.Raycaster();
+  const pointer = new THREE.Vector2(0, 0);
+  const targetUv = new THREE.Vector2(.5, .5);
+
+  const chapters = [
+    ["Raw layer","Start with the untreated surface.","The first frame should make the baseline visible: grain, scratches, dullness, oxidation, unfinished material, or the part before restoration."],
+    ["Controlled edge","Let the reveal line prove the difference.","A soft shader edge works when both sides stay readable. The transition should compare states, not smear the asset."],
+    ["Inspection lens","Use local motion for detail, not novelty.","The pointer pass gives the visitor a smaller proof loop: move over the surface, inspect the finish, then keep reading."],
+    ["Finished surface","Resolve to the final material.","End with clarity. The finished state should show the product, coating, ingredient, or material without distortion covering the proof."]
+  ];
+
+  function clamp(value, min, max){ return Math.max(min, Math.min(max, value)); }
+  function progress(){
+    const rect = inspection.getBoundingClientRect();
+    const travel = Math.max(1, rect.height - window.innerHeight * 1.05);
+    return clamp(-rect.top / travel, 0, 1);
+  }
+  function updateCopy(p){
+    const index = Math.min(chapters.length - 1, Math.floor(p * chapters.length));
+    chapterLabel.textContent = chapters[index][0];
+    chapterTitle.textContent = chapters[index][1];
+    chapterCopy.textContent = chapters[index][2];
+    progressFill.style.width = (p * 100).toFixed(1) + "%";
+  }
+  function resize(){
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    renderer.setSize(width, height, false);
+    camera.aspect = width / height;
+    camera.fov = width < 760 ? 50 : 42;
+    camera.position.z = width < 760 ? 6.9 : 5.7;
+    camera.updateProjectionMatrix();
+    rig.scale.setScalar(width < 760 ? .72 : 1);
+    uniforms.uAspect.value = 4.6 / 3.15;
+  }
+  function movePointer(event){
+    const rect = canvas.getBoundingClientRect();
+    pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    pointer.y = -(((event.clientY - rect.top) / rect.height) * 2 - 1);
+    raycaster.setFromCamera(pointer, camera);
+    const hit = raycaster.intersectObject(surface, false)[0];
+    if (hit && hit.uv) {
+      targetUv.copy(hit.uv);
+      uniforms.uPointerStrength.value = Math.min(.92, uniforms.uPointerStrength.value + .08);
+    }
+  }
+  function softenPointer(){
+    uniforms.uPointerStrength.value = .36;
+  }
+
+  document.body.classList.add("has-webgl");
+  resize();
+  window.addEventListener("resize", resize, { passive:true });
+  window.addEventListener("pointermove", movePointer, { passive:true });
+  window.addEventListener("pointerleave", softenPointer, { passive:true });
+
+  let eased = 0;
+  function render(time){
+    const p = progress();
+    eased += (p - eased) * .08;
+    uniforms.uReveal.value = clamp(eased * 1.04, 0, 1);
+    uniforms.uPointer.value.lerp(targetUv, .12);
+    uniforms.uTime.value = time * .001;
+    uniforms.uPointerStrength.value += (.38 + Math.sin(time * .0007) * .03 - uniforms.uPointerStrength.value) * .018;
+
+    rig.rotation.y = -0.24 + eased * .36 + (uniforms.uPointer.value.x - .5) * .08;
+    rig.rotation.x = -0.3 + Math.sin(time * .0006) * .018 + (uniforms.uPointer.value.y - .5) * -.05;
+    edge.rotation.z += .0012;
+    particleField.rotation.y += .0007;
+    cool.intensity = 11 + eased * 8;
+    warm.intensity = 8 + Math.sin(eased * Math.PI) * 5;
+
+    updateCopy(eased);
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</body>
+</html>

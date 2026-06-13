@@ -1,5 +1,12 @@
 # Cinematic Site Components Changelog
 
+## [0.7.0] - 2026-06-12
+
+### Added
+
+- **WebGL material inspection module**: Added module 40, `webgl-material-reveal.html`, a Three.js shader example where scroll advances a controlled reveal from a raw material texture to a finished surface while pointer movement adds a local inspection lens. The page is meant for product materials, restorations, coatings, fabrication details, food/detail imagery, and premium before-and-after surfaces where the finish itself is the proof. It includes generated raw/finish texture layers, a visible comparison edge, synced chapter copy, nonblank canvas-friendly rendering, and a static split fallback for reduced motion or missing WebGL. `index.html`, `README.md`, `IMPLEMENTATION-REFERENCE.md`, `CLAUDE.md`, and generated `AGENTS.md` now list 40 modules, including 17 scroll-driven examples.
+- **3D intake cleanup**: Re-scraped the shader, responsive WebGL text, and reactive image-tube Codrops sources through local Firecrawl, then kept only distilled source notes in `_sources/`. `_notes/source-log.md` and `_notes/pattern-backlog.md` now promote the shader source only for the material-reveal use case, while leaving the image tube, responsive WebGL text, and carousel-style effects backlogged until they solve a sharper content job.
+
 ## [0.6.0] - 2026-06-09
 
 ### Added
