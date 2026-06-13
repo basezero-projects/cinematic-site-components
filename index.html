@@ -140,6 +140,31 @@
   .mini-camera-dot{position:absolute;width:8px;height:8px;border-radius:50%;background:#f3efe3;box-shadow:0 0 16px rgba(232,121,58,.6);offset-path:path("M18,66 C18,12 106,8 118,50 C103,80 38,88 18,66");animation:miniCameraDot 4.8s cubic-bezier(.37,0,.18,1) infinite}
   @keyframes miniCameraDot{0%{offset-distance:0%}55%,72%{offset-distance:78%}100%{offset-distance:100%}}
   @keyframes miniCameraObject{0%,100%{transform:rotateX(12deg) rotateY(-22deg)}45%,65%{transform:rotateX(18deg) rotateY(28deg)}}
+  .mini-package-scene{position:relative;width:132px;height:96px;perspective:300px}
+  .mini-package-box{position:absolute;left:21px;top:30px;width:90px;height:54px;transform-style:preserve-3d;animation:miniPackageTilt 4.8s cubic-bezier(.37,0,.18,1) infinite}
+  .mini-package-box::before{content:"";position:absolute;inset:0;border-radius:7px;background:linear-gradient(145deg,#7b5133,#302014);box-shadow:0 18px 28px rgba(0,0,0,.32);transform:translateZ(-18px)}
+  .mini-package-box span,.mini-package-box i,.mini-package-box b{position:absolute;display:block;border-radius:6px;border:1px solid rgba(234,231,226,.16);background:linear-gradient(145deg,#8a5a35,#3c2718);backface-visibility:hidden}
+  .mini-package-box span{left:0;right:0;bottom:0;height:36px;transform-origin:50% 100%;animation:miniPackageFront 4.8s cubic-bezier(.37,0,.18,1) infinite}
+  .mini-package-box i{left:27px;top:-26px;width:36px;height:26px;transform-origin:50% 100%;animation:miniPackageFlap 4.8s cubic-bezier(.37,0,.18,1) infinite}
+  .mini-package-box b{left:24px;top:15px;width:42px;height:30px;border-radius:8px;background:linear-gradient(145deg,#18201c,#78a8b3);animation:miniPackagePayload 4.8s cubic-bezier(.37,0,.18,1) infinite}
+  @keyframes miniPackageTilt{0%,100%{transform:rotateX(-18deg) rotateY(-34deg) translateY(0)}54%,74%{transform:rotateX(-6deg) rotateY(22deg) translateY(-8px)}}
+  @keyframes miniPackageFront{0%,100%{transform:translateZ(0) rotateX(0deg)}54%,74%{transform:translateZ(0) rotateX(-108deg)}}
+  @keyframes miniPackageFlap{0%,100%{transform:translateZ(4px) rotateX(178deg)}54%,74%{transform:translateZ(4px) rotateX(26deg)}}
+  @keyframes miniPackagePayload{0%,24%{transform:translateZ(8px) translateY(0);opacity:.2}54%,74%{transform:translateZ(42px) translateY(-11px);opacity:1}100%{transform:translateZ(8px) translateY(0);opacity:.2}}
+  .mini-projection-grid{width:118px;height:78px;display:grid;grid-template-columns:repeat(6,1fr);gap:5px;perspective:300px;transform:rotateX(10deg) rotateY(-18deg)}
+  .mini-projection-grid span{border-radius:4px;background:linear-gradient(145deg,#21342f,#3b2a18);box-shadow:0 12px 18px rgba(0,0,0,.24),inset 0 0 0 1px rgba(215,173,96,.12);animation:miniProjectCell 4.6s cubic-bezier(.37,0,.18,1) infinite}
+  .mini-projection-grid span:nth-child(3n){animation-delay:.08s}.mini-projection-grid span:nth-child(4n){animation-delay:.16s}.mini-projection-grid span:nth-child(5n){animation-delay:.24s}
+  @keyframes miniProjectCell{0%,18%{transform:translateZ(0);background:linear-gradient(145deg,#21342f,#3b2a18)}58%,76%{transform:translateZ(22px);background:linear-gradient(145deg,#78a8b3,#d7ad60 56%,#c7683b)}100%{transform:translateZ(0);background:linear-gradient(145deg,#21342f,#3b2a18)}}
+  .mini-persistent-scene{position:relative;width:136px;height:82px;perspective:260px}
+  .mini-persistent-track{position:absolute;left:10px;right:10px;top:42px;height:1px;background:rgba(215,173,96,.25)}
+  .mini-persistent-node{position:absolute;top:30px;width:24px;height:24px;border-radius:50%;background:#15130f;border:1px solid rgba(234,231,226,.18)}
+  .mini-persistent-node:nth-child(2){left:12px;background:#d7ad60}.mini-persistent-node:nth-child(3){left:56px;background:#78a8b3}.mini-persistent-node:nth-child(4){right:12px;background:#c7683b}
+  .mini-persistent-camera{position:absolute;left:8px;top:19px;width:38px;height:38px;border:2px solid rgba(243,236,223,.75);border-radius:50%;box-shadow:0 0 24px rgba(120,168,179,.28);animation:miniPersistentCamera 5s cubic-bezier(.37,0,.18,1) infinite}
+  @keyframes miniPersistentCamera{0%,18%{transform:translateX(0) scale(1)}44%,58%{transform:translateX(44px) scale(.94)}80%,100%{transform:translateX(88px) scale(1.04)}}
+  .mini-ink-preview{position:relative;width:122px;height:78px;border-radius:10px;overflow:hidden;background:linear-gradient(145deg,#19120d,#0a0908);border:1px solid rgba(234,231,226,.12)}
+  .mini-ink-preview::before{content:"";position:absolute;left:16px;bottom:15px;width:48px;height:8px;border-radius:999px;background:#d7ad60;opacity:.8}
+  .mini-ink-preview span{position:absolute;right:12px;bottom:12px;width:12px;height:12px;border-radius:50%;background:#1d140f;box-shadow:0 0 0 0 rgba(29,20,15,.9);animation:miniInkSpread 4.4s cubic-bezier(.37,0,.18,1) infinite}
+  @keyframes miniInkSpread{0%,20%{transform:scale(1);box-shadow:0 0 0 0 rgba(29,20,15,.9)}58%,78%{transform:scale(1.8);box-shadow:0 0 0 92px rgba(29,20,15,.92)}100%{transform:scale(1);box-shadow:0 0 0 0 rgba(29,20,15,.9)}}
 
   /* Curtain */
   .mini-curtain{display:flex;width:100%;height:100%;position:absolute;inset:0}
@@ -326,7 +351,7 @@
 
 <div class="header">
   <div class="label">Cinematic Site Modules</div>
-  <h1>40 <span>cinematic modules</span> for websites that move</h1>
+  <h1>44 <span>cinematic modules</span> for websites that move</h1>
   <p>Each module is a standalone HTML file. No frameworks, no build step. Click any card to see it live.</p>
   <div style="margin-top:20px;font-size:12px;color:var(--muted)">&copy; Created by Jay from <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboLabs</a>. Learn more at <a href="https://robonuggets.com" style="color:#e8793a;text-decoration:none">RoboNuggets</a></div>
 </div>
@@ -336,7 +361,7 @@
   <div class="section-head">
     <div class="section-dot" style="background:#e8793a"></div>
     <div class="section-title">Scroll-Driven</div>
-    <div class="section-count">17 modules</div>
+    <div class="section-count">19 modules</div>
   </div>
   <div class="bento bento-scroll">
     <a href="text-mask.html" class="card span-2c"><div class="card-demo"><div class="mini-mask">REVEAL</div><div class="mini-mask-fill">REVEAL</div></div><div class="card-info"><span class="card-num">01</span><span class="card-name">Text Mask Reveal</span><span class="card-arrow">&rarr;</span></div></a>
@@ -353,6 +378,8 @@
     <a href="curved-path-motion.html" class="card"><div class="card-demo"><svg class="mini-curve-svg" viewBox="0 0 160 100" aria-hidden="true"><defs><linearGradient id="miniCurveGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e8793a"/><stop offset="52%" stop-color="#c8a97e"/><stop offset="100%" stop-color="#5eadb5"/></linearGradient></defs><path class="mini-curve-guide" d="M18,70 C42,12 88,24 96,48 C106,82 56,76 66,52 C78,24 118,26 142,44"/><path class="mini-curve-draw" d="M18,70 C42,12 88,24 96,48 C106,82 56,76 66,52 C78,24 118,26 142,44"/><circle class="mini-curve-dot" r="5"><animateMotion dur="4.2s" repeatCount="indefinite" path="M18,70 C42,12 88,24 96,48 C106,82 56,76 66,52 C78,24 118,26 142,44"/></circle></svg></div><div class="card-info"><span class="card-num">36</span><span class="card-name">Curved Path Motion</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="scroll-3d-text.html" class="card"><div class="card-demo"><div class="mini-text-wheel"><div class="mini-text-wheel-inner"><span>Proof</span><span>Speed</span><span>Care</span><span>Build</span><span>Launch</span><span>Trust</span></div></div></div><div class="card-info"><span class="card-num">37</span><span class="card-name">3D Scroll Text</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="scroll-camera-tour.html" class="card span-2c"><div class="card-demo"><div class="mini-camera-tour"><div class="mini-camera-floor"></div><div class="mini-camera-path"></div><div class="mini-camera-dot"></div><div class="mini-camera-object"></div></div></div><div class="card-info"><span class="card-num">38</span><span class="card-name">3D Camera Tour</span><span class="card-arrow">&rarr;</span></div></a>
+    <a href="folding-package-scroll.html" class="card"><div class="card-demo"><div class="mini-package-scene"><div class="mini-package-box"><span></span><i></i><b></b></div></div></div><div class="card-info"><span class="card-num">41</span><span class="card-name">Folding Package Scroll</span><span class="card-arrow">&rarr;</span></div></a>
+    <a href="projection-mapping-grid.html" class="card span-2c"><div class="card-demo"><div class="mini-projection-grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div><div class="card-info"><span class="card-num">42</span><span class="card-name">Projection Mapping Grid</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="curtain-reveal.html" class="card span-2c"><div class="card-demo"><div class="mini-curtain"><div class="mini-curtain-bg">Reveal</div><div class="mini-curtain-l">DIS</div><div class="mini-curtain-r">COVER</div></div></div><div class="card-info"><span class="card-num">07</span><span class="card-name">Curtain Reveal</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="split-scroll.html" class="card"><div class="card-demo"><div class="mini-split"><div class="mini-split-col"><div class="mini-split-item" style="background:#1a1a2e"></div><div class="mini-split-item" style="background:#2d4a3e"></div><div class="mini-split-item" style="background:#4a3a2d"></div><div class="mini-split-item" style="background:#1a1a2e"></div></div><div class="mini-split-col"><div class="mini-split-item" style="background:#2e1a1a"></div><div class="mini-split-item" style="background:#1a2e2a"></div><div class="mini-split-item" style="background:#2e2a1a"></div><div class="mini-split-item" style="background:#2e1a1a"></div></div></div></div><div class="card-info"><span class="card-num">08</span><span class="card-name">Split Screen</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="color-shift.html" class="card"><div class="card-demo"><div class="mini-colorshift"></div></div><div class="card-info"><span class="card-num">09</span><span class="card-name">Color Shift</span><span class="card-arrow">&rarr;</span></div></a>
@@ -384,7 +411,7 @@
   <div class="section-head">
     <div class="section-dot" style="background:#d4622a"></div>
     <div class="section-title">Click & Tap</div>
-    <div class="section-count">7 modules</div>
+    <div class="section-count">9 modules</div>
   </div>
   <div class="bento bento-click">
     <a href="view-transitions.html" class="card span-2c"><div class="card-demo"><div class="mini-morph"></div></div><div class="card-info"><span class="card-num">18</span><span class="card-name">View Transition Morphing</span><span class="card-arrow">&rarr;</span></div></a>
@@ -392,6 +419,8 @@
     <a href="odometer.html" class="card"><div class="card-demo"><div class="mini-odo"><span class="mini-odo-digit">2</span><span class="mini-odo-digit" style="animation-delay:.1s">8</span><span class="mini-odo-digit" style="animation-delay:.2s">4</span><span class="mini-odo-digit" style="animation-delay:.3s">7</span></div></div><div class="card-info"><span class="card-num">20</span><span class="card-name">Odometer Counter</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="coverflow.html" class="card span-2c"><div class="card-demo"><div class="mini-cover"><div class="mini-cover-item"></div><div class="mini-cover-item"></div><div class="mini-cover-item"></div><div class="mini-cover-item"></div><div class="mini-cover-item"></div></div></div><div class="card-info"><span class="card-num">21</span><span class="card-name">3D Coverflow Carousel</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="spatial-product-hotspots.html" class="card span-2c"><div class="card-demo"><div class="mini-hotspot-scene"><div class="mini-hotspot-product"></div><div class="mini-hotspot-dot"></div><div class="mini-hotspot-dot"></div><div class="mini-hotspot-dot"></div></div></div><div class="card-info"><span class="card-num">39</span><span class="card-name">Spatial Product Hotspots</span><span class="card-arrow">&rarr;</span></div></a>
+    <a href="persistent-3d-transition.html" class="card"><div class="card-demo"><div class="mini-persistent-scene"><span class="mini-persistent-track"></span><span class="mini-persistent-node"></span><span class="mini-persistent-node"></span><span class="mini-persistent-node"></span><span class="mini-persistent-camera"></span></div></div><div class="card-info"><span class="card-num">43</span><span class="card-name">Persistent 3D Transition</span><span class="card-arrow">&rarr;</span></div></a>
+    <a href="ink-bleed-overlay.html" class="card"><div class="card-demo"><div class="mini-ink-preview"><span></span></div></div><div class="card-info"><span class="card-num">44</span><span class="card-name">Ink Bleed Overlay</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="dynamic-island.html" class="card"><div class="card-demo"><div class="mini-island"><div class="mini-island-dot"></div>3 new</div></div><div class="card-info"><span class="card-num">22</span><span class="card-name">Dynamic Island</span><span class="card-arrow">&rarr;</span></div></a>
     <a href="dock-nav.html" class="card"><div class="card-demo"><div class="mini-dock"><div class="mini-dock-item" style="background:#e85d3a"></div><div class="mini-dock-item" style="background:#22c55e"></div><div class="mini-dock-item" style="background:#4f46e5"></div><div class="mini-dock-item" style="background:#c8a97e"></div><div class="mini-dock-item" style="background:#5eadb5"></div></div></div><div class="card-info"><span class="card-num">23</span><span class="card-name">macOS Dock</span><span class="card-arrow">&rarr;</span></div></a>
   </div>
@@ -415,7 +444,7 @@
   </div>
 </section>
 
-<div class="footer-note">40 cinematic modules. No frameworks, no build step.</div>
+<div class="footer-note">44 cinematic modules. No frameworks, no build step.</div>
 <footer>Cinematic Site Modules</footer>
 
 </body>

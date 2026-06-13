@@ -23,6 +23,125 @@ Why it belongs here:
 
 ## Entries
 
+### 2026-06-12 - Folding package scroll
+
+Date: 2026-06-12
+Source: Codrops
+URL: https://tympanus.net/codrops/2022/12/13/how-to-code-an-on-scroll-folding-3d-cardboard-box-animation-with-three-js-and-gsap/
+Scrape method: Firecrawl
+Candidate pattern: Scroll opens a physical package through hinged panels and resolves into a payload/product frame
+Score: 8/10
+Decision: Build
+Good for: Product launches, packaging stories, welcome kits, fulfillment, physical goods, assembly sections
+Avoid for: Generic boxes, products where packaging is irrelevant, loose panels with no object logic, or dense reading sections
+Motion risk: The package can look like decorative cardboard unless the fold reveals structure, craft, contents, or a next action
+Reduced motion fallback: Show the package open, product payload visible, progress complete, and final chapter copy
+Dependencies: CSS 3D transforms and vanilla scroll mapping
+License/attribution: Original local implementation inspired by public pattern research; no source code copied
+Why it belongs here: Built as `folding-package-scroll.html`, it adds a clear physical product-construction motion job that is not covered by existing gallery or card modules.
+
+### 2026-06-12 - Projection mapping grid
+
+Date: 2026-06-12
+Source: Codrops
+URL: https://tympanus.net/codrops/2025/08/28/interactive-video-projection-mapping-with-three-js/
+Scrape method: Firecrawl
+Candidate pattern: One visual source is projected across many physical cells so the surface reconstructs a larger signal
+Score: 8/10
+Decision: Build
+Good for: Event walls, launch installations, venue pages, music/campaign surfaces, product arrays, installation recaps
+Avoid for: Empty cube grids, ordinary galleries, low-asset service pages, or unreadable final marks
+Motion risk: A projection grid becomes junk animation if the physical surface and final visual are not meaningful
+Reduced motion fallback: Static lit wall with explanation cards and a readable projected state
+Dependencies: Three.js CDN, CanvasTexture, vanilla scroll mapping
+License/attribution: Original local implementation inspired by public pattern research; no source code copied
+Why it belongs here: Built as `projection-mapping-grid.html`, it gives future sites a physical-surface WebGL pattern instead of another carousel.
+
+### 2026-06-12 - Persistent 3D transition
+
+Date: 2026-06-12
+Source: Codrops
+URL: https://tympanus.net/codrops/2026/03/18/building-seamless-3d-transitions-with-webflow-gsap-and-three-js/
+Scrape method: Firecrawl
+Candidate pattern: A persistent Three.js scene remains mounted while camera movement connects content states
+Score: 8/10
+Decision: Build
+Good for: Product categories, case-study routes, venue zones, service modes, connected page states
+Avoid for: Hard page pops, cryptic navigation, too many stations, or generic 3D objects
+Motion risk: If the camera states do not explain the content, the scene feels like a menu gimmick
+Reduced motion fallback: Static cards for every state with no required camera movement
+Dependencies: Three.js CDN and vanilla click/tap state management
+License/attribution: Original local implementation inspired by public pattern research; no source code copied
+Why it belongs here: Built as `persistent-3d-transition.html`, it covers connected state transitions without relying on a framework or page router.
+
+### 2026-06-12 - Ink bleed overlay
+
+Date: 2026-06-12
+Source: Codrops
+URL: https://tympanus.net/codrops/2026/04/28/more-than-a-portfolio-building-a-scroll-driven-3d-world-with-something-to-say/
+Scrape method: Firecrawl
+Candidate pattern: Shader overlay changes page mode and reveals an HTML panel while the page remains behind it
+Score: 8/10 for the narrowed overlay pattern
+Decision: Build
+Good for: Contact panels, booking overlays, project details, editorial menus, campaign mode changes
+Avoid for: Ordinary navigation, weak modal content, overlays that hide essential reading, or shader-only decoration
+Motion risk: Ink or shader transitions can become a loading-screen trope if they do not signal a real context change
+Reduced motion fallback: Plain overlay panel opens and closes without shader canvas
+Dependencies: Three.js CDN, custom shader material, vanilla click/tap state management
+License/attribution: Original local implementation inspired by public pattern research; no source code copied
+Why it belongs here: Built as `ink-bleed-overlay.html`, it gives future sites a reversible cinematic overlay transition rather than a one-way modal pop.
+
+### 2026-06-12 - Scroll-reactive 3D gallery
+
+Date: 2026-06-12
+Source: Codrops
+URL: https://tympanus.net/codrops/2026/03/09/building-a-scroll-reactive-3d-gallery-with-three-js-velocity-and-mood-based-backgrounds/
+Scrape method: Firecrawl
+Candidate pattern: Scroll velocity and active item state drive a 3D gallery and background mood
+Score: 6/10 as a new module
+Decision: Backlog
+Good for: Campaign galleries, venue media, portfolio archives, lookbooks
+Avoid for: Low-asset pages, generic gallery duplication, and any site already served by coverflow, horizontal scroll, or WebGL rotating gallery
+Motion risk: Velocity response can become novelty motion and weaken scanability
+Reduced motion fallback: Static image grid or ordered gallery
+Dependencies: Three.js-style gallery rendering and scroll velocity mapping
+License/attribution: Source noted for pattern research only
+Why it belongs here: Useful reference, but not distinct enough to build until there is a collection-specific reason.
+
+### 2026-06-12 - Scroll-revealed WebGL gallery
+
+Date: 2026-06-12
+Source: Codrops
+URL: https://tympanus.net/codrops/2026/02/02/building-a-scroll-revealed-webgl-gallery-with-gsap-three-js-astro-and-barba-js/
+Scrape method: Firecrawl
+Candidate pattern: Scroll, routing, and a WebGL layer coordinate a high-end gallery reveal
+Score: 6/10 as a new standalone module
+Decision: Backlog
+Good for: Multi-page portfolios, lookbooks, galleries, art-direction sites
+Avoid for: Static single-section demos, duplicate galleries, and modules where routing complexity is not the point
+Motion risk: Heavy orchestration can hide the reusable effect
+Reduced motion fallback: Static gallery with route/page state visible
+Dependencies: Source combines Three.js, GSAP, Astro, and Barba-style routing concepts
+License/attribution: Source noted for architecture reference only
+Why it belongs here: Keep as reference for future multi-page WebGL work, not as another gallery in this batch.
+
+### 2026-06-12 - Scroll-driven cube gallery
+
+Date: 2026-06-12
+Source: Codrops
+URL: https://tympanus.net/codrops/2026/05/26/building-a-scroll-driven-3d-cube-gallery-in-webflow-with-gsap/
+Scrape method: Firecrawl
+Candidate pattern: Scroll turns featured image/content tiles into a 3D cube field
+Score: 6/10 as a new module
+Decision: Backlog
+Good for: Featured case studies, product collections, campaign drops, editorial packages
+Avoid for: Ordinary galleries, weak item hierarchy, and cases covered by coverflow, rotating gallery, or sticky cards
+Motion risk: Cube structures can obscure content and become motion for motion's sake
+Reduced motion fallback: Static featured-card grid
+Dependencies: Source uses Webflow/GSAP-style choreography
+License/attribution: Source noted for pattern research only
+Why it belongs here: Worth tracking, but not built because it would currently duplicate existing collection modules.
+
 ### 2026-06-12 - WebGL material reveal
 
 Date: 2026-06-12

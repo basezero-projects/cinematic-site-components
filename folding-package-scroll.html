@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Folding Package Scroll - Cinematic Module</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0907;
+    --ink:#f4ecdc;
+    --muted:#9a8d78;
+    --panel:#12100d;
+    --line:#2c261d;
+    --gold:#d5aa5a;
+    --rust:#c46938;
+    --green:#6f8768;
+    --cyan:#78a5ad;
+    --open:.02;
+    --progress:0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    min-height:100%;
+    overflow-x:hidden;
+    background:
+      radial-gradient(circle at 14% 10%,rgba(120,165,173,.16),transparent 28%),
+      radial-gradient(circle at 82% 14%,rgba(196,105,56,.13),transparent 32%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Public Sans",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .eyebrow,.chapter-label,.spec-label,.fallback-label{
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+  }
+  .hero{
+    min-height:86dvh;
+    display:grid;
+    place-items:end center;
+    padding:92px 24px 54px;
+  }
+  .hero-inner{
+    width:min(1180px,100%);
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(300px,390px);
+    gap:44px;
+    align-items:end;
+  }
+  .eyebrow{color:var(--cyan);margin-bottom:18px}
+  h1{
+    max-width:960px;
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(48px,8.2vw,122px);
+    line-height:.84;
+    letter-spacing:0;
+    font-weight:900;
+  }
+  h1 span{color:var(--gold)}
+  .hero-copy{
+    max-width:64ch;
+    margin-top:26px;
+    color:var(--muted);
+    font-size:18px;
+    line-height:1.62;
+  }
+  .use-card{
+    min-height:250px;
+    display:grid;
+    align-content:end;
+    gap:18px;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;
+    background:linear-gradient(145deg,rgba(255,255,255,.08),transparent 34%),var(--panel);
+    box-shadow:0 34px 100px rgba(0,0,0,.28);
+    padding:24px;
+  }
+  .use-card strong{
+    font-family:"Archivo",sans-serif;
+    font-size:36px;
+    line-height:.96;
+    letter-spacing:0;
+  }
+  .use-card p{
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.56;
+  }
+  .fold-section{
+    min-height:360vh;
+    border-top:1px solid rgba(255,255,255,.07);
+    border-bottom:1px solid rgba(255,255,255,.07);
+  }
+  .stage{
+    position:sticky;
+    top:0;
+    min-height:100dvh;
+    overflow:hidden;
+    display:grid;
+    place-items:center;
+    background:
+      radial-gradient(circle at 50% 46%,rgba(213,170,90,.13),transparent 30%),
+      linear-gradient(180deg,#080705,#0c0a08);
+  }
+  .stage::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(90deg,rgba(8,7,5,.82),transparent 38%,rgba(8,7,5,.58)),
+      linear-gradient(180deg,rgba(8,7,5,.7),transparent 32%,rgba(8,7,5,.86));
+  }
+  .scene-wrap{
+    position:relative;
+    z-index:2;
+    width:min(1180px,100%);
+    min-height:100dvh;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(286px,420px);
+    gap:32px;
+    align-items:end;
+    padding:44px 24px 58px;
+  }
+  .package-area{
+    align-self:center;
+    min-height:620px;
+    display:grid;
+    place-items:center;
+    perspective:1200px;
+  }
+  .package{
+    position:relative;
+    width:min(430px,70vw);
+    height:min(300px,50vw);
+    transform-style:preserve-3d;
+    transform:
+      rotateX(calc(-20deg + var(--open) * 16deg))
+      rotateY(calc(-36deg + var(--open) * 62deg))
+      translateY(calc(var(--open) * -38px));
+    transition:transform .08s linear;
+  }
+  .face,.flap,.product-card{
+    position:absolute;
+    transform-style:preserve-3d;
+    backface-visibility:hidden;
+    border:1px solid rgba(255,255,255,.16);
+  }
+  .face,.flap{
+    background:
+      repeating-linear-gradient(12deg,rgba(255,255,255,.07) 0 1px,transparent 1px 18px),
+      linear-gradient(145deg,#7b5133,#3d281a);
+    box-shadow:inset 0 0 42px rgba(0,0,0,.16);
+  }
+  .base{
+    width:100%;
+    height:100%;
+    transform:translateZ(-78px);
+    border-radius:10px;
+  }
+  .front,.back{
+    width:100%;
+    height:156px;
+    left:0;
+    transform-origin:50% 100%;
+    border-radius:10px 10px 6px 6px;
+  }
+  .front{
+    bottom:0;
+    transform:translateZ(0) rotateX(calc(var(--open) * -112deg));
+  }
+  .back{
+    top:-156px;
+    transform-origin:50% 100%;
+    transform:translateZ(0) rotateX(calc(180deg - var(--open) * 112deg));
+  }
+  .left,.right{
+    width:156px;
+    height:100%;
+    top:0;
+    transform-origin:100% 50%;
+    border-radius:10px 6px 6px 10px;
+  }
+  .left{
+    left:-156px;
+    transform:translateZ(0) rotateY(calc(-180deg + var(--open) * 112deg));
+  }
+  .right{
+    right:-156px;
+    transform-origin:0 50%;
+    transform:translateZ(0) rotateY(calc(180deg - var(--open) * 112deg));
+  }
+  .flap{
+    width:40%;
+    height:108px;
+    left:30%;
+    top:-108px;
+    transform-origin:50% 100%;
+    border-radius:8px 8px 5px 5px;
+    background:
+      linear-gradient(145deg,rgba(255,255,255,.08),transparent 40%),
+      #624126;
+    transform:translateZ(4px) rotateX(calc(180deg - var(--open) * 156deg));
+  }
+  .product-card{
+    left:18%;
+    top:18%;
+    width:64%;
+    height:62%;
+    border-radius:14px;
+    background:
+      radial-gradient(circle at 70% 30%,rgba(120,165,173,.34),transparent 34%),
+      linear-gradient(145deg,#18201c,#090b0a);
+    box-shadow:0 28px 80px rgba(0,0,0,.38);
+    transform:
+      translateZ(calc(6px + var(--open) * 62px))
+      translateY(calc(var(--open) * -24px))
+      rotateX(calc(var(--open) * -7deg));
+    display:grid;
+    align-content:end;
+    padding:22px;
+  }
+  .product-card b{
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(24px,3vw,38px);
+    line-height:.92;
+    letter-spacing:0;
+  }
+  .product-card span{
+    display:block;
+    margin-top:8px;
+    color:rgba(244,236,220,.68);
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+  }
+  .shadow{
+    position:absolute;
+    left:50%;
+    top:58%;
+    width:560px;
+    height:180px;
+    border-radius:50%;
+    background:radial-gradient(ellipse,rgba(0,0,0,.46),transparent 66%);
+    transform:translate(-50%,-50%) rotateX(76deg) translateZ(-160px);
+  }
+  .chapter-card{
+    position:relative;
+    z-index:3;
+    pointer-events:auto;
+    width:min(420px,100%);
+    border:1px solid rgba(255,255,255,.11);
+    border-radius:10px;
+    background:rgba(14,12,10,.84);
+    backdrop-filter:blur(18px);
+    box-shadow:0 28px 90px rgba(0,0,0,.38);
+    padding:22px;
+  }
+  .chapter-label{color:var(--gold);margin-bottom:16px}
+  .chapter-card h2{
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(32px,4.6vw,56px);
+    line-height:.92;
+    letter-spacing:0;
+    margin-bottom:18px;
+  }
+  .chapter-card p{
+    color:rgba(244,236,220,.74);
+    font-size:15px;
+    line-height:1.62;
+  }
+  .progress-shell{
+    height:5px;
+    border-radius:999px;
+    background:rgba(255,255,255,.1);
+    overflow:hidden;
+    margin-top:22px;
+  }
+  .progress-fill{
+    width:calc(var(--progress) * 100%);
+    height:100%;
+    border-radius:inherit;
+    background:linear-gradient(90deg,var(--rust),var(--gold),var(--cyan));
+  }
+  .why{
+    max-width:1040px;
+    margin:0 auto;
+    padding:112px 24px 132px;
+    display:grid;
+    grid-template-columns:.8fr 1.2fr;
+    gap:44px;
+  }
+  .why h2{
+    font-family:"Archivo",sans-serif;
+    font-size:clamp(34px,5vw,62px);
+    line-height:.95;
+    letter-spacing:0;
+  }
+  .why p{
+    color:var(--muted);
+    font-size:17px;
+    line-height:1.7;
+  }
+  footer{
+    border-top:1px solid rgba(255,255,255,.08);
+    color:var(--muted);
+    text-align:center;
+    padding:24px;
+    font-size:12px;
+  }
+  .credit{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:30;
+    padding:8px 16px;
+    color:rgba(244,236,220,.38);
+    background:rgba(10,9,7,.84);
+    border-top:1px solid rgba(255,255,255,.08);
+    text-align:center;
+    font-size:11px;
+    backdrop-filter:blur(8px);
+  }
+  .credit a{color:var(--gold);text-decoration:none}
+  @media(max-width:860px){
+    .hero-inner,.scene-wrap,.why{grid-template-columns:1fr}
+    .hero{min-height:auto;padding:64px 18px 24px}
+    .hero-inner{gap:24px}
+    .use-card{min-height:190px}
+    .scene-wrap{padding:24px 16px 58px;align-items:end}
+    .package-area{min-height:480px;transform:scale(.82)}
+    .chapter-card{width:100%}
+    .chapter-card h2{font-size:clamp(30px,9vw,44px)}
+  }
+  @media(max-width:560px){
+    h1{font-size:clamp(42px,15vw,70px)}
+    .hero-copy{font-size:16px}
+    .use-card{min-height:168px;padding:20px}
+    .use-card strong{font-size:28px}
+    .fold-section{min-height:310vh}
+    .package-area{min-height:390px;transform:scale(.64)}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    :root{--open:1;--progress:1}
+    .fold-section{min-height:auto}
+    .stage{position:relative}
+  }
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Module 41 - Folding Package Scroll</div>
+      <h1>Make the product <span>unpack itself.</span></h1>
+      <p class="hero-copy">Use this when packaging, assembly, fulfillment, or product construction is part of the proof. The scroll motion opens the object before the copy asks for the next action.</p>
+    </div>
+    <aside class="use-card">
+      <strong>Useful when the box tells part of the story.</strong>
+      <p>A fold should reveal structure, contents, or craft. If the package is not meaningful, use a simpler reveal.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="fold-section" id="foldSection">
+  <div class="stage">
+    <div class="scene-wrap">
+      <div class="package-area" aria-hidden="true">
+        <div class="package" id="package">
+          <div class="shadow"></div>
+          <div class="face base"></div>
+          <div class="face front"></div>
+          <div class="face back"></div>
+          <div class="face left"></div>
+          <div class="face right"></div>
+          <div class="flap"></div>
+          <div class="product-card"><b>Core kit</b><span>sealed insert / fast start / proof inside</span></div>
+        </div>
+      </div>
+      <article class="chapter-card" aria-live="polite">
+        <div class="chapter-label" id="chapterLabel">Closed form</div>
+        <h2 id="chapterTitle">Start with the object intact.</h2>
+        <p id="chapterCopy">The first frame should read as a real package or artifact, not loose panels floating in space.</p>
+        <div class="progress-shell" aria-hidden="true"><div class="progress-fill"></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <h2>Why this belongs in the library.</h2>
+  <p>Most scroll 3D demos rotate an object without explaining anything. This module uses scroll to reveal construction: flaps, enclosure, and the payload inside. It fits product launches, physical goods, installation kits, client welcome packs, logistics stories, and any section where packaging quality supports the offer.</p>
+</section>
+
+<footer>Cinematic Module - Folding Package Scroll</footer>
+<div class="credit">&copy; Created by Jay from <a href="https://robonuggets.com">RoboLabs</a>. Learn more at <a href="https://robonuggets.com">RoboNuggets</a></div>
+
+<script>
+(function(){
+  const section = document.getElementById("foldSection");
+  const label = document.getElementById("chapterLabel");
+  const title = document.getElementById("chapterTitle");
+  const copy = document.getElementById("chapterCopy");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const chapters = [
+    ["Closed form","Start with the object intact.","The first frame should read as a real package or artifact, not loose panels floating in space."],
+    ["Opening hinge","Let the fold show construction.","The viewer sees how the object is built, where it opens, and why the motion matters."],
+    ["Payload reveal","Bring the contents forward.","The product or insert should become the focus only after the package has earned attention."],
+    ["Ready state","Resolve into the next action.","End with a stable product frame that can support pricing, booking, purchase, or case-study copy."]
+  ];
+  function clamp(value, min, max){ return Math.max(min, Math.min(max, value)); }
+  function update(){
+    const rect = section.getBoundingClientRect();
+    const travel = Math.max(1, rect.height - window.innerHeight * 1.04);
+    const p = reduce ? 1 : clamp(-rect.top / travel, 0, 1);
+    const eased = p * p * (3 - 2 * p);
+    document.documentElement.style.setProperty("--open", eased.toFixed(4));
+    document.documentElement.style.setProperty("--progress", p.toFixed(4));
+    const index = Math.min(chapters.length - 1, Math.floor(p * chapters.length));
+    label.textContent = chapters[index][0];
+    title.textContent = chapters[index][1];
+    copy.textContent = chapters[index][2];
+  }
+  update();
+  window.addEventListener("scroll", update, { passive:true });
+  window.addEventListener("resize", update, { passive:true });
+})();
+</script>
+</body>
+</html>

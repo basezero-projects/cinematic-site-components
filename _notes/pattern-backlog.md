@@ -106,6 +106,46 @@ Why built: It turns the broad shader source into a concrete inspection module fo
 Best fit: Product detail sections, material pages, restoration proof, coating/finish claims, food or fabrication macro imagery.
 Risk: If the two layers are weak or flat, the shader becomes decorative noise.
 
+### Folding package scroll
+
+Pattern: Scroll opens a physical package through hinged panels and resolves into a payload frame
+Source: https://tympanus.net/codrops/2022/12/13/how-to-code-an-on-scroll-folding-3d-cardboard-box-animation-with-three-js-and-gsap/
+Score: 8/10
+Status: Built as `folding-package-scroll.html`
+Why built: It adds a physical product-construction motion job for packaging, welcome kits, fulfillment, and assembly stories without needing model assets.
+Best fit: Product launches, packaging pages, welcome kits, fulfillment flows, physical goods.
+Risk: If the box does not matter, the fold reads as decorative cardboard.
+
+### Projection mapping grid
+
+Pattern: One visual source maps across many 3D cells so the surface reconstructs a projected signal
+Source: https://tympanus.net/codrops/2025/08/28/interactive-video-projection-mapping-with-three-js/
+Score: 8/10
+Status: Built as `projection-mapping-grid.html`
+Why built: It gives event, launch, venue, and campaign pages a physical-surface WebGL pattern that is distinct from carousel and gallery modules.
+Best fit: Event walls, venue pages, product arrays, music/campaign surfaces, installation recaps.
+Risk: Empty cubes or unreadable final marks turn it into surface-level spectacle.
+
+### Persistent 3D transition
+
+Pattern: A persistent Three.js canvas remains mounted while camera movement connects content states
+Source: https://tympanus.net/codrops/2026/03/18/building-seamless-3d-transitions-with-webflow-gsap-and-three-js/
+Score: 8/10
+Status: Built as `persistent-3d-transition.html`
+Why built: It covers a real transition architecture: one spatial scene, stateful camera movement, synced HTML copy, and a static fallback.
+Best fit: Product families, case-study routes, venue zones, service modes, connected page states.
+Risk: Too many stations or generic objects make the scene feel cryptic.
+
+### Ink bleed overlay
+
+Pattern: A screen-space shader opens and closes a real HTML overlay panel
+Source: https://tympanus.net/codrops/2026/04/28/more-than-a-portfolio-building-a-scroll-driven-3d-world-with-something-to-say/
+Score: 8/10 for the narrowed overlay pattern
+Status: Built as `ink-bleed-overlay.html`
+Why built: It narrows a broad 3D world reference into a reusable context-change transition for contact, booking, project-detail, and editorial menu overlays.
+Best fit: Contact panels, booking overlays, project details, editorial menus, campaign mode switches.
+Risk: Shader overlays become decorative if they do not open a meaningful new mode.
+
 ## Backlog
 
 ### Layered image grid zoom
@@ -147,6 +187,36 @@ Why not built yet: It is useful but not distinct enough from the existing coverf
 What would make it worth building: A featured-item module where the reactive background clearly helps active-card focus.
 Best fit: Featured products, campaign cards, music/event cards, premium testimonials.
 Risk: Reactive gradients can become decoration.
+
+### Scroll-reactive 3D gallery
+
+Pattern: Scroll velocity and active item state drive a 3D gallery with mood-based background changes.
+Source: https://tympanus.net/codrops/2026/03/09/building-a-scroll-reactive-3d-gallery-with-three-js-velocity-and-mood-based-backgrounds/
+Score: 6/10
+Why not built yet: It overlaps existing coverflow, horizontal-scroll, WebGL rotating gallery, hover grid, and image trail modules.
+What would make it worth building: A collection-specific story where velocity and mood changes help users understand active item hierarchy.
+Best fit: Campaign galleries, venue media, portfolio archives, lookbooks.
+Risk: Velocity-driven galleries can turn into novelty motion.
+
+### Scroll-revealed WebGL gallery
+
+Pattern: Scroll and route state coordinate a WebGL gallery reveal.
+Source: https://tympanus.net/codrops/2026/02/02/building-a-scroll-revealed-webgl-gallery-with-gsap-three-js-astro-and-barba-js/
+Score: 6/10
+Why not built yet: The source is more useful as multi-page architecture reference than as another static gallery module.
+What would make it worth building: A future routed site or library module where persistent WebGL state is the actual problem being solved.
+Best fit: Multi-page portfolios, lookbooks, galleries, art-direction sites.
+Risk: Heavy orchestration can hide the reusable effect.
+
+### Scroll-driven cube gallery
+
+Pattern: Scroll turns featured image/content tiles into a 3D cube field.
+Source: https://tympanus.net/codrops/2026/05/26/building-a-scroll-driven-3d-cube-gallery-in-webflow-with-gsap/
+Score: 6/10
+Why not built yet: It is not distinct enough from the existing collection and card-stack modules.
+What would make it worth building: A compact featured-item cube system tied to CMS cards or campaign drops.
+Best fit: Featured case studies, product collections, campaign drops, editorial packages.
+Risk: Cube structures can obscure content and become motion for motion's sake.
 
 ## Rejected As Module
 

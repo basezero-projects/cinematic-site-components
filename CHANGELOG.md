@@ -1,5 +1,13 @@
 # Cinematic Site Components Changelog
 
+## [0.8.0] - 2026-06-12
+
+### Added
+
+- **Batch of four 3D-focused cinematic modules**: Added modules 41-44 as standalone examples and linked them from `index.html`. `folding-package-scroll.html` opens a CSS 3D package on scroll so product, packaging, welcome-kit, and fulfillment pages can reveal the payload after the enclosure has visual meaning. `projection-mapping-grid.html` uses Three.js to map one generated visual across a physical cube wall, then scroll lifts the surface into a readable event, launch, venue, or campaign projection with a static fallback. `persistent-3d-transition.html` keeps one Three.js canvas mounted while click/tap buttons move the camera between material, assembly, and launch states, giving future product/category/page transitions a reusable persistent-scene pattern. `ink-bleed-overlay.html` opens and closes an HTML panel through a screen-space shader spread, with a normal reduced-motion overlay for contact, booking, project-detail, and editorial menu contexts.
+- **Quality-gated 3D source intake**: Added distilled source notes for the Codrops folding package, projection mapping, persistent 3D transition, scroll-driven 3D world, scroll-reactive gallery, scroll-revealed WebGL gallery, and scroll-driven cube gallery sources. `_notes/source-log.md` and `_notes/pattern-backlog.md` now show which sources were promoted, which gallery-heavy ideas were backlogged, and why the batch does not duplicate existing coverflow, horizontal-scroll, or rotating-gallery modules.
+- **Registry and prompt guidance updated for 44 modules**: Updated `README.md`, `IMPLEMENTATION-REFERENCE.md`, `CLAUDE.md`, and generated `AGENTS.md` to list 44 modules, including 19 scroll-driven examples and 9 click/tap examples. The implementation reference now documents the behavior contracts for folding packages, projection mapped surfaces, persistent 3D transitions, and ink overlay panels so future LLMs preserve fallbacks, reverse paths, nonblank canvas checks, and real content jobs when adapting them.
+
 ## [0.7.0] - 2026-06-12
 
 ### Added

@@ -1,10 +1,10 @@
 # Cinematic Site Modules
 
-40 cinematic website modules. Each one is a single HTML file. No frameworks. No build step. No npm. Just open it.
+44 cinematic website modules. Each one is a single HTML file. No frameworks. No build step. No npm. Just open it.
 
 ## Preview
 
-Open `index.html` to browse all 40 modules with animated mini-demos, or open any individual module file directly in a browser.
+Open `index.html` to browse all 44 modules with animated mini-demos, or open any individual module file directly in a browser.
 
 ## Curation Rules
 
@@ -43,9 +43,9 @@ http://100.x.x.x:8035/index.html
 
 Open that URL on the phone while Tailscale is connected. Keep the Windows machine awake. If the phone cannot connect, run the script once from an elevated PowerShell with `-OpenFirewall`, or manually allow inbound TCP port `8035`.
 
-## The 40 Modules
+## The 44 Modules
 
-### Scroll-Driven (17)
+### Scroll-Driven (19)
 | # | Module | What It Does |
 |---|---|---|
 | 01 | Text Mask Reveal | Headline fills with colour as you scroll |
@@ -65,6 +65,8 @@ Open that URL on the phone while Tailscale is connected. Keep the Windows machin
 | 36 | Curved Path Motion | A meaningful object travels along a responsive SVG path through proof points |
 | 37 | 3D Scroll Text | Short brand or product vocabulary rotates through a CSS 3D scroll cylinder |
 | 38 | 3D Camera Tour | A Three.js camera path inspects a product-like object through planned scroll chapters |
+| 41 | Folding Package Scroll | CSS 3D package flaps open with scroll and reveals the product payload inside |
+| 42 | Projection Mapping Grid | Three.js cube wall reconstructs one projected texture as scroll adds depth and rotation |
 
 ### Cursor & Hover (9)
 | # | Module | What It Does |
@@ -79,7 +81,7 @@ Open that URL on the phone while Tailscale is connected. Keep the Windows machin
 | 16 | Spotlight Border Cards | Borders illuminate under cursor |
 | 17 | Drag-to-Pan Grid | Infinite draggable canvas |
 
-### Click & Tap (7)
+### Click & Tap (9)
 | # | Module | What It Does |
 |---|---|---|
 | 18 | View Transition Morphing | Elements shape-shift between states |
@@ -89,6 +91,8 @@ Open that URL on the phone while Tailscale is connected. Keep the Windows machin
 | 22 | Dynamic Island Nav | Pill morphs for notifications |
 | 23 | macOS Dock Nav | Icons magnify on hover |
 | 39 | Spatial Product Hotspots | A lightweight CSS 3D object tilts and reveals concrete product detail hotspots |
+| 43 | Persistent 3D Transition | A persistent Three.js canvas moves the camera between connected content states |
+| 44 | Ink Bleed Overlay | A shader overlay opens and closes a modal layer with an ink-spread transition |
 
 ### Ambient & Auto (7)
 | # | Module | What It Does |

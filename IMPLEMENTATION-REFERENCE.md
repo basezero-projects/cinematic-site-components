@@ -4,8 +4,8 @@ Use this file when an LLM is asked to add animation from this folder to a real s
 
 ## Current Status
 
-- **Module count:** 40 standalone examples.
-- **Last verification pass:** 2026-06-09.
+- **Module count:** 44 standalone examples.
+- **Last verification pass:** 2026-06-12.
 - **Preview URL pattern:** run `serve-over-tailscale.ps1`, then open the printed Tailscale URL.
 - **Cache behavior:** the Tailscale helper now serves no-cache headers. If Chrome or a phone shows an old effect, restart the helper and reload with a cache-busting query string.
 - **Quality rule:** do not add effects from this folder just because they move. Pick the effect that proves something, clarifies a transition, or makes a product/story easier to understand.
@@ -73,6 +73,8 @@ If the target page is a SYVR/client marketing page, also point it at the relevan
 | `curved-path-motion.html` | Product flows, quote funnels, service journeys, case-study timelines, fulfillment routes, or any page where scattered proof needs one clear route. | The moving object must mean something, the active cards should sync with path position, and the final stop needs a concrete action. | Decorative route lines, pages with no real sequence, or dense content where the moving object competes with reading. |
 | `scroll-3d-text.html` | Brand pillars, product attributes, capability spectra, and short editorial chapter vocabularies. | Keep the word set tight, sync the active word to explanatory copy, and verify mobile/reduced-motion fallbacks. | Buzzword clouds, long lists, body-copy replacement, or fast spinning text that users have to read. |
 | `scroll-camera-tour.html` | Product construction, venue walkthroughs, architecture, hardware, gallery installations, or case-study artifacts where planned camera angles make the subject easier to understand. | Preserve the full camera story: wide read, material pass, detail pass, spatial proof, and resolved action frame. Verify nonblank canvas, mobile framing, and static fallback. | Generic floating objects, pages with no inspectable subject, heavy model loads without fallback, or camera movement that competes with the CTA. |
+| `folding-package-scroll.html` | Product launches, packaging stories, welcome kits, fulfillment flows, physical goods, and assembly sections where the package or enclosure is part of the proof. | Preserve the readable closed state, hinged flap sequence, payload reveal, stable final action frame, and reduced-motion open state. | Generic boxes, products where packaging does not matter, floating panels without object logic, or copy that needs to be read while the package is mid-fold. |
+| `projection-mapping-grid.html` | Event walls, venue pages, launch installations, product arrays, music/campaign surfaces, and visual recaps where the surface itself should feel lit. | Preserve one source visual distributed across many physical cells, the dark-surface start, scroll-linked depth lift, readable resolved mark, nonblank canvas check, and static fallback. | Empty cube grids, ordinary galleries, low-asset service pages, or projections where the final state is not readable. |
 
 ### Cursor & Hover
 
@@ -99,6 +101,8 @@ If the target page is a SYVR/client marketing page, also point it at the relevan
 | `dynamic-island.html` | Compact status, nav, notification, or mode switcher demos. | Expanded/collapsed states both work on click/tap. | Marketing pages that need obvious controls more than hidden chrome. |
 | `dock-nav.html` | Small toolbars, icon launchers, or playful nav on creative pages. | Hit targets stay stable despite magnification. | Main nav for service pages or text-heavy menus. |
 | `spatial-product-hotspots.html` | Product detail sections, installation artifacts, device features, package callouts, or service objects with a few concrete parts to inspect. | Keep the object readable before interaction, keep hotspot count low, support tap and keyboard buttons, and connect each hotspot to the visible part. | Decorative dots, vague feature labels, too many callouts, or hiding critical information behind hover-only states. |
+| `persistent-3d-transition.html` | Product families, case-study routes, venue zones, service modes, or category changes that should feel connected by one spatial layer. | Preserve the persistent canvas, camera travel between named states, synced HTML copy, bidirectional button navigation, nonblank canvas check, and static fallback. | Separate page pops, cryptic navigation, too many stations, or 3D objects that do not clarify the content. |
+| `ink-bleed-overlay.html` | Contact panels, booking overlays, project details, editorial menus, and campaign mode switches on already cinematic pages. | Preserve both open and close motion, screen-space shader coverage, pointer-origin update, accessible HTML panel, and reduced-motion normal overlay. | Ordinary nav, weak modal content, overlays that block essential page reading, or shader effects with no context change. |
 
 ### Ambient & Auto
 

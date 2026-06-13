@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projection Mapping Grid - Cinematic Module</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#070807;--ink:#f2ecdf;--muted:#938a7b;--panel:#11110f;--gold:#d8ad5d;--rust:#c86a3b;--cyan:#77a9b7;--green:#748b6b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{min-height:100%;overflow-x:hidden;background:radial-gradient(circle at 14% 12%,rgba(119,169,183,.16),transparent 28%),radial-gradient(circle at 82% 18%,rgba(200,106,59,.12),transparent 33%),var(--bg);color:var(--ink);font-family:"Public Sans",sans-serif;-webkit-font-smoothing:antialiased}
+  .eyebrow,.chapter-label,.meta-label,.fallback-label{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+  .hero{min-height:86dvh;display:grid;place-items:end center;padding:92px 24px 54px}
+  .hero-inner{width:min(1180px,100%);display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,390px);gap:44px;align-items:end}
+  .eyebrow{color:var(--cyan);margin-bottom:18px}
+  h1{max-width:960px;font-family:"Archivo",sans-serif;font-size:clamp(48px,8.2vw,122px);line-height:.84;letter-spacing:0;font-weight:900}
+  h1 span{color:var(--gold)}
+  .hero-copy{max-width:64ch;margin-top:26px;color:var(--muted);font-size:18px;line-height:1.62}
+  .use-card{min-height:250px;display:grid;align-content:end;gap:18px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:linear-gradient(145deg,rgba(255,255,255,.08),transparent 34%),var(--panel);box-shadow:0 34px 100px rgba(0,0,0,.28);padding:24px}
+  .use-card strong{font-family:"Archivo",sans-serif;font-size:36px;line-height:.96;letter-spacing:0}
+  .use-card p{color:var(--muted);font-size:15px;line-height:1.56}
+  .mapping{display:none;position:relative;min-height:340vh;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07)}
+  .has-webgl .mapping{display:block}
+  .stage{position:sticky;top:0;min-height:100dvh;overflow:hidden;background:#050505}
+  canvas{position:absolute;inset:0;display:block;width:100%;height:100%;background:radial-gradient(circle at 52% 44%,#1b1812,#050505 68%)}
+  .stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(5,5,5,.82),transparent 40%,rgba(5,5,5,.52)),linear-gradient(180deg,rgba(5,5,5,.68),transparent 30%,rgba(5,5,5,.84))}
+  .mapping-ui{position:relative;z-index:3;min-height:100dvh;width:min(1180px,100%);margin:0 auto;display:grid;grid-template-columns:minmax(286px,420px) minmax(0,1fr);gap:32px;align-items:end;padding:46px 24px 58px;pointer-events:none}
+  .chapter-card{pointer-events:auto;width:min(420px,100%);border:1px solid rgba(255,255,255,.11);border-radius:10px;background:rgba(13,13,11,.82);backdrop-filter:blur(18px);box-shadow:0 28px 90px rgba(0,0,0,.38);padding:22px}
+  .chapter-label{color:var(--gold);margin-bottom:16px}
+  .chapter-card h2{font-family:"Archivo",sans-serif;font-size:clamp(32px,4.6vw,56px);line-height:.92;letter-spacing:0;margin-bottom:18px}
+  .chapter-card p{color:rgba(242,236,223,.73);font-size:15px;line-height:1.62}
+  .progress-shell{height:5px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:22px}
+  .progress-fill{width:0%;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--rust),var(--gold),var(--cyan))}
+  .meta-panel{align-self:start;justify-self:end;width:min(360px,100%);display:grid;gap:12px;padding-top:12px}
+  .meta-row{display:grid;grid-template-columns:94px 1fr;gap:16px;border-top:1px solid rgba(255,255,255,.12);padding-top:12px}
+  .meta-label{color:rgba(242,236,223,.44)}
+  .meta-row span:last-child{color:rgba(242,236,223,.76);font-size:14px;line-height:1.45}
+  .static-fallback{display:block;max-width:1120px;margin:0 auto;padding:96px 24px 118px}
+  .has-webgl .static-fallback{display:none}
+  .fallback-label{color:var(--cyan);margin-bottom:18px}
+  .fallback-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+  .fallback-wall{min-height:420px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:#0d0e0d;display:grid;grid-template-columns:repeat(9,1fr);gap:7px;padding:24px;align-content:center}
+  .fallback-wall span{aspect-ratio:1;border-radius:4px;background:linear-gradient(145deg,#2f443f,#d0a65a);opacity:.25}
+  .fallback-wall span:nth-child(3n){opacity:.82}.fallback-wall span:nth-child(5n){background:linear-gradient(145deg,#c86a3b,#77a9b7);opacity:.72}
+  .fallback-copy{display:grid;gap:12px}
+  .fallback-step{border:1px solid rgba(255,255,255,.1);border-radius:8px;background:rgba(17,17,15,.84);padding:18px}
+  .fallback-step b{display:block;margin-bottom:7px;color:var(--gold);font-size:13px}
+  .fallback-step span{color:var(--muted);font-size:14px;line-height:1.5}
+  .why{max-width:1040px;margin:0 auto;padding:112px 24px 132px;display:grid;grid-template-columns:.8fr 1.2fr;gap:44px}
+  .why h2{font-family:"Archivo",sans-serif;font-size:clamp(34px,5vw,62px);line-height:.95;letter-spacing:0}
+  .why p{color:var(--muted);font-size:17px;line-height:1.7}
+  footer{border-top:1px solid rgba(255,255,255,.08);color:var(--muted);text-align:center;padding:24px;font-size:12px}
+  .credit{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:8px 16px;color:rgba(242,236,223,.38);background:rgba(7,8,7,.84);border-top:1px solid rgba(255,255,255,.08);text-align:center;font-size:11px;backdrop-filter:blur(8px)}
+  .credit a{color:var(--gold);text-decoration:none}
+  @media(max-width:860px){.hero-inner,.mapping-ui,.fallback-grid,.why{grid-template-columns:1fr}.hero{min-height:auto;padding:64px 18px 24px}.hero-inner{gap:24px}.use-card{min-height:190px}.mapping-ui{padding:24px 16px 58px}.meta-panel{display:none}.chapter-card h2{font-size:clamp(30px,9vw,44px)}}
+  @media(max-width:560px){h1{font-size:clamp(42px,15vw,70px)}.hero-copy{font-size:16px}.use-card{min-height:168px;padding:20px}.use-card strong{font-size:28px}.mapping{min-height:300vh}.fallback-wall{min-height:330px;grid-template-columns:repeat(7,1fr)}}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.mapping{display:none!important}.static-fallback{display:block!important}}
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Module 42 - Projection Mapping Grid</div>
+      <h1>Turn the surface into the <span>screen.</span></h1>
+      <p class="hero-copy">Use this when a venue, launch wall, product grid, or campaign surface needs to feel physically lit rather than simply faded in.</p>
+    </div>
+    <aside class="use-card"><strong>Projection mapping works when the surface matters.</strong><p>The grid should carry real footage, campaign marks, venue texture, or launch visuals. Empty cubes are just decoration.</p></aside>
+  </div>
+</section>
+
+<section class="mapping" id="mapping">
+  <div class="stage">
+    <canvas id="mappingCanvas" aria-label="WebGL projection mapped cube grid"></canvas>
+    <div class="mapping-ui">
+      <article class="chapter-card" aria-live="polite">
+        <div class="chapter-label" id="chapterLabel">Dark wall</div>
+        <h2 id="chapterTitle">Start with the physical surface.</h2>
+        <p id="chapterCopy">The first frame should read as a wall, booth, product array, or installation - not a floating image gallery.</p>
+        <div class="progress-shell" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+      </article>
+      <div class="meta-panel" aria-hidden="true">
+        <div class="meta-row"><span class="meta-label">Input</span><span>One generated motion texture split across cube UV cells.</span></div>
+        <div class="meta-row"><span class="meta-label">Motion</span><span>Scroll lifts depth, rotates the wall, and sharpens the projection.</span></div>
+        <div class="meta-row"><span class="meta-label">Fallback</span><span>Reduced motion shows a static lit wall and the explanation cards.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="static-fallback">
+  <div class="fallback-label">Static projection fallback</div>
+  <div class="fallback-grid">
+    <div class="fallback-wall" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="fallback-copy">
+      <div class="fallback-step"><b>Dark wall</b><span>Show the surface before the content lands.</span></div>
+      <div class="fallback-step"><b>Mapped signal</b><span>The same image should be distributed across many cells so the grid reconstructs one larger piece.</span></div>
+      <div class="fallback-step"><b>Depth lift</b><span>Use 3D offset to make the projection feel attached to physical blocks.</span></div>
+      <div class="fallback-step"><b>Resolved mark</b><span>End with a readable campaign, product, or event state.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="why"><h2>Why this belongs in the library.</h2><p>This module is not another carousel. It teaches how to project one moving visual system onto a field of objects, which is useful for launches, event walls, venue pages, music sites, installation recaps, and product grids where the medium needs to feel physical.</p></section>
+<footer>Cinematic Module - Projection Mapping Grid</footer>
+<div class="credit">&copy; Created by Jay from <a href="https://robonuggets.com">RoboLabs</a>. Learn more at <a href="https://robonuggets.com">RoboNuggets</a></div>
+
+<script type="module">
+import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+(function(){
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const section = document.getElementById("mapping");
+  const canvas = document.getElementById("mappingCanvas");
+  const label = document.getElementById("chapterLabel");
+  const title = document.getElementById("chapterTitle");
+  const copy = document.getElementById("chapterCopy");
+  const fill = document.getElementById("progressFill");
+  if (reduce) return;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false, powerPreference:"high-performance", preserveDrawingBuffer:true });
+  renderer.setPixelRatio(Math.min(1.6, window.devicePixelRatio || 1));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x050505);
+  scene.fog = new THREE.Fog(0x050505, 7, 16);
+  const camera = new THREE.PerspectiveCamera(42, 1, .1, 40);
+  camera.position.set(0, .4, 8.4);
+  const group = new THREE.Group();
+  scene.add(group);
+  const texCanvas = document.createElement("canvas");
+  texCanvas.width = 1024; texCanvas.height = 640;
+  const ctx = texCanvas.getContext("2d");
+  const texture = new THREE.CanvasTexture(texCanvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  const cols = 13, rows = 8;
+  const materialBase = new THREE.MeshStandardMaterial({ map:texture, roughness:.62, metalness:.2, emissive:0x15100a, emissiveIntensity:.18 });
+  const darkMat = new THREE.MeshStandardMaterial({ color:0x10100e, roughness:.72, metalness:.1 });
+  const mask = [];
+  for (let y=0;y<rows;y+=1){
+    for (let x=0;x<cols;x+=1){
+      const dx = (x - (cols-1)/2) / (cols/2);
+      const dy = (y - (rows-1)/2) / (rows/2);
+      const inside = Math.pow(dx*1.1,2) + Math.pow(dy*.9,2) < .86 || (x>2 && x<10 && y>2 && y<5);
+      if (!inside) continue;
+      const geo = new THREE.BoxGeometry(.42,.42,.16);
+      const uv = geo.attributes.uv;
+      const u0=x/cols,u1=(x+1)/cols,v0=1-(y+1)/rows,v1=1-y/rows;
+      for(let i=0;i<uv.count;i+=1){
+        const u=uv.getX(i), v=uv.getY(i);
+        uv.setXY(i, THREE.MathUtils.lerp(u0,u1,u), THREE.MathUtils.lerp(v0,v1,v));
+      }
+      uv.needsUpdate = true;
+      const mesh = new THREE.Mesh(geo, materialBase.clone());
+      mesh.userData = { x, y, homeZ:(Math.sin(x*.8)+Math.cos(y*.7))*.03 };
+      mesh.position.set((x-(cols-1)/2)*.5, ((rows-1)/2-y)*.5, mesh.userData.homeZ);
+      group.add(mesh);
+      mask.push(mesh);
+    }
+  }
+  const back = new THREE.Mesh(new THREE.PlaneGeometry(7.2,4.8), darkMat);
+  back.position.z = -.16;
+  group.add(back);
+  const grid = new THREE.GridHelper(18,36,0x493820,0x1b1812);
+  grid.position.y = -2.75;
+  scene.add(grid);
+  scene.add(new THREE.HemisphereLight(0xf2ecdf,0x050505,1.05));
+  const key = new THREE.DirectionalLight(0xffe4be,2.1); key.position.set(3,4,5); scene.add(key);
+  const cyan = new THREE.PointLight(0x77a9b7,12,8,2); cyan.position.set(-3,1.2,2.5); scene.add(cyan);
+  const chapters = [
+    ["Dark wall","Start with the physical surface.","The first frame should read as a wall, booth, product array, or installation - not a floating image gallery."],
+    ["Mapped signal","Project one image across many cells.","Each cube carries its part of the same motion texture, so the surface reconstructs one larger visual."],
+    ["Depth lift","Let physical blocks catch the signal.","Small Z offsets and rotation make the projection feel mounted to objects instead of pasted on a flat plane."],
+    ["Resolved mark","End in a readable campaign state.","The final frame should support a title, event name, product launch, or installation proof."]
+  ];
+  function drawTexture(t,p){
+    ctx.clearRect(0,0,texCanvas.width,texCanvas.height);
+    const g=ctx.createLinearGradient(0,0,texCanvas.width,texCanvas.height);
+    g.addColorStop(0,"#102629"); g.addColorStop(.45,"#d6ad5d"); g.addColorStop(1,"#c86a3b");
+    ctx.fillStyle=g; ctx.fillRect(0,0,texCanvas.width,texCanvas.height);
+    ctx.globalAlpha=.45;
+    for(let i=0;i<18;i+=1){
+      ctx.strokeStyle=i%2?"#f2ecdf":"#77a9b7";
+      ctx.lineWidth=3+i%4;
+      ctx.beginPath();
+      const y=(i/18)*texCanvas.height + Math.sin(t*.001+i)*36;
+      ctx.moveTo(-100,y);
+      ctx.bezierCurveTo(250,y-120,620,y+160,texCanvas.width+120,y-40);
+      ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+    ctx.fillStyle="rgba(5,5,5,.38)";
+    ctx.fillRect(250,205,524,185);
+    ctx.strokeStyle="rgba(242,236,223,.34)";
+    ctx.strokeRect(250.5,205.5,524,185);
+    ctx.fillStyle="#f2ecdf";
+    ctx.font="900 92px Archivo, Arial";
+    ctx.fillText(p>.72?"LIVE WALL":"SIGNAL",300,320);
+    ctx.fillStyle="#d6ad5d";
+    ctx.font="800 28px Public Sans, Arial";
+    ctx.fillText("mapped across physical cells",306,358);
+    texture.needsUpdate=true;
+  }
+  function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+  function progress(){const r=section.getBoundingClientRect();const travel=Math.max(1,r.height-innerHeight*1.05);return clamp(-r.top/travel,0,1)}
+  function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=w<760?50:42;camera.position.z=w<760?9.6:8.4;camera.updateProjectionMatrix();group.scale.setScalar(w<760?.72:1)}
+  document.body.classList.add("has-webgl");
+  resize(); addEventListener("resize",resize,{passive:true});
+  let eased=0;
+  function render(t){
+    const p=progress(); eased+=(p-eased)*.08;
+    drawTexture(t,eased);
+    mask.forEach((mesh,i)=>{
+      const wave=Math.sin(t*.002+i*.41)*.06;
+      mesh.position.z = mesh.userData.homeZ + eased*.62 + wave*eased;
+      mesh.rotation.x = eased*.22 + wave*.2;
+      mesh.rotation.y = (mesh.userData.x-(cols-1)/2)*.006 + eased*.12;
+      mesh.material.emissiveIntensity=.1+eased*.34;
+      mesh.material.opacity=1;
+    });
+    group.rotation.y = -0.36 + eased*.62;
+    group.rotation.x = -0.08 + Math.sin(t*.0007)*.02;
+    cyan.intensity = 8 + eased*12;
+    const idx=Math.min(chapters.length-1,Math.floor(eased*chapters.length));
+    label.textContent=chapters[idx][0]; title.textContent=chapters[idx][1]; copy.textContent=chapters[idx][2]; fill.style.width=(eased*100).toFixed(1)+"%";
+    renderer.render(scene,camera);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</body>
+</html>

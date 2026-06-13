@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ink Bleed Overlay - Cinematic Module</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0908;--ink:#f3ecdf;--muted:#968b7b;--panel:#11100e;--line:#2c261f;--gold:#d7ad60;--rust:#c6673b;--cyan:#78a8b3;--open:0}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100dvh;overflow-x:hidden;background:radial-gradient(circle at 16% 12%,rgba(120,168,179,.18),transparent 28%),radial-gradient(circle at 82% 20%,rgba(198,103,59,.14),transparent 34%),var(--bg);color:var(--ink);font-family:"Public Sans",sans-serif;-webkit-font-smoothing:antialiased}
+  .eyebrow,.panel-label,.meta-label{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+  .page{min-height:100dvh;display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,420px);gap:44px;align-items:end;width:min(1180px,100%);margin:0 auto;padding:92px 24px 76px}
+  .eyebrow{color:var(--cyan);margin-bottom:18px}
+  h1{max-width:900px;font-family:"Archivo",sans-serif;font-size:clamp(48px,8.2vw,122px);line-height:.84;letter-spacing:0;font-weight:900}
+  h1 span{color:var(--gold)}
+  .hero-copy{max-width:64ch;margin-top:26px;color:var(--muted);font-size:18px;line-height:1.62}
+  .control-card{min-height:300px;display:grid;align-content:end;gap:18px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:linear-gradient(145deg,rgba(255,255,255,.08),transparent 34%),var(--panel);box-shadow:0 34px 100px rgba(0,0,0,.28);padding:24px}
+  .control-card strong{font-family:"Archivo",sans-serif;font-size:36px;line-height:.96;letter-spacing:0}
+  .control-card p{color:var(--muted);font-size:15px;line-height:1.56}
+  .open-btn,.close-btn{appearance:none;border:0;border-radius:999px;background:var(--gold);color:#12100d;font-weight:900;padding:14px 20px;cursor:pointer;width:max-content;transition:transform .18s,background .18s}
+  .open-btn:hover,.close-btn:hover{transform:translateY(-1px);background:#e5bd70}
+  .shader-layer{position:fixed;inset:0;z-index:20;pointer-events:none;opacity:0;transition:opacity .18s linear}
+  .is-open .shader-layer,.is-animating .shader-layer{opacity:1}
+  .shader-layer canvas{width:100%;height:100%;display:block}
+  .overlay-content{position:fixed;inset:0;z-index:25;display:grid;place-items:center;padding:24px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s ease,visibility .3s ease}
+  .is-open .overlay-content,.is-closing .overlay-content{opacity:1;visibility:visible;pointer-events:auto;transition-delay:.16s}
+  .is-closing .overlay-content{pointer-events:none;transition-delay:0s}
+  .overlay-panel{width:min(920px,100%);display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(10,9,8,.84);backdrop-filter:blur(18px);box-shadow:0 40px 120px rgba(0,0,0,.5);padding:24px}
+  .panel-label{color:var(--gold);margin-bottom:16px}
+  .overlay-panel h2{font-family:"Archivo",sans-serif;font-size:clamp(36px,6vw,76px);line-height:.88;letter-spacing:0}
+  .overlay-panel p{color:rgba(243,236,223,.74);font-size:16px;line-height:1.65}
+  .meta-list{display:grid;gap:12px}
+  .meta-row{display:grid;grid-template-columns:112px 1fr;gap:16px;border-top:1px solid rgba(255,255,255,.14);padding-top:13px}
+  .meta-label{color:rgba(243,236,223,.44)}
+  .meta-row span:last-child{color:rgba(243,236,223,.76);font-size:14px;line-height:1.45}
+  .close-btn{margin-top:22px}
+  .why{max-width:1040px;margin:0 auto;padding:80px 24px 132px;display:grid;grid-template-columns:.8fr 1.2fr;gap:44px}
+  .why h2{font-family:"Archivo",sans-serif;font-size:clamp(34px,5vw,62px);line-height:.95;letter-spacing:0}
+  .why p{color:var(--muted);font-size:17px;line-height:1.7}
+  footer{border-top:1px solid rgba(255,255,255,.08);color:var(--muted);text-align:center;padding:24px;font-size:12px}
+  .credit{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:8px 16px;color:rgba(243,236,223,.38);background:rgba(10,9,8,.84);border-top:1px solid rgba(255,255,255,.08);text-align:center;font-size:11px;backdrop-filter:blur(8px)}
+  .credit a{color:var(--gold);text-decoration:none}
+  @media(max-width:860px){.page,.overlay-panel,.why{grid-template-columns:1fr}.page{padding:76px 18px 56px}.overlay-panel{padding:20px}.meta-row{grid-template-columns:1fr;gap:6px}}
+  @media(max-width:560px){h1{font-size:clamp(42px,15vw,70px)}.hero-copy{font-size:16px}.control-card{min-height:240px}.overlay-content{padding:14px}.overlay-panel h2{font-size:clamp(34px,12vw,54px)}}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}.shader-layer{display:none}.is-open .overlay-content{opacity:1;visibility:visible;pointer-events:auto}}
+</style>
+</head>
+<body>
+<main class="page">
+  <section>
+    <div class="eyebrow">Module 44 - Ink Bleed Overlay</div>
+    <h1>Open the overlay like <span>ink spreading.</span></h1>
+    <p class="hero-copy">Use this for contact panels, project details, editorial menus, or campaign overlays when a normal dropdown would feel underbuilt next to a cinematic page.</p>
+  </section>
+  <aside class="control-card">
+    <strong>The transition is the doorway.</strong>
+    <p>A shader overlay is useful when it changes context. It should not hide weak content or replace ordinary navigation.</p>
+    <button class="open-btn" id="openBtn">Open panel</button>
+  </aside>
+</main>
+
+<div class="shader-layer" aria-hidden="true"><canvas id="inkCanvas"></canvas></div>
+<section class="overlay-content" aria-modal="true" aria-label="Ink bleed overlay example">
+  <div class="overlay-panel">
+    <div>
+      <div class="panel-label">Contact layer</div>
+      <h2>The page stays behind the ink.</h2>
+      <button class="close-btn" id="closeBtn">Close panel</button>
+    </div>
+    <div>
+      <p>The shader is pinned to screen space, so it behaves like an overlay rather than another 3D object. Use it when the visitor is entering a new mode: contact, booking, project detail, or an editorial menu.</p>
+      <div class="meta-list" aria-hidden="true">
+        <div class="meta-row"><span class="meta-label">Input</span><span>Click/tap toggles one shader uniform and one HTML panel.</span></div>
+        <div class="meta-row"><span class="meta-label">Motion</span><span>Noisy radial spread with softer edges while the ink is moving.</span></div>
+        <div class="meta-row"><span class="meta-label">Fallback</span><span>Reduced motion skips the shader and shows a normal overlay panel.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why"><h2>Why this belongs in the library.</h2><p>This is a UI transition, not decoration. It gives future sites a way to open high-value overlays without snapping into a generic modal, while still keeping a plain reduced-motion path.</p></section>
+<footer>Cinematic Module - Ink Bleed Overlay</footer>
+<div class="credit">&copy; Created by Jay from <a href="https://robonuggets.com">RoboLabs</a>. Learn more at <a href="https://robonuggets.com">RoboNuggets</a></div>
+
+<script type="module">
+import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+(function(){
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const body = document.body;
+  const openBtn = document.getElementById("openBtn");
+  const closeBtn = document.getElementById("closeBtn");
+  if (reduce) {
+    openBtn.addEventListener("click",()=>body.classList.add("is-open"));
+    closeBtn.addEventListener("click",()=>body.classList.remove("is-open"));
+    return;
+  }
+  const canvas = document.getElementById("inkCanvas");
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true, preserveDrawingBuffer:true });
+  renderer.setPixelRatio(Math.min(1.6, devicePixelRatio || 1));
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+  const uniforms = {
+    uOpen:{value:0},
+    uTime:{value:0},
+    uAspect:{value:1},
+    uOrigin:{value:new THREE.Vector2(.78,.68)}
+  };
+  const material = new THREE.ShaderMaterial({
+    transparent:true,
+    uniforms,
+    vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.0,1.0);}`,
+    fragmentShader:`
+      precision highp float;
+      varying vec2 vUv;
+      uniform float uOpen;
+      uniform float uTime;
+      uniform float uAspect;
+      uniform vec2 uOrigin;
+      float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}
+      float noise(vec2 p){vec2 i=floor(p);vec2 f=fract(p);vec2 u=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1.,0.)),u.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),u.x),u.y);}
+      float fbm(vec2 p){float v=0.;float a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p*=2.02;a*=.5;}return v;}
+      void main(){
+        vec2 uv=vUv;
+        vec2 p=(uv-uOrigin)*vec2(uAspect,1.0);
+        float d=length(p);
+        float n=fbm(uv*5.0+uTime*.08) + .45*fbm(uv*13.0-uTime*.12);
+        float radius=mix(.02,1.35,uOpen);
+        float softness=mix(.018,.18,sin(uOpen*3.14159));
+        float mask=1.0-smoothstep(radius-softness+n*.08,radius+softness+n*.12,d);
+        vec3 ink=mix(vec3(.025,.023,.02),vec3(.09,.065,.04),n*.45);
+        ink+=vec3(.45,.24,.11)*smoothstep(.45,1.0,n)*.18;
+        gl_FragColor=vec4(ink,mask*.94);
+      }`
+  });
+  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),material));
+  let target = 0;
+  let current = 0;
+  function open(){ target=1; body.classList.remove("is-closing"); body.classList.add("is-animating"); body.classList.add("is-open"); }
+  function close(){ target=0; body.classList.add("is-animating"); body.classList.add("is-closing"); body.classList.remove("is-open"); }
+  openBtn.addEventListener("click",open);
+  closeBtn.addEventListener("click",close);
+  window.addEventListener("pointerdown",(event)=>{
+    uniforms.uOrigin.value.set(event.clientX/innerWidth,1-event.clientY/innerHeight);
+  },{passive:true});
+  function resize(){renderer.setSize(innerWidth,innerHeight,false);uniforms.uAspect.value=innerWidth/innerHeight}
+  resize(); addEventListener("resize",resize,{passive:true});
+  function render(t){
+    current += (target-current)*.08;
+    uniforms.uOpen.value=current;
+    uniforms.uTime.value=t*.001;
+    if (Math.abs(target-current)<.01) {
+      body.classList.remove("is-animating");
+      if (target === 0) body.classList.remove("is-closing");
+    }
+    renderer.render(scene,camera);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</body>
+</html>
